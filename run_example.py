@@ -4,12 +4,10 @@ import boto3
 
 def main():
 
-    # connect to ec2
-    # upload sql files
-    # run mysql commands on files
-    # pgloader to postgres
-    # command to retrive output file
 
+    # running the script of the pgloader somehow
+    # get the output file that works with the postgres
+    # continue with this code to upload the file to postgres
 
     uploader = awsUploader()
 
@@ -21,17 +19,24 @@ def main():
 
     uploader.upload_postgres("output.sql")
     
-    '''
+
+if __name__ == "__main__":
+    main()
+
+'''
     # מגדירים פרטי התחברות ל־MySQL
     uploader.set_mysql_connection_details("mysql-source-db2.cdg0qswm8uxu.us-east-1.rds.amazonaws.com", aws_config["source"])
 
     uploader.connect()
-    
+
     # ⬆️ מעלים את הסכמה והדאטה (שני הקבצים)
     uploader.upload("sakila-schema.sql")
     uploader.upload("sakila-data.sql")
     '''
 
-if __name__ == "__main__":
-    main()
+# connect to ec2
+# upload sql files
+# run mysql commands on files
+# pgloader to postgres
+# command to retrive output file
 
