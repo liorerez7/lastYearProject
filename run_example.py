@@ -25,7 +25,8 @@ if __name__ == "__main__":
 
 '''
     # מגדירים פרטי התחברות ל־MySQL
-    uploader.set_mysql_connection_details("mysql-source-db2.cdg0qswm8uxu.us-east-1.rds.amazonaws.com", aws_config["source"])
+    uploader.set_mysql_connection_details("mysql-source-db2.cdg0qswm8uxu.us-east-1.rds.amazonaws.com",
+     aws_config["source"])
 
     uploader.connect()
 

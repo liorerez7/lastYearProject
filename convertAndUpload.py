@@ -9,6 +9,9 @@ def run_pgloader_script():
     script_path = "/mnt/c/Users/Lior/Desktop/Lior/שנה 3/סדנה/LastYearProject/engine/DBconvertor/newScript.sh"
     postgres_conn_string = "postgresql://postgres:postgres@172.24.128.1:5432/sakila"
 
+    schema_path = "/mnt/c/Users/Lior/Desktop/Lior/שנה 3/סדנה/LastYearProject/engine/DBconvertor/sakila-schema.sql"
+    data_path = "/mnt/c/Users/Lior/Desktop/Lior/שנה 3/סדנה/LastYearProject/engine/DBconvertor/sakila-data.sql"
+
     command = [
         "wsl",
         "bash",
@@ -16,8 +19,8 @@ def run_pgloader_script():
         "root",
         "rootpass",
         postgres_conn_string,
-        "sakila-schema.sql",
-        "sakila-data.sql"
+        schema_path,
+        data_path
     ]
 
     subprocess.run(command, check=True)
@@ -27,7 +30,7 @@ def export_pg_dump_from_windows():
     print("📦 Exporting PostgreSQL database to output.sql using Windows pg_dump...")
 
     output_path = r"C:\Users\Lior\Desktop\Lior\שנה 3\סדנה\LastYearProject\output.sql"
-    pg_dump_path = r"C:\Program Files\PostgreSQL\17\bin\pg_dump.exe"  # שנה לגרסה שלך אם צריך
+    pg_dump_path = r"C:\Program Files\PostgreSQL\17\bin\pg_dump.exe"
 
     command = [
         pg_dump_path,

@@ -4,12 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="16f505cf-1371-4bff-9441-22d339431234" name="Changes" comment="now we have 2 databases in the aws which are exactly the same. sakila.">
-      <change afterPath="$PROJECT_DIR$/convertAndDumpOnly.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/convertAndUpload.py" afterDir="false" />
+    <list default="true" id="16f505cf-1371-4bff-9441-22d339431234" name="Changes" comment="working but messy, i didnt delete a lot of code. in the next branch will be a clean version of the code">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output.sql" beforeDir="false" afterPath="$PROJECT_DIR$/mysql_postgresql_convertion/output.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run_example.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_example.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/convertAndDumpOnly.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/convertAndUpload.py" beforeDir="false" afterPath="$PROJECT_DIR$/convertAndUpload.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/DBconvertor/DBconvertor.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/DBconvertor/deleteDatabase.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/DBconvertor/mysql_to_postgres_converter.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/DBconvertor/output.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/DBconvertor/pgloader.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/output.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql_postgresql_convertion/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql_postgresql_convertion/add_foreign_keys_to_db.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql_postgresql_convertion/config.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql_postgresql_convertion/convert_local.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql_postgresql_convertion/output.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql_postgresql_convertion/run_all.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql_postgresql_convertion/test_match.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/output.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sakila-data.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sakila-schema.sql" beforeDir="false" />
     </list>
     <list id="b6354233-43bd-4259-89e9-c2a1dbaa965f" name="Changes by nivii" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -27,7 +41,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="convertingMySQLtoPostgres" />
+        <entry key="$PROJECT_DIR$" value="uploadDataIntoPostgres" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -57,15 +71,15 @@
     "Python.testConnection.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "uploadDataIntoPostgres",
-    "last_opened_file_path": "C:/Users/Lior/Desktop/Lior/שנה 3/סדנה/LastYearProject/engine/DBconvertor",
+    "git-widget-placeholder": "cleanV1",
+    "last_opened_file_path": "C:/Users/Lior/Desktop/Lior/שנה 3/סדנה/LastYearProject",
     "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Lior\Desktop\Lior\שנה 3\סדנה\LastYearProject\engine\DBconvertor" />
       <recent name="C:\Users\Lior\Desktop\Lior\שנה 3\סדנה\LastYearProject" />
+      <recent name="C:\Users\Lior\Desktop\Lior\שנה 3\סדנה\LastYearProject\engine\DBconvertor" />
       <recent name="C:\Users\Lior\Desktop\Lior\שנה 3\סדנה" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -130,7 +144,23 @@
       <option name="project" value="LOCAL‎" />
       <updated>1744126699307</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL‎-00006" summary="working but messy, i didnt delete a lot of code. in the next branch will be a clean version of the code">
+      <option name="closed" value="true" />
+      <created>1744138443979</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL‎-00006" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1744138443979</updated>
+    </task>
+    <task id="LOCAL‎-00007" summary="working but messy, i didnt delete a lot of code. in the next branch will be a clean version of the code">
+      <option name="closed" value="true" />
+      <created>1744138462331</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL‎-00007" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1744138462331</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -148,6 +178,7 @@
     <MESSAGE value="can now convert mysql code into postgres" />
     <MESSAGE value="so far, updating perfect the data into the mysql data base in engine version of 8.0" />
     <MESSAGE value="now we have 2 databases in the aws which are exactly the same. sakila." />
-    <option name="LAST_COMMIT_MESSAGE" value="now we have 2 databases in the aws which are exactly the same. sakila." />
+    <MESSAGE value="working but messy, i didnt delete a lot of code. in the next branch will be a clean version of the code" />
+    <option name="LAST_COMMIT_MESSAGE" value="working but messy, i didnt delete a lot of code. in the next branch will be a clean version of the code" />
   </component>
 </project>
