@@ -24,7 +24,7 @@ sudo docker exec -i mysql57 mysql -u root -prootpass sakila < sakila-data.sql
 sudo docker run --rm dimitri/pgloader:latest \
   pgloader \
   mysql://root:rootpass@host.docker.internal:3307/sakila \
-  postgresql://postgres:postgres@192.168.1.207:5432/sakila
+  postgresql://postgres:postgres@172.24.128.1:5432/sakila
 
 echo "Migration completed!"
 

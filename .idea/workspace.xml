@@ -4,16 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="16f505cf-1371-4bff-9441-22d339431234" name="Changes" comment="so far, updating perfect the data into the mysql data base in engine version of 8.0">
-      <change afterPath="$PROJECT_DIR$/output.sql" afterDir="false" />
+    <list default="true" id="16f505cf-1371-4bff-9441-22d339431234" name="Changes" comment="now we have 2 databases in the aws which are exactly the same. sakila.">
+      <change afterPath="$PROJECT_DIR$/engine/DBconvertor/newScript.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/engine/DBconvertor/sakila-data.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/engine/DBconvertor/sakila-schema.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/awsUploader.py" beforeDir="false" afterPath="$PROJECT_DIR$/engine/awsUploader.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mysql_postgresql_convertion/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/mysql_postgresql_convertion/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/DBconvertor/pgloader.sh" beforeDir="false" afterPath="$PROJECT_DIR$/engine/DBconvertor/pgloader.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/run_example.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_example.py" afterDir="false" />
     </list>
-    <list id="b6354233-43bd-4259-89e9-c2a1dbaa965f" name="Changes by nivii" comment="">
-      <change beforePath="$PROJECT_DIR$/run_example.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_example.py" afterDir="false" />
-    </list>
+    <list id="b6354233-43bd-4259-89e9-c2a1dbaa965f" name="Changes by nivii" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -37,18 +36,6 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/engine/DBconvertor/mysql_to_postgres_converter.py" root0="SKIP_INSPECTION" />
   </component>
-  <component name="LineStatusTrackerManager">
-    <file path="$PROJECT_DIR$/run_example.py">
-      <ranges>
-        <range start1="5" end1="5" start2="5" end2="13" changelist="16f505cf-1371-4bff-9441-22d339431234" />
-        <range start1="7" end1="7" start2="15" end2="24" changelist="16f505cf-1371-4bff-9441-22d339431234" />
-        <range start1="11" end1="12" start2="28" end2="29" changelist="16f505cf-1371-4bff-9441-22d339431234" />
-        <range start1="15" end1="15" start2="32" end2="33" changelist="16f505cf-1371-4bff-9441-22d339431234" />
-        <range start1="18" end1="19" start2="36" end2="36" changelist="b6354233-43bd-4259-89e9-c2a1dbaa965f" />
-        <range start1="26" end1="26" start2="43" end2="44" changelist="16f505cf-1371-4bff-9441-22d339431234" />
-      </ranges>
-    </file>
-  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
 }</component>
@@ -70,12 +57,13 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "uploadDataIntoPostgres",
-    "last_opened_file_path": "C:/Users/Lior/Desktop/Lior/שנה 3/סדנה/LastYearProject",
+    "last_opened_file_path": "C:/Users/Lior/Desktop/Lior/שנה 3/סדנה/LastYearProject/engine/DBconvertor",
     "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Lior\Desktop\Lior\שנה 3\סדנה\LastYearProject\engine\DBconvertor" />
       <recent name="C:\Users\Lior\Desktop\Lior\שנה 3\סדנה\LastYearProject" />
       <recent name="C:\Users\Lior\Desktop\Lior\שנה 3\סדנה" />
     </key>
@@ -124,7 +112,15 @@
       <option name="project" value="LOCAL‎" />
       <updated>1744113997530</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL‎-00004" summary="now we have 2 databases in the aws which are exactly the same. sakila.">
+      <option name="closed" value="true" />
+      <created>1744119393025</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL‎-00004" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1744119393025</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -141,6 +137,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="can now convert mysql code into postgres" />
     <MESSAGE value="so far, updating perfect the data into the mysql data base in engine version of 8.0" />
-    <option name="LAST_COMMIT_MESSAGE" value="so far, updating perfect the data into the mysql data base in engine version of 8.0" />
+    <MESSAGE value="now we have 2 databases in the aws which are exactly the same. sakila." />
+    <option name="LAST_COMMIT_MESSAGE" value="now we have 2 databases in the aws which are exactly the same. sakila." />
   </component>
 </project>

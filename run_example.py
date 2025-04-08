@@ -34,10 +34,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-'''
-rds = boto3.client("rds")
-    instance_id = aws_config["source"]["DBInstanceIdentifier"]
-    response = rds.describe_db_instances(DBInstanceIdentifier=instance_id)
-    endpoint = response["DBInstances"][0]["Endpoint"]["Address"]
-    print("🔍 Endpoint:", endpoint)
-'''
+
