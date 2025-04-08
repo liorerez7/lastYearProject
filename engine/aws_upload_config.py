@@ -1,12 +1,12 @@
 aws_config = {
   "source": {
-    "DBInstanceIdentifier": "mysql-source-db",
+    "DBInstanceIdentifier": "mysql-source-db2",
     "DBName": "sakila",
     "Engine": "mysql",
     "MasterUsername": "admin",
     "MasterUserPassword": "StrongPassword123",
     "DBInstanceClass": "db.t3.micro",
-    "AllocatedStorage": 20
+    "AllocatedStorage": 20,
   },
   "destination": {
     "DBInstanceIdentifier": "postgres-dest-db",

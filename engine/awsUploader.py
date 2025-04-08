@@ -8,7 +8,19 @@ class awsUploader(dbUploader):
     AWS-specific implementation for uploading a MySQL dump to an RDS instance.
     """
     def __init__(self):
-        pass
+        self.connection = None
+        self.rds_host = None
+        self.rds_user = None
+        self.rds_password = None
+        self.rds_db = None
+        self.rds_port = None
+
+    def set_mysql_connection_details(self, endpoint, config):
+        self.rds_host = endpoint
+        self.rds_user = config["MasterUsername"]
+        self.rds_password = config["MasterUserPassword"]
+        self.rds_db = config["DBName"]
+        self.rds_port = config.get("Port", 3306)
 
     def connect(self):
         try:
@@ -73,7 +85,6 @@ class awsUploader(dbUploader):
                     DBInstanceClass=db_config['DBInstanceClass'],
                     AllocatedStorage=db_config['AllocatedStorage'],
                 )
-
                 print("⏳ Waiting for RDS instance to be available...")
                 waiter = rds.get_waiter('db_instance_available')
                 waiter.wait(DBInstanceIdentifier=instance_id)
