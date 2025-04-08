@@ -1,6 +1,6 @@
-from engine.awsUploader import awsUploader
+from main.core.awsUploader import awsUploader
 from engine.aws_upload_config import aws_config
-import boto3
+
 
 def main():
 

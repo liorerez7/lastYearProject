@@ -1,6 +1,6 @@
 import os
 
-from engine.uploader import dbUploader
+from main.core.uploader import dbUploader
 import boto3
 import pymysql
 import subprocess
