@@ -1,3 +1,5 @@
+import os
+
 from engine.uploader import dbUploader
 import boto3
 import pymysql
@@ -14,13 +16,42 @@ class awsUploader(dbUploader):
         self.rds_password = None
         self.rds_db = None
         self.rds_port = None
-
     def set_mysql_connection_details(self, endpoint, config):
         self.rds_host = endpoint
         self.rds_user = config["MasterUsername"]
         self.rds_password = config["MasterUserPassword"]
         self.rds_db = config["DBName"]
         self.rds_port = config.get("Port", 3306)
+
+    def set_postgres_connection_details(self, endpoint, config):
+        self.rds_host = endpoint
+        self.rds_user = config["MasterUsername"]
+        self.rds_password = config["MasterUserPassword"]
+        self.rds_db = config["DBName"]
+        self.rds_port = config.get("Port", 5432)
+
+    def upload_postgres(self, dump_path):
+        print(f"🚀 Uploading dump file to AWS RDS PostgreSQL from {dump_path}...")
+        try:
+            command = [
+                'psql',
+                f'-h', self.rds_host,
+                f'-U', self.rds_user,
+                f'-p', str(self.rds_port),
+                f'-d', self.rds_db,
+                '-f', dump_path
+            ]
+            env = os.environ.copy()
+            env['PGPASSWORD'] = self.rds_password  # כדי לא להקליד את הסיסמה
+
+            result = subprocess.run(command, capture_output=True, text=True, env=env)
+            if result.returncode != 0:
+                print(f"❌ Upload failed: {result.stderr}")
+            else:
+                print("✅ Upload complete.")
+        except Exception as e:
+            print(f"❌ Exception during upload to PostgreSQL: {e}")
+            raise
 
     def connect(self):
         try:

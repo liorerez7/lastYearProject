@@ -4,8 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="16f505cf-1371-4bff-9441-22d339431234" name="Changes" comment="so far, updating perfect the data into the mysql data base in engine version of 8.0" />
-    <list id="b6354233-43bd-4259-89e9-c2a1dbaa965f" name="Changes by nivii" comment="" />
+    <list default="true" id="16f505cf-1371-4bff-9441-22d339431234" name="Changes" comment="so far, updating perfect the data into the mysql data base in engine version of 8.0">
+      <change afterPath="$PROJECT_DIR$/output.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/awsUploader.py" beforeDir="false" afterPath="$PROJECT_DIR$/engine/awsUploader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql_postgresql_convertion/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/mysql_postgresql_convertion/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run_example.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_example.py" afterDir="false" />
+    </list>
+    <list id="b6354233-43bd-4259-89e9-c2a1dbaa965f" name="Changes by nivii" comment="">
+      <change beforePath="$PROJECT_DIR$/run_example.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_example.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -21,13 +29,25 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="convertingMySQLtoPostgres" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/engine/DBconvertor/mysql_to_postgres_converter.py" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="LineStatusTrackerManager">
+    <file path="$PROJECT_DIR$/run_example.py">
+      <ranges>
+        <range start1="5" end1="5" start2="5" end2="13" changelist="16f505cf-1371-4bff-9441-22d339431234" />
+        <range start1="7" end1="7" start2="15" end2="24" changelist="16f505cf-1371-4bff-9441-22d339431234" />
+        <range start1="11" end1="12" start2="28" end2="29" changelist="16f505cf-1371-4bff-9441-22d339431234" />
+        <range start1="15" end1="15" start2="32" end2="33" changelist="16f505cf-1371-4bff-9441-22d339431234" />
+        <range start1="18" end1="19" start2="36" end2="36" changelist="b6354233-43bd-4259-89e9-c2a1dbaa965f" />
+        <range start1="26" end1="26" start2="43" end2="44" changelist="16f505cf-1371-4bff-9441-22d339431234" />
+      </ranges>
+    </file>
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
@@ -41,11 +61,15 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Python.awsUploader.executor": "Run",
+    "Python.aws_upload_config.executor": "Run",
+    "Python.config.executor": "Run",
+    "Python.convert_local.executor": "Run",
     "Python.deleteDatabase.executor": "Run",
     "Python.run_example.executor": "Run",
     "Python.testConnection.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "uploadDataIntoPostgres",
     "last_opened_file_path": "C:/Users/Lior/Desktop/Lior/שנה 3/סדנה/LastYearProject",
     "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
@@ -92,23 +116,31 @@
       <option name="project" value="LOCAL‎" />
       <updated>1744113407467</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL‎-00003" summary="so far, updating perfect the data into the mysql data base in engine version of 8.0">
+      <option name="closed" value="true" />
+      <created>1744113997530</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL‎-00003" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1744113997530</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="can now convert mysql code into postgres" />
     <MESSAGE value="so far, updating perfect the data into the mysql data base in engine version of 8.0" />
     <option name="LAST_COMMIT_MESSAGE" value="so far, updating perfect the data into the mysql data base in engine version of 8.0" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/engine/awsUploader.py</url>
-          <line>49</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
