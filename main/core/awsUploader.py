@@ -5,10 +5,12 @@ import boto3
 import pymysql
 import subprocess
 
+
 class awsUploader(dbUploader):
     """
     AWS-specific implementation for uploading a MySQL dump to an RDS instance.
     """
+
     def __init__(self):
         self.connection = None
         self.rds_host = None
@@ -16,6 +18,7 @@ class awsUploader(dbUploader):
         self.rds_password = None
         self.rds_db = None
         self.rds_port = None
+
     def set_mysql_connection_details(self, endpoint, config):
         self.rds_host = endpoint
         self.rds_user = config["MasterUsername"]
@@ -92,15 +95,14 @@ class awsUploader(dbUploader):
             self.connection.close()
             print("🔒 Connection to RDS closed.")
 
-
-    def create_rds_instance(self,aws_upload_config):
+    def create_rds_instance(self, aws_upload_config):
         """
         Creates both source and destination RDS instances based on the given config.
         :param aws_upload_config:
         """
         rds = boto3.client('rds')
 
-        for db_type in ['destination']:
+        for db_type in ['source', 'destination']:
             db_config = aws_upload_config[db_type]
             instance_id = db_config['DBInstanceIdentifier']
 

@@ -1,22 +1,23 @@
 import pymysql
+import psycopg2
 
 # Replace with your actual credentials
-host = "mysql-source-db2.cdg0qswm8uxu.us-east-1.rds.amazonaws.com"
-port = 3306
-user = "admin"
-password = "StrongPassword123"
-database = "sakila"
+host = "postgres-dest-db.cr6a6e6uczdi.us-east-1.rds.amazonaws.com"
+port = 5432
+user = "pgadmin"
+password = "StrongPassword456"
+database = "sakila_migrated"
 
 try:
-    connection = pymysql.connect(
+    connection = psycopg2.connect(
         host=host,
         port=port,
         user=user,
         password=password,
-        db=database
+        database=database
     )
-    print("✅ Successfully connected to MySQL RDS!")
+    print("✅ Successfully connected to PostgreSQL RDS!")
     connection.close()
 except Exception as e:
-    print("❌ Failed to connect to MySQL RDS:")
+    print("❌ Failed to connect to PostgreSQL RDS:")
     print(e)

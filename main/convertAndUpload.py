@@ -26,11 +26,11 @@ def run_pgloader_script():
     script_path_wsl = to_wsl_path(MIGRATION_SCRIPT)
 
     # IMPORTANT: Replace this IP with the output of `ipconfig` under "WSL" section on your computer
-    postgres_conn_string = "postgresql://postgres:postgres@172.24.128.1:5432/sakila"
+    postgres_conn_string = "postgresql://postgres:postgres@192.168.1.206:5432/sakila"
 
     command = [
         "wsl",
-        "bash",
+        "bash",   ## IMPORTANT - USED TO BE BASH NOW SH
         script_path_wsl,
         "root",
         "rootpass",
@@ -38,10 +38,9 @@ def run_pgloader_script():
         schema_path_wsl,
         data_path_wsl
     ]
-
+    print("Running command:", " ".join(command))
     subprocess.run(command, check=True)
     print("✅ pgloader migration completed.")
-
 def export_pg_dump_from_windows():
     print("📦 Exporting PostgreSQL database to output.sql using Windows pg_dump...")
 
@@ -57,7 +56,7 @@ def export_pg_dump_from_windows():
     ]
 
     env = os.environ.copy()
-    env["PGPASSWORD"] = "lior" #Replace with your local PostgreSQL password
+    env["PGPASSWORD"] = "postgres" #Replace with your local PostgreSQL password
 
     subprocess.run(command, env=env, check=True)
     print(f"✅ Export completed successfully: {OUTPUT_SQL}")
@@ -67,7 +66,7 @@ def upload_to_postgres_rds():
 
     uploader = awsUploader()
     uploader.set_postgres_connection_details(
-        "postgres-dest-db.cdg0qswm8uxu.us-east-1.rds.amazonaws.com",
+        "postgres-dest-db.cr6a6e6uczdi.us-east-1.rds.amazonaws.com",
         aws_config["destination"]
     )
 
@@ -75,9 +74,12 @@ def upload_to_postgres_rds():
     print("✅ Upload to RDS completed successfully.")
 
 def main():
+    # if session is over run :
+    #uploader = awsUploader()
+    #uploader.create_rds_instance(aws_config)
+
     run_pgloader_script()
     export_pg_dump_from_windows()
     upload_to_postgres_rds()
-
 if __name__ == "__main__":
     main()
