@@ -3,8 +3,6 @@ from engine.aws_upload_config import aws_config
 
 
 def main():
-
-
     # running the script of the pgloader somehow
     # get the output file that works with the postgres
     # continue with this code to upload the file to postgres
@@ -40,4 +38,3 @@ if __name__ == "__main__":
 # run mysql commands on files
 # pgloader to postgres
 # command to retrive output file
-
