@@ -200,6 +200,7 @@ MYSQL_CONFIG = {
     "password": "StrongPassword123",
     "database": "sakila"
 }
+
 queries = {
     "simple_select": "SELECT * FROM customer WHERE active = TRUE;",
     "top_actors_by_film": """
