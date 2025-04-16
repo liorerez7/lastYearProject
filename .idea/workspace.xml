@@ -4,10 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="16f505cf-1371-4bff-9441-22d339431234" name="Changes" comment="simple run convertAndUpload.py and it will work and upload to the RDS">
+    <list default="true" id="16f505cf-1371-4bff-9441-22d339431234" name="Changes" comment="working for lior on the supabase">
+      <change afterPath="$PROJECT_DIR$/main/core/DBcomare/sakila_benchmark/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/core/DBcomare/schema_inspector/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/core/DBcomare/schema_inspector/mysql_schema_reader.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/scripts/inspect_mysql_schema.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/Test_comprare_Sakila/run_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/DBcomare/Test_comprare_Sakila/run_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/Test_comprare_Sakila/sakila_comparsion_mySQL_postgres.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/DBcomare/Test_comprare_Sakila/sakila_comparsion_mySQL_postgres.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/Test_comprare_Sakila/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/config/db_config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/Test_comprare_Sakila/run_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/DBcomare/sakila_benchmark/run_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/Test_comprare_Sakila/sakila_comparsion_mySQL_postgres.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/DBcomare/sakila_benchmark/sakila_comparsion_mySQL_postgres.py" afterDir="false" />
     </list>
     <list id="b6354233-43bd-4259-89e9-c2a1dbaa965f" name="Changes by nivii" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -25,7 +30,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="creating-db-to-hold-comparsions" />
+        <entry key="$PROJECT_DIR$" value="creating-db-to-hold-comparsions-liorV1" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -51,12 +56,13 @@
     "Python.convertAndUpload.executor": "Run",
     "Python.convert_local.executor": "Run",
     "Python.deleteDatabase.executor": "Run",
+    "Python.inspect_mysql_schema.executor": "Run",
     "Python.run_example.executor": "Run",
     "Python.run_test.executor": "Run",
     "Python.testConnection.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "creating-db-to-hold-comparsions-liorV1",
+    "git-widget-placeholder": "creating-db-to-hold-comparsions-liorV2",
     "last_opened_file_path": "C:/Users/Lior/Desktop/Lior/year3/project/LastYearProject",
     "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
@@ -171,7 +177,15 @@
       <option name="project" value="LOCAL‎" />
       <updated>1744812128464</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL‎-00011" summary="working for lior on the supabase">
+      <option name="closed" value="true" />
+      <created>1744822838011</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL‎-00011" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1744822838011</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -191,6 +205,7 @@
     <MESSAGE value="now we have 2 databases in the aws which are exactly the same. sakila." />
     <MESSAGE value="working but messy, i didnt delete a lot of code. in the next branch will be a clean version of the code" />
     <MESSAGE value="simple run convertAndUpload.py and it will work and upload to the RDS" />
-    <option name="LAST_COMMIT_MESSAGE" value="simple run convertAndUpload.py and it will work and upload to the RDS" />
+    <MESSAGE value="working for lior on the supabase" />
+    <option name="LAST_COMMIT_MESSAGE" value="working for lior on the supabase" />
   </component>
 </project>

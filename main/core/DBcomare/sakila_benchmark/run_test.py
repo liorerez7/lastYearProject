@@ -1,6 +1,6 @@
 
 import psycopg2
-from main.core.DBcomare.Test_comprare_Sakila.sakila_comparsion_mySQL_postgres import (
+from main.core.DBcomare.sakila_benchmark.sakila_comparsion_mySQL_postgres import (
     SUPABASE_DB_CONFIG,
     PG_CONFIG,
     MYSQL_CONFIG,
