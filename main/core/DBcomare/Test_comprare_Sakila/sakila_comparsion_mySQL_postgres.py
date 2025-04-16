@@ -180,21 +180,21 @@ queries_all = {
 
 # === Configuration ===
 SUPABASE_DB_CONFIG = {
-    "host": "db.khtbaqygdazmywvcnmdn.supabase.co",
-    "port": 5432,
+    "host": "db.nsfhfmkgwhcfoezuhqpp.supabase.co",
+    "port": 6543,
     "user": "postgres",
-    "password": "d7Mz74piNSHf?9F",  # ⬅️ Change this
+    "password": "Khturer7",
     "dbname": "postgres"
 }
 PG_CONFIG = {
-    "host": "postgres-dest-db.cr6a6e6uczdi.us-east-1.rds.amazonaws.com",
+    "host": "postgres-dest-db.cdg0qswm8uxu.us-east-1.rds.amazonaws.com",
     "port": 5432,
     "user": "pgadmin",
     "password": "StrongPassword456",
-    "dbname": "sakila"
+    "dbname": "sakila_migrated"
 }
 MYSQL_CONFIG = {
-    "host": "mysql-source-db2.cr6a6e6uczdi.us-east-1.rds.amazonaws.com",
+    "host": "mysql-source-db2.cdg0qswm8uxu.us-east-1.rds.amazonaws.com",
     "port": 3306,
     "user": "admin",
     "password": "StrongPassword123",
@@ -260,6 +260,9 @@ def insert_query_run(cursor, query_result_id, run_number, exec_time, success, er
 def connect_to_databases():
     pg_conn = psycopg2.connect(**PG_CONFIG)
     pg_cursor = pg_conn.cursor()
+
+    pg_cursor.execute("SET search_path TO sakila;")
+
     mysql_conn = mysql.connector.connect(**MYSQL_CONFIG)
     mysql_cursor = mysql_conn.cursor()
     return pg_conn, pg_cursor, mysql_conn, mysql_cursor

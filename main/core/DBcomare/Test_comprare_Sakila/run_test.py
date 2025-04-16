@@ -11,7 +11,8 @@ from main.core.DBcomare.Test_comprare_Sakila.sakila_comparsion_mySQL_postgres im
     queries
 )
 def connect_to_supabase():
-    return psycopg2.connect(SUPABASE_DB_CONFIG)
+    return psycopg2.connect(**SUPABASE_DB_CONFIG)
+
 
 def main():
     import uuid
