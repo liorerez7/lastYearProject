@@ -11,5 +11,5 @@ DATA_SQL = os.path.join(DATA_DIR, "sakila-data.sql")
 
 # Scripts
 SCRIPTS_DIR = os.path.join(BASE_DIR, "scripts")
-MIGRATION_SCRIPT = os.path.join(SCRIPTS_DIR, "mysql_to_postgres.sh.sh")
+MIGRATION_SCRIPT = os.path.join(SCRIPTS_DIR, "mysql_to_postgres.sh")
 
