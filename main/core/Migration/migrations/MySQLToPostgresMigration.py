@@ -81,6 +81,5 @@ class MySQLToPostgresMigration(MigrationStrategy):
             self.destination_endpoint,   # ← dynamic endpoint!
             aws_config["destination"]
         )
-
         uploader.upload_postgres(OUTPUT_SQL)
         print("✅ Upload to RDS completed.")

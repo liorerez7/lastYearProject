@@ -4,18 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="16f505cf-1371-4bff-9441-22d339431234" name="Changes" comment="there is a migration folder more orginize and a base for strating to creating more types of migrations. &#10;convertAndUpload file is now postgrestTomysqlMigration.&#10;&#10;added utils package: for now just to replace the ip every time no need to do it manuaaly.&#10;&#10;create rds function changed to create or get and the return value is source and destention endpoints of the rds.">
-      <change afterPath="$PROJECT_DIR$/main/core/DBcomare/query_generator/base_strategy.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/core/DBcomare/query_generator/generator_manager.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/core/DBcomare/query_generator/registry.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/core/DBcomare/query_generator/strategies/deep_join_generator.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/core/DBcomare/query_generator/testWithAlchmey.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/core/DBcomare/schema_inspector/postgres_schema_reader.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/scripts/inspect_postgres_schema.py" afterDir="false" />
+    <list default="true" id="16f505cf-1371-4bff-9441-22d339431234" name="Changes" comment="first query generator working!">
+      <change afterPath="$PROJECT_DIR$/main/core/test_framework/plans/deep_join_plan.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/core/test_framework/testing_ExcutionPlanTest.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/config/db_config.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/config/db_config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/schema_inspector/mysql_schema_reader.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/DBcomare/schema_inspector/mysql_schema_reader.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/Migration/convertAndUpload.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/DBcomare/query_generator/strategies/basic_select_generator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/query_generator/strategies/deep_join_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/DBcomare/query_generator/strategies/deep_join_generator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/Migration/migrations/MySQLToPostgresMigration.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/Migration/migrations/MySQLToPostgresMigration.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/test_framework/base_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/testConnection.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/test_framework/execution_plan_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/data/output.sql" beforeDir="false" afterPath="$PROJECT_DIR$/main/data/output.sql" afterDir="false" />
     </list>
     <list id="b6354233-43bd-4259-89e9-c2a1dbaa965f" name="Changes by nivii" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -69,6 +67,7 @@
     "Python.run_test.executor": "Run",
     "Python.testConnection.executor": "Run",
     "Python.testWithAlchmey.executor": "Run",
+    "Python.testing_ExcutionPlanTest.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "creating-db-to-hold-comparsions-liorV2",
@@ -90,7 +89,7 @@
       <recent name="C:\Users\Lior\Desktop\Lior\שנה 3\סדנה\LastYearProject\main\scripts" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.testWithAlchmey">
+  <component name="RunManager" selected="Python.testing_ExcutionPlanTest">
     <configuration name="MigrationPipelineManeger" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="LastYearProject" />
       <option name="ENV_FILES" value="" />
@@ -179,12 +178,35 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="testing_ExcutionPlanTest" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="LastYearProject" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/main/core/test_framework" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main/core/test_framework/testing_ExcutionPlanTest.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.testing_ExcutionPlanTest" />
+        <item itemvalue="Python.MigrationPipelineManeger" />
         <item itemvalue="Python.testWithAlchmey" />
         <item itemvalue="Python.inspect_postgres_schema" />
         <item itemvalue="Python.inspect_mysql_schema" />
-        <item itemvalue="Python.MigrationPipelineManeger" />
       </list>
     </recent_temporary>
   </component>
@@ -300,7 +322,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744879440315</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="first query generator working!">
+      <option name="closed" value="true" />
+      <created>1744885986789</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1744885986789</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -334,6 +364,7 @@
     <MESSAGE value="simple run convertAndUpload.py and it will work and upload to the RDS" />
     <MESSAGE value="working for lior on the supabase" />
     <MESSAGE value="there is a migration folder more orginize and a base for strating to creating more types of migrations. &#10;convertAndUpload file is now postgrestTomysqlMigration.&#10;&#10;added utils package: for now just to replace the ip every time no need to do it manuaaly.&#10;&#10;create rds function changed to create or get and the return value is source and destention endpoints of the rds." />
-    <option name="LAST_COMMIT_MESSAGE" value="there is a migration folder more orginize and a base for strating to creating more types of migrations. &#10;convertAndUpload file is now postgrestTomysqlMigration.&#10;&#10;added utils package: for now just to replace the ip every time no need to do it manuaaly.&#10;&#10;create rds function changed to create or get and the return value is source and destention endpoints of the rds." />
+    <MESSAGE value="first query generator working!" />
+    <option name="LAST_COMMIT_MESSAGE" value="first query generator working!" />
   </component>
 </project>

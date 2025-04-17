@@ -4,6 +4,7 @@ from main.core.DBcomare.query_generator.base_strategy import QueryGenerationStra
 
 
 class DeepJoinGenerator(QueryGenerationStrategy):
+    #TODO: the same query should be generated for both DBs
     def generate_query(self, metadata: MetaData) -> str:
         # בניית גרף קשרים לפי Foreign Keys
         fk_graph = self._build_fk_graph(metadata)
@@ -44,6 +45,7 @@ class DeepJoinGenerator(QueryGenerationStrategy):
         """
         חיפוש עומק (DFS) למציאת מסלול של טבלאות מקושרות עד לעומק מסוים
         """
+
         def dfs(table, path):
             if len(path) == limit:
                 return path
