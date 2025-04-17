@@ -8,6 +8,7 @@ from main.core.uploader.awsUploader import awsUploader
 # Add more imports as you add strategies
 
 class MigrationPipeline:
+
     STRATEGY_REGISTRY = {
         ("mysql", "postgres"): MySQLToPostgresMigration,
         # Add more strategies here...
@@ -34,5 +35,5 @@ class MigrationPipeline:
 if __name__ == '__main__':
     uploader = awsUploader()
     endpoints = uploader.get_or_create_endpoints(aws_config)
-    strategy = MySQLToPostgresMigration()
-    strategy.run(endpoints['source'], endpoints['destination'])
+    pipeline = MigrationPipeline("mysql", "postgres")
+    pipeline.run(endpoints['source'], endpoints['destination'])

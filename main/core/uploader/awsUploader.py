@@ -109,7 +109,6 @@ class awsUploader(dbUploader):
 
     def get_or_create_endpoints(self, aws_upload_config):
         """
-
         Retrieves endpoints for source and destination RDS instances.
         Creates them if they don't exist.
         """
