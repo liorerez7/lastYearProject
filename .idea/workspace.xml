@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="16f505cf-1371-4bff-9441-22d339431234" name="Changes" comment="working for lior on the supabase">
-      <change beforePath="$PROJECT_DIR$/.idea/LastYearProject.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/LastYearProject.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="16f505cf-1371-4bff-9441-22d339431234" name="Changes" comment="working but messy, i didnt delete a lot of code. in the next branch will be a clean version of the code">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_16_04_2025_16_16__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_16_04_2025_16_16__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <list id="b6354233-43bd-4259-89e9-c2a1dbaa965f" name="Changes by nivii" comment="" />
@@ -25,7 +24,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="creating-db-to-hold-comparsions-liorV1" />
+        <entry key="$PROJECT_DIR$" value="cleanV1" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -42,26 +41,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.awsUploader.executor&quot;: &quot;Run&quot;,
-    &quot;Python.aws_upload_config.executor&quot;: &quot;Run&quot;,
-    &quot;Python.config.executor&quot;: &quot;Run&quot;,
-    &quot;Python.convertAndDumpOnly.executor&quot;: &quot;Run&quot;,
-    &quot;Python.convertAndUpload.executor&quot;: &quot;Run&quot;,
-    &quot;Python.convert_local.executor&quot;: &quot;Run&quot;,
-    &quot;Python.deleteDatabase.executor&quot;: &quot;Run&quot;,
-    &quot;Python.inspect_mysql_schema.executor&quot;: &quot;Run&quot;,
-    &quot;Python.run_example.executor&quot;: &quot;Run&quot;,
-    &quot;Python.run_test.executor&quot;: &quot;Run&quot;,
-    &quot;Python.testConnection.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;creating-db-to-hold-comparsions-liorV2&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Lior/Desktop/Lior/year3/project/LastYearProject&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.awsUploader.executor": "Run",
+    "Python.aws_upload_config.executor": "Run",
+    "Python.config.executor": "Run",
+    "Python.convertAndDumpOnly.executor": "Run",
+    "Python.convertAndUpload.executor": "Run",
+    "Python.convert_local.executor": "Run",
+    "Python.deleteDatabase.executor": "Run",
+    "Python.run_example.executor": "Run",
+    "Python.testConnection.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "creating-db-to-hold-comparsions-liorV2",
+    "last_opened_file_path": "C:/Users/Lior/Desktop/Lior/שנה 3/סדנה/LastYearProject",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Lior\Desktop\Lior\שנה 3\סדנה\LastYearProject" />
@@ -69,11 +66,9 @@
       <recent name="C:\Users\Lior\Desktop\Lior\שנה 3\סדנה" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Lior\Desktop\Lior\שנה 3\סדנה\LastYearProject\main\scripts" />
-      <recent name="C:\Users\Lior\Desktop\Lior\שנה 3\סדנה\LastYearProject\main\data" />
-      <recent name="C:\Users\Lior\Desktop\Lior\שנה 3\סדנה\LastYearProject\main\core" />
-      <recent name="C:\Users\Lior\Desktop\Lior\שנה 3\סדנה\LastYearProject\main" />
       <recent name="C:\Users\Lior\Desktop\Lior\שנה 3\סדנה\LastYearProject\mysql_postgresql_convertion" />
+      <recent name="C:\Users\Lior\Desktop\Lior\שנה 3\סדנה\LastYearProject\engine" />
+      <recent name="C:\Users\Lior\Desktop\Lior\שנה 3\סדנה\LastYearProject" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -148,47 +143,7 @@
       <option name="project" value="LOCAL‎" />
       <updated>1744138462331</updated>
     </task>
-    <task id="LOCAL‎-00008" summary="simple run convertAndUpload.py and it will work and upload to the RDS">
-      <option name="closed" value="true" />
-      <created>1744139683772</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL‎-00008" />
-      <option name="project" value="LOCAL‎" />
-      <updated>1744139683772</updated>
-    </task>
-    <task id="LOCAL‎-00009" summary="simple run convertAndUpload.py and it will work and upload to the RDS">
-      <option name="closed" value="true" />
-      <created>1744809907434</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL‎-00009" />
-      <option name="project" value="LOCAL‎" />
-      <updated>1744809907434</updated>
-    </task>
-    <task id="LOCAL‎-00010" summary="simple run convertAndUpload.py and it will work and upload to the RDS">
-      <option name="closed" value="true" />
-      <created>1744812128464</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL‎-00010" />
-      <option name="project" value="LOCAL‎" />
-      <updated>1744812128464</updated>
-    </task>
-    <task id="LOCAL‎-00011" summary="working for lior on the supabase">
-      <option name="closed" value="true" />
-      <created>1744822838011</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL‎-00011" />
-      <option name="project" value="LOCAL‎" />
-      <updated>1744822838011</updated>
-    </task>
-    <task id="LOCAL‎-00012" summary="working for lior on the supabase">
-      <option name="closed" value="true" />
-      <created>1744900574721</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL‎-00012" />
-      <option name="project" value="LOCAL‎" />
-      <updated>1744900574721</updated>
-    </task>
-    <option name="localTasksCounter" value="13" />
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -207,8 +162,6 @@
     <MESSAGE value="so far, updating perfect the data into the mysql data base in engine version of 8.0" />
     <MESSAGE value="now we have 2 databases in the aws which are exactly the same. sakila." />
     <MESSAGE value="working but messy, i didnt delete a lot of code. in the next branch will be a clean version of the code" />
-    <MESSAGE value="simple run convertAndUpload.py and it will work and upload to the RDS" />
-    <MESSAGE value="working for lior on the supabase" />
-    <option name="LAST_COMMIT_MESSAGE" value="working for lior on the supabase" />
+    <option name="LAST_COMMIT_MESSAGE" value="working but messy, i didnt delete a lot of code. in the next branch will be a clean version of the code" />
   </component>
 </project>
