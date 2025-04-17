@@ -4,16 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="16f505cf-1371-4bff-9441-22d339431234" name="Changes" comment="first query generator working!">
-      <change afterPath="$PROJECT_DIR$/main/core/test_framework/plans/deep_join_plan.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/core/test_framework/testing_ExcutionPlanTest.py" afterDir="false" />
+    <list default="true" id="16f505cf-1371-4bff-9441-22d339431234" name="Changes" comment="the base and structure of the the testing framework working">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/DBcomare/query_generator/strategies/basic_select_generator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/query_generator/strategies/deep_join_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/DBcomare/query_generator/strategies/deep_join_generator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/Migration/migrations/MySQLToPostgresMigration.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/Migration/migrations/MySQLToPostgresMigration.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/test_framework/base_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/testConnection.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/test_framework/execution_plan_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/data/output.sql" beforeDir="false" afterPath="$PROJECT_DIR$/main/data/output.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/query_generator/generator_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/DBcomare/query_generator/generator_manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/query_generator/testWithAlchmey.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/DBcomare/query_generator/testWithAlchmey.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/Migration/MigrationPipelineManeger.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/Migration/MigrationPipelineManeger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/test_framework/base_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/test_framework/base_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/test_framework/execution_plan_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/test_framework/execution_plan_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/test_framework/plans/deep_join_plan.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/test_framework/plans/deep_join_plan.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/test_framework/testing_ExcutionPlanTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/test_framework/testing_ExcutionPlanTest.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/uploader/awsUploader.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/uploader/awsUploader.py" afterDir="false" />
     </list>
     <list id="b6354233-43bd-4259-89e9-c2a1dbaa965f" name="Changes by nivii" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -67,7 +67,7 @@
     "Python.run_test.executor": "Run",
     "Python.testConnection.executor": "Run",
     "Python.testWithAlchmey.executor": "Run",
-    "Python.testing_ExcutionPlanTest.executor": "Run",
+    "Python.testing_ExcutionPlanTest.executor": "Debug",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "creating-db-to-hold-comparsions-liorV2",
@@ -203,8 +203,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.testing_ExcutionPlanTest" />
-        <item itemvalue="Python.MigrationPipelineManeger" />
         <item itemvalue="Python.testWithAlchmey" />
+        <item itemvalue="Python.MigrationPipelineManeger" />
         <item itemvalue="Python.inspect_postgres_schema" />
         <item itemvalue="Python.inspect_mysql_schema" />
       </list>
@@ -330,7 +330,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744885986789</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="the base and structure of the the testing framework working">
+      <option name="closed" value="true" />
+      <created>1744899104616</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1744899104616</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -365,6 +373,18 @@
     <MESSAGE value="working for lior on the supabase" />
     <MESSAGE value="there is a migration folder more orginize and a base for strating to creating more types of migrations. &#10;convertAndUpload file is now postgrestTomysqlMigration.&#10;&#10;added utils package: for now just to replace the ip every time no need to do it manuaaly.&#10;&#10;create rds function changed to create or get and the return value is source and destention endpoints of the rds." />
     <MESSAGE value="first query generator working!" />
-    <option name="LAST_COMMIT_MESSAGE" value="first query generator working!" />
+    <MESSAGE value="the base and structure of the the testing framework working" />
+    <option name="LAST_COMMIT_MESSAGE" value="the base and structure of the the testing framework working" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/main/core/test_framework/testing_ExcutionPlanTest.py</url>
+          <line>5</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

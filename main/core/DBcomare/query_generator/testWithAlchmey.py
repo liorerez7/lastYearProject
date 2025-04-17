@@ -3,6 +3,7 @@ from typing import Tuple, Optional
 from sqlalchemy import create_engine, MetaData, text
 
 from main.config.db_config import POSTGRES_CONFIG
+from main.core.DBcomare.query_generator.generator_manager import QueryGeneratorManager
 from main.core.DBcomare.query_generator.strategies.deep_join_generator import DeepJoinGenerator
 
 
@@ -24,8 +25,11 @@ if __name__ == '__main__':
     engine, metadata = load_metadata(postgres_url, schema="sakila")
     print(metadata.tables.keys())
     # Generate query
-    generator = DeepJoinGenerator()
-    query = generator.generate_query(metadata)
+    test_type = "deep_join"  # This must match your QUERY_GENERATOR_REGISTRY keys
+    manager = QueryGeneratorManager(test_type, metadata)
+
+    # Step 3: Generate the query
+    query = manager.generate()
     print("📄 Generated SQL:\n", query)
 
     # Run the query

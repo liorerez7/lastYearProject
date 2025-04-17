@@ -2,7 +2,6 @@ import time
 
 from main.core.test_framework.base_test import BaseTest
 
-
 class ExecutionPlanTest(BaseTest):
     def __init__(self, execution_plan: list):
         super().__init__()
