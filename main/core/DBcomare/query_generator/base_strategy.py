@@ -13,7 +13,7 @@ class QueryGenerationStrategy(ABC):
 
     """
     @abstractmethod
-    def generate_query(self, schema_metadata) -> str:
+    def generate_query(self, schema_metadata, db_type: str) -> str:
         """
         Generate a SQL query based on schema metadata.
         """

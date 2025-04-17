@@ -2,7 +2,7 @@ from typing import Tuple, Optional
 
 from sqlalchemy import create_engine, MetaData, text
 
-from main.config.db_config import POSTGRES_CONFIG
+from main.config.db_config import POSTGRES_CONFIG, MYSQL_CONFIG
 from main.core.DBcomare.query_generator.generator_manager import QueryGeneratorManager
 from main.core.DBcomare.query_generator.strategies.deep_join_generator import DeepJoinGenerator
 
@@ -21,12 +21,21 @@ if __name__ == '__main__':
         f"postgresql+psycopg2://{POSTGRES_CONFIG['user']}:{POSTGRES_CONFIG['password']}"
         f"@{POSTGRES_CONFIG['host']}:{POSTGRES_CONFIG['port']}/{POSTGRES_CONFIG['dbname']}"
     )
+    mysql_url = (
+        f"mysql+pymysql://{MYSQL_CONFIG['user']}:{MYSQL_CONFIG['password']}"
+        f"@{MYSQL_CONFIG['host']}:{MYSQL_CONFIG['port']}/{MYSQL_CONFIG['database']}"
+    )
+
     # Load metadata + engine
-    engine, metadata = load_metadata(postgres_url, schema="sakila")
+
+    #engine, metadata = load_metadata(postgres_url, schema="sakila")
+    engine, metadata = load_metadata(mysql_url, schema="sakila")
+    db_type = "mysql"  # or "postgres"
+
     print(metadata.tables.keys())
     # Generate query
     test_type = "deep_join"  # This must match your QUERY_GENERATOR_REGISTRY keys
-    manager = QueryGeneratorManager(test_type, metadata)
+    manager = QueryGeneratorManager(test_type, metadata, db_type)
 
     # Step 3: Generate the query
     query = manager.generate()

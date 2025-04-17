@@ -5,16 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="16f505cf-1371-4bff-9441-22d339431234" name="Changes" comment="simple run convertAndUpload.py and it will work and upload to the RDS">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_16_04_2025_16_16__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_16_04_2025_16_16__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_17_04_2025_18_27__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_17_04_2025_18_27__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_17_04_2025_18_27__Changes_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_17_04_2025_18_27__Changes_1.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/query_generator/base_strategy.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/DBcomare/query_generator/base_strategy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/query_generator/generator_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/DBcomare/query_generator/generator_manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/query_generator/strategies/basic_select_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/DBcomare/query_generator/strategies/basic_select_generator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/query_generator/strategies/deep_join_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/DBcomare/query_generator/strategies/deep_join_generator.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/core/DBcomare/query_generator/testWithAlchmey.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/DBcomare/query_generator/testWithAlchmey.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/Migration/MigrationPipelineManeger.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/Migration/MigrationPipelineManeger.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/Migration/migrations/MySQLToPostgresMigration.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/Migration/migrations/MySQLToPostgresMigration.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/test_framework/testing_ExcutionPlanTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/test_framework/testing_ExcutionPlanTest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/data/output.sql" beforeDir="false" afterPath="$PROJECT_DIR$/main/data/output.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/scripts/mysql_to_postgres.sh" beforeDir="false" afterPath="$PROJECT_DIR$/main/scripts/mysql_to_postgres.sh" afterDir="false" />
     </list>
     <list id="b6354233-43bd-4259-89e9-c2a1dbaa965f" name="Changes by nivii" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -49,28 +45,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.MigrationPipelineManeger.executor": "Run",
-    "Python.MySQLToPostgresMigration.executor": "Run",
-    "Python.awsUploader.executor": "Run",
-    "Python.aws_upload_config.executor": "Run",
-    "Python.config.executor": "Run",
-    "Python.convertAndDumpOnly.executor": "Run",
-    "Python.convertAndUpload.executor": "Run",
-    "Python.convert_local.executor": "Run",
-    "Python.deleteDatabase.executor": "Run",
-    "Python.run_example.executor": "Run",
-    "Python.testConnection.executor": "Run",
-    "Python.testWithAlchmey.executor": "Run",
-    "Python.testing_ExcutionPlanTest.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "creating-db-to-hold-comparsions-liorV3",
-    "last_opened_file_path": "C:/Users/Lior/Desktop/Lior/year3/project/LastYearProject",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.MigrationPipelineManeger.executor&quot;: &quot;Run&quot;,
+    &quot;Python.MySQLToPostgresMigration.executor&quot;: &quot;Run&quot;,
+    &quot;Python.awsUploader.executor&quot;: &quot;Run&quot;,
+    &quot;Python.aws_upload_config.executor&quot;: &quot;Run&quot;,
+    &quot;Python.config.executor&quot;: &quot;Run&quot;,
+    &quot;Python.convertAndDumpOnly.executor&quot;: &quot;Run&quot;,
+    &quot;Python.convertAndUpload.executor&quot;: &quot;Run&quot;,
+    &quot;Python.convert_local.executor&quot;: &quot;Run&quot;,
+    &quot;Python.deleteDatabase.executor&quot;: &quot;Run&quot;,
+    &quot;Python.run_example.executor&quot;: &quot;Run&quot;,
+    &quot;Python.testConnection.executor&quot;: &quot;Run&quot;,
+    &quot;Python.testWithAlchmey.executor&quot;: &quot;Run&quot;,
+    &quot;Python.testing_ExcutionPlanTest.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;creating-db-to-hold-comparsions-liorV3&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Lior/Desktop/Lior/year3/project/LastYearProject&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Lior\Desktop\Lior\שנה 3\סדנה\LastYearProject" />
