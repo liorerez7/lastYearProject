@@ -12,4 +12,4 @@ if __name__ == '__main__':
     engine, metadata = testWithAlchmey.load_metadata(postgres_url, schema="sakila")
     test = ExecutionPlanTest(deep_join_plan())
 
-    test.run(engine,metadata)  # No engine needed
+    test.run(engine,metadata)

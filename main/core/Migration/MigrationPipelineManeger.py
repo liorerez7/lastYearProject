@@ -35,5 +35,6 @@ class MigrationPipeline:
 if __name__ == '__main__':
     uploader = awsUploader()
     endpoints = uploader.get_or_create_endpoints(aws_config)
+    print(endpoints)
     pipeline = MigrationPipeline("mysql", "postgres")
     pipeline.run(endpoints['source'], endpoints['destination'])

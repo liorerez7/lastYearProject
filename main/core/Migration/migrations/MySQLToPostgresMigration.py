@@ -7,11 +7,12 @@ from main.core.Migration.migrations.base_strategy import MigrationStrategy
 from main.utils.network_utils import get_windows_host_ip
 
 
-#TODO: upload for mysql as well#
 
 class MySQLToPostgresMigration(MigrationStrategy):
     def run(self, source_endpoint, destination_endpoint):
+        self.source_endpoint = source_endpoint
         self.destination_endpoint = destination_endpoint
+        self.upload_to_mysql_rds()
         self.run_pgloader_script()
         self.export_pg_dump_from_windows()
         self.upload_to_postgres_rds()
@@ -71,7 +72,8 @@ class MySQLToPostgresMigration(MigrationStrategy):
         ]
 
         env = os.environ.copy()
-        env["PGPASSWORD"] = "postgres"
+        env["PGPASSWORD"] = "lior"
+        #TODO: important!! my PGPASSWORD is: "lior" and Niv's is: "postgres"
 
         subprocess.run(command, env=env, check=True)
         print(f"✅ Export completed successfully: {OUTPUT_SQL}")
@@ -86,3 +88,20 @@ class MySQLToPostgresMigration(MigrationStrategy):
         )
         uploader.upload_postgres(OUTPUT_SQL)
         print("✅ Upload to RDS completed.")
+
+    def upload_to_mysql_rds(self):
+        print("🚀 Uploading schema and data to AWS RDS MySQL...")
+
+        uploader = awsUploader()
+        uploader.set_mysql_connection_details(
+            self.source_endpoint,
+            aws_config["source"]
+        )
+
+        # נתחיל עם schema
+        uploader.upload(SCHEMA_SQL)
+        print("✅ Schema uploaded to MySQL.")
+
+        # ואז נוסיף את הנתונים
+        uploader.upload(DATA_SQL)
+        print("✅ Data uploaded to MySQL.")

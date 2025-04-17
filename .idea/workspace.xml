@@ -4,13 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="16f505cf-1371-4bff-9441-22d339431234" name="Changes" comment="working for lior on the supabase">
+    <list default="true" id="16f505cf-1371-4bff-9441-22d339431234" name="Changes" comment="simple run convertAndUpload.py and it will work and upload to the RDS">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_16_04_2025_16_16__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_16_04_2025_16_16__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_17_04_2025_18_27__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_17_04_2025_18_27__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_17_04_2025_18_27__Changes_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_17_04_2025_18_27__Changes_1.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/config/db_config.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/config/db_config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/config/paths_config.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/config/paths_config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/query_generator/testWithAlchmey.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/DBcomare/query_generator/testWithAlchmey.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/Migration/MigrationPipelineManeger.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/Migration/MigrationPipelineManeger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/Migration/migrations/MySQLToPostgresMigration.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/Migration/migrations/MySQLToPostgresMigration.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/core/test_framework/testing_ExcutionPlanTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/test_framework/testing_ExcutionPlanTest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/scripts/mysql_to_postgres.sh.sh" beforeDir="false" afterPath="$PROJECT_DIR$/main/scripts/mysql_to_postgres.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/data/output.sql" beforeDir="false" afterPath="$PROJECT_DIR$/main/data/output.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/scripts/mysql_to_postgres.sh" beforeDir="false" afterPath="$PROJECT_DIR$/main/scripts/mysql_to_postgres.sh" afterDir="false" />
     </list>
+    <list id="b6354233-43bd-4259-89e9-c2a1dbaa965f" name="Changes by nivii" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -26,7 +32,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="creating-db-to-hold-comparsions-liorV2" />
+        <entry key="$PROJECT_DIR$" value="cleanV2" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -46,6 +52,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Python.MigrationPipelineManeger.executor": "Run",
+    "Python.MySQLToPostgresMigration.executor": "Run",
     "Python.awsUploader.executor": "Run",
     "Python.aws_upload_config.executor": "Run",
     "Python.config.executor": "Run",
@@ -55,10 +62,12 @@
     "Python.deleteDatabase.executor": "Run",
     "Python.run_example.executor": "Run",
     "Python.testConnection.executor": "Run",
+    "Python.testWithAlchmey.executor": "Run",
+    "Python.testing_ExcutionPlanTest.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "creating-db-to-hold-comparsions-liorV3",
-    "last_opened_file_path": "C:/Users/Lior/Desktop/Lior/שנה 3/סדנה/LastYearProject",
+    "last_opened_file_path": "C:/Users/Lior/Desktop/Lior/year3/project/LastYearProject",
     "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
 }]]></component>
@@ -69,10 +78,41 @@
       <recent name="C:\Users\Lior\Desktop\Lior\שנה 3\סדנה" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Lior\Desktop\Lior\שנה 3\סדנה\LastYearProject\main\scripts" />
+      <recent name="C:\Users\Lior\Desktop\Lior\שנה 3\סדנה\LastYearProject\main\data" />
+      <recent name="C:\Users\Lior\Desktop\Lior\שנה 3\סדנה\LastYearProject\main\core" />
+      <recent name="C:\Users\Lior\Desktop\Lior\שנה 3\סדנה\LastYearProject\main" />
       <recent name="C:\Users\Lior\Desktop\Lior\שנה 3\סדנה\LastYearProject\mysql_postgresql_convertion" />
-      <recent name="C:\Users\Lior\Desktop\Lior\שנה 3\סדנה\LastYearProject\engine" />
-      <recent name="C:\Users\Lior\Desktop\Lior\שנה 3\סדנה\LastYearProject" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="MigrationPipelineManeger" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="LastYearProject" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/main/core/Migration" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main/core/Migration/MigrationPipelineManeger.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.MigrationPipelineManeger" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -146,23 +186,15 @@
       <option name="project" value="LOCAL‎" />
       <updated>1744138462331</updated>
     </task>
-    <task id="LOCAL‎-00008" summary="working for lior on the supabase">
+    <task id="LOCAL‎-00008" summary="simple run convertAndUpload.py and it will work and upload to the RDS">
       <option name="closed" value="true" />
-      <created>1744904192489</created>
+      <created>1744139683772</created>
       <option name="number" value="00008" />
       <option name="presentableId" value="LOCAL‎-00008" />
       <option name="project" value="LOCAL‎" />
-      <updated>1744904192489</updated>
+      <updated>1744139683772</updated>
     </task>
-    <task id="LOCAL‎-00009" summary="working for lior on the supabase">
-      <option name="closed" value="true" />
-      <created>1744905511951</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL‎-00009" />
-      <option name="project" value="LOCAL‎" />
-      <updated>1744905511951</updated>
-    </task>
-    <option name="localTasksCounter" value="10" />
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -181,7 +213,7 @@
     <MESSAGE value="so far, updating perfect the data into the mysql data base in engine version of 8.0" />
     <MESSAGE value="now we have 2 databases in the aws which are exactly the same. sakila." />
     <MESSAGE value="working but messy, i didnt delete a lot of code. in the next branch will be a clean version of the code" />
-    <MESSAGE value="working for lior on the supabase" />
-    <option name="LAST_COMMIT_MESSAGE" value="working for lior on the supabase" />
+    <MESSAGE value="simple run convertAndUpload.py and it will work and upload to the RDS" />
+    <option name="LAST_COMMIT_MESSAGE" value="simple run convertAndUpload.py and it will work and upload to the RDS" />
   </component>
 </project>

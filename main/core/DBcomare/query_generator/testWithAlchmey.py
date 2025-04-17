@@ -37,4 +37,5 @@ if __name__ == '__main__':
         result = conn.execute(text(query)).fetchmany(5)
         print("\n🧪 Sample Results (5 rows):")
         for row in result:
-            print(dict(row))
+            #print(dict(row)) gives warning, swapping to row._mapping()
+            print(dict(row._mapping))
