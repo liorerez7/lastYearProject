@@ -1,6 +1,6 @@
 import subprocess
 import os
-from main.core.awsUploader import awsUploader
+from main.core.uploader.awsUploader import awsUploader
 from main.config.aws_config import aws_config
 from main.config.paths_config import SCHEMA_SQL, DATA_SQL, OUTPUT_SQL, MIGRATION_SCRIPT
 
@@ -76,8 +76,7 @@ def upload_to_postgres_rds():
 def main():
     # if session is over run :
     #uploader = awsUploader()
-    #uploader.create_rds_instance(aws_config)
-
+    #uploader.get_or_create_endpoints(aws_config)
     run_pgloader_script()
     export_pg_dump_from_windows()
     upload_to_postgres_rds()
