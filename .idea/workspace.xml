@@ -5,17 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="16f505cf-1371-4bff-9441-22d339431234" name="Changes" comment="working for lior on the supabase">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_16_04_2025_16_16__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_16_04_2025_16_16__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/query_generator/base_strategy.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/DBcomare/query_generator/base_strategy.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/core/Migration/migrations/MySQLToPostgresMigration.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/Migration/migrations/MySQLToPostgresMigration.py" afterDir="false" />
     </list>
-    <list id="b6354233-43bd-4259-89e9-c2a1dbaa965f" name="Changes by nivii" comment="">
-      <change beforePath="$PROJECT_DIR$/main/core/Migration/migrations/base_strategy.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/Migration/migrations/base_strategy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/test_framework/execution_plan_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/test_framework/execution_plan_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/test_framework/plans/deep_join_plan.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/test_framework/plans/deep_join_plan.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/uploader/awsUploader.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/uploader/awsUploader.py" afterDir="false" />
-    </list>
+    <list id="b6354233-43bd-4259-89e9-c2a1dbaa965f" name="Changes by nivii" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -31,7 +23,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="cleanV1" />
+        <entry key="$PROJECT_DIR$" value="creating-db-to-hold-comparsions-liorV3" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />

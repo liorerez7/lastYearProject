@@ -7,7 +7,7 @@ from main.core.Migration.migrations.base_strategy import MigrationStrategy
 from main.utils.network_utils import get_windows_host_ip
 
 
-#TODO: upload for mysql as well#
+
 
 class MySQLToPostgresMigration(MigrationStrategy):
     def run(self, source_endpoint, destination_endpoint):
@@ -72,6 +72,7 @@ class MySQLToPostgresMigration(MigrationStrategy):
 
         env = os.environ.copy()
         env["PGPASSWORD"] = "postgres"
+        #TODO: lior's password was: "lior". niv's password is: "postgres"
 
         subprocess.run(command, env=env, check=True)
         print(f"✅ Export completed successfully: {OUTPUT_SQL}")
