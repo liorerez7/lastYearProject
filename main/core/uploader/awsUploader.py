@@ -1,6 +1,6 @@
 import os
 
-from main.core.uploader import dbUploader
+from main.core.uploader.uploader import dbUploader
 import boto3
 import pymysql
 import subprocess
@@ -10,8 +10,8 @@ class awsUploader(dbUploader):
     """
     AWS-specific implementation for uploading a MySQL dump to an RDS instance.
     """
-
     def __init__(self):
+        self.created_endpoints = None
         self.connection = None
         self.rds_host = None
         self.rds_user = None
@@ -95,22 +95,42 @@ class awsUploader(dbUploader):
             self.connection.close()
             print("🔒 Connection to RDS closed.")
 
-    def create_rds_instance(self, aws_upload_config):
+    def get_endpoint(self, instance_id):
         """
-        Creates both source and destination RDS instances based on the given config.
-        :param aws_upload_config:
+        Get the current endpoint address of an RDS instance by ID.
+        """
+        try:
+            rds = boto3.client('rds')
+            response = rds.describe_db_instances(DBInstanceIdentifier=instance_id)
+            return response['DBInstances'][0]['Endpoint']['Address']
+        except Exception as e:
+            print(f"❌ Failed to retrieve endpoint for '{instance_id}': {e}")
+            raise
+
+    def get_or_create_endpoints(self, aws_upload_config):
+        """
+
+        Retrieves endpoints for source and destination RDS instances.
+        Creates them if they don't exist.
         """
         rds = boto3.client('rds')
+        self.created_endpoints = {}
 
         for db_type in ['source', 'destination']:
             db_config = aws_upload_config[db_type]
             instance_id = db_config['DBInstanceIdentifier']
 
             try:
+                # Check if instance exists
+                response = rds.describe_db_instances(DBInstanceIdentifier=instance_id)
+                endpoint = response['DBInstances'][0]['Endpoint']['Address']
+                print(f"🔁 RDS instance '{instance_id}' already exists.")
+            except rds.exceptions.DBInstanceNotFoundFault:
+                # Create it if not found
                 print(f"🚀 Creating RDS instance: {instance_id}")
-
-                response = rds.create_db_instance(
-                    DBInstanceIdentifier=db_config['DBInstanceIdentifier'],
+                # TODO ADD A GROUP RULE SO WE CAN REACH THE DB FROM THE OUTSIDE
+                rds.create_db_instance(
+                    DBInstanceIdentifier=instance_id,
                     DBName=db_config['DBName'],
                     Engine=db_config['Engine'],
                     MasterUsername=db_config['MasterUsername'],
@@ -118,11 +138,23 @@ class awsUploader(dbUploader):
                     DBInstanceClass=db_config['DBInstanceClass'],
                     AllocatedStorage=db_config['AllocatedStorage'],
                 )
-                print("⏳ Waiting for RDS instance to be available...")
+
+                print("⏳ Waiting for RDS instance to become available...")
                 waiter = rds.get_waiter('db_instance_available')
                 waiter.wait(DBInstanceIdentifier=instance_id)
-                print(f"✅ {db_type.capitalize()} RDS instance '{instance_id}' is ready.")
+
+                # Get endpoint after creation
+                response = rds.describe_db_instances(DBInstanceIdentifier=instance_id)
+                endpoint = response['DBInstances'][0]['Endpoint']['Address']
+                print(f"✅ Created RDS instance '{instance_id}'.")
 
             except Exception as e:
-                print(f"❌ Failed to create {db_type} RDS instance '{instance_id}': {e}")
+                print(f"❌ Failed to get or create {db_type} RDS instance '{instance_id}': {e}")
                 raise
+
+            self.created_endpoints[db_type] = endpoint
+            print(f"🌐 Endpoint for {db_type}: {endpoint}")
+
+        return self.created_endpoints
+
+

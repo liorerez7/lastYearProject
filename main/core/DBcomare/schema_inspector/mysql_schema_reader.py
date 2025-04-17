@@ -1,5 +1,5 @@
 import mysql.connector
-
+from sqlalchemy import create_engine, MetaData
 class MySQLSchemaReader:
     def __init__(self, config):
         self.config = config
@@ -7,8 +7,13 @@ class MySQLSchemaReader:
         self.cursor = self.conn.cursor(dictionary=True)
 
     def get_tables(self):
-        self.cursor.execute("SHOW TABLES;")
-        return [row[f'Tables_in_{self.config["database"]}'] for row in self.cursor.fetchall()]
+        self.cursor.execute("""
+            SELECT table_schema, table_name 
+            FROM information_schema.tables 
+            WHERE table_type = 'BASE TABLE'
+              AND table_schema NOT IN ('pg_catalog', 'information_schema');
+        """)
+        return [f"{schema}.{name}" for schema, name in self.cursor.fetchall()]
 
     def get_columns(self, table_name):
         self.cursor.execute(f"SHOW COLUMNS FROM {table_name};")
@@ -29,3 +34,9 @@ class MySQLSchemaReader:
     def close(self):
         self.cursor.close()
         self.conn.close()
+
+def load_metadata(db_url: str) -> MetaData:
+    engine = create_engine(db_url)
+    metadata = MetaData()
+    metadata.reflect(bind=engine)
+    return metadata

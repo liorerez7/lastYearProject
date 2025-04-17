@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-
 class dbUploader(ABC):
     """
     Abstract base class for uploading a MySQL dump to any cloud provider.
