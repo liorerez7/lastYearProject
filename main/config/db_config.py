@@ -1,15 +1,15 @@
 MYSQL_CONFIG = {
-    "host": "...",
+    "host": "mysql-source-db2.c7asysmcksb6.us-east-1.rds.amazonaws.com",
     "port": 3306,
     "user": "admin",
-    "password": "...",
+    "password": "StrongPassword123",
     "database": "sakila"
 }
 POSTGRES_CONFIG = {
-    "host": "...",
+    "host": "postgres-dest-db.c7asysmcksb6.us-east-1.rds.amazonaws.com",
     "port": 5432,
-    "user": "...",
-    "password": "...",
+    "user": "pgadmin",
+    "password": "StrongPassword456",
     "dbname": "sakila_migrated"
 }
 SUPABASE_DB_CONFIG = {

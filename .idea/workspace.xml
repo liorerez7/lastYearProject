@@ -4,24 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="16f505cf-1371-4bff-9441-22d339431234" name="Changes" comment="working for lior on the supabase">
-      <change afterPath="$PROJECT_DIR$/main/core/Migration/MigrationPipelineManeger.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/core/Migration/migrations/MySQLToPostgresMigration.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/core/Migration/migrations/base_strategy.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/core/uploader/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/utils/network_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/LastYearProject.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/LastYearProject.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_16_04_2025_16_16__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_16_04_2025_16_16__Changes_.xml" afterDir="false" />
+    <list default="true" id="16f505cf-1371-4bff-9441-22d339431234" name="Changes" comment="there is a migration folder more orginize and a base for strating to creating more types of migrations. &#10;convertAndUpload file is now postgrestTomysqlMigration.&#10;&#10;added utils package: for now just to replace the ip every time no need to do it manuaaly.&#10;&#10;create rds function changed to create or get and the return value is source and destention endpoints of the rds.">
+      <change afterPath="$PROJECT_DIR$/main/core/DBcomare/query_generator/base_strategy.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/core/DBcomare/query_generator/generator_manager.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/core/DBcomare/query_generator/registry.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/core/DBcomare/query_generator/strategies/deep_join_generator.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/core/DBcomare/query_generator/testWithAlchmey.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/core/DBcomare/schema_inspector/postgres_schema_reader.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/scripts/inspect_postgres_schema.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/config/paths_config.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/config/paths_config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/convertAndUpload.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/Migration/convertAndUpload.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/awsUploader.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/uploader/awsUploader.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/testConnection.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/testConnection.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/uploader.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/uploader/uploader.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/data/output.sql" beforeDir="false" afterPath="$PROJECT_DIR$/main/data/output.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/run_example.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/scripts/newScript.sh" beforeDir="false" afterPath="$PROJECT_DIR$/main/scripts/mysql_to_postgres.sh.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/config/db_config.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/config/db_config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/schema_inspector/mysql_schema_reader.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/DBcomare/schema_inspector/mysql_schema_reader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/Migration/convertAndUpload.py" beforeDir="false" />
     </list>
     <list id="b6354233-43bd-4259-89e9-c2a1dbaa965f" name="Changes by nivii" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -45,8 +39,8 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/main/core/DBcomare/query_generator/strategies/deep_join_generator.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/main/core/Migration/MigrationPipelineManeger.py" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/main/core/Migration/convertAndUpload.py" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/main/core/Migration/migrations/MySQLToPostgresMigration.py" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/main/core/Migration/migrations/base_strategy.py" root0="FORCE_HIGHLIGHTING" />
   </component>
@@ -70,9 +64,11 @@
     "Python.convert_local.executor": "Run",
     "Python.deleteDatabase.executor": "Run",
     "Python.inspect_mysql_schema.executor": "Run",
+    "Python.inspect_postgres_schema.executor": "Run",
     "Python.run_example.executor": "Run",
     "Python.run_test.executor": "Run",
     "Python.testConnection.executor": "Run",
+    "Python.testWithAlchmey.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "creating-db-to-hold-comparsions-liorV2",
@@ -94,7 +90,7 @@
       <recent name="C:\Users\Lior\Desktop\Lior\שנה 3\סדנה\LastYearProject\main\scripts" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.testWithAlchmey">
     <configuration name="MigrationPipelineManeger" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="LastYearProject" />
       <option name="ENV_FILES" value="" />
@@ -117,8 +113,77 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="inspect_mysql_schema" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="LastYearProject" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/main/scripts" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main/scripts/inspect_mysql_schema.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="inspect_postgres_schema" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="LastYearProject" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/main/scripts" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main/scripts/inspect_postgres_schema.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="testWithAlchmey" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="LastYearProject" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/main/core/DBcomare/query_generator" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main/core/DBcomare/query_generator/testWithAlchmey.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.testWithAlchmey" />
+        <item itemvalue="Python.inspect_postgres_schema" />
+        <item itemvalue="Python.inspect_mysql_schema" />
         <item itemvalue="Python.MigrationPipelineManeger" />
       </list>
     </recent_temporary>
@@ -227,7 +292,15 @@
       <option name="project" value="LOCAL‎" />
       <updated>1744822838011</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="there is a migration folder more orginize and a base for strating to creating more types of migrations. &#10;convertAndUpload file is now postgrestTomysqlMigration.&#10;&#10;added utils package: for now just to replace the ip every time no need to do it manuaaly.&#10;&#10;create rds function changed to create or get and the return value is source and destention endpoints of the rds.">
+      <option name="closed" value="true" />
+      <created>1744879440315</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1744879440315</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -260,6 +333,7 @@
     <MESSAGE value="working but messy, i didnt delete a lot of code. in the next branch will be a clean version of the code" />
     <MESSAGE value="simple run convertAndUpload.py and it will work and upload to the RDS" />
     <MESSAGE value="working for lior on the supabase" />
-    <option name="LAST_COMMIT_MESSAGE" value="working for lior on the supabase" />
+    <MESSAGE value="there is a migration folder more orginize and a base for strating to creating more types of migrations. &#10;convertAndUpload file is now postgrestTomysqlMigration.&#10;&#10;added utils package: for now just to replace the ip every time no need to do it manuaaly.&#10;&#10;create rds function changed to create or get and the return value is source and destention endpoints of the rds." />
+    <option name="LAST_COMMIT_MESSAGE" value="there is a migration folder more orginize and a base for strating to creating more types of migrations. &#10;convertAndUpload file is now postgrestTomysqlMigration.&#10;&#10;added utils package: for now just to replace the ip every time no need to do it manuaaly.&#10;&#10;create rds function changed to create or get and the return value is source and destention endpoints of the rds." />
   </component>
 </project>
