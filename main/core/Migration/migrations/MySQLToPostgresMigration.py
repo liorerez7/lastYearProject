@@ -6,6 +6,9 @@ from main.config.paths_config import SCHEMA_SQL, DATA_SQL, OUTPUT_SQL, MIGRATION
 from main.core.Migration.migrations.base_strategy import MigrationStrategy
 from main.utils.network_utils import get_windows_host_ip
 
+
+#TODO: upload for mysql as well#
+
 class MySQLToPostgresMigration(MigrationStrategy):
     def run(self, source_endpoint, destination_endpoint):
         self.destination_endpoint = destination_endpoint

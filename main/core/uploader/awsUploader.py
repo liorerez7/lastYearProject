@@ -108,6 +108,8 @@ class awsUploader(dbUploader):
             raise
 
     def get_or_create_endpoints(self, aws_upload_config):
+        #TODO: if we creating new rds update the configfile(main.config.dbconfig.py) with the new endpoint
+
         """
         Retrieves endpoints for source and destination RDS instances.
         Creates them if they don't exist.

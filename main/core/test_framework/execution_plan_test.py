@@ -2,6 +2,8 @@ import time
 
 from main.core.test_framework.base_test import BaseTest
 
+#TODO: MODULER TO FUNCTIONS , ADD MORE FUNCRTILITY TO EXCUTION PLAN LIE (BOOLEAN IF WE WANT TO USE INDEXS OR NOT )
+# TODO : WE NEED TO MAKE DEFAULT VALUES FOR A PLAN
 class ExecutionPlanTest(BaseTest):
     def __init__(self, execution_plan: list):
         super().__init__()
