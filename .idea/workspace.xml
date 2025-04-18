@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="16f505cf-1371-4bff-9441-22d339431234" name="Changes" comment="made best practice name conventions, made the code a bit more modular and orginazed">
-      <change beforePath="$PROJECT_DIR$/main/core/Migration/MigrationPipelineManeger.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/Migration/MigrationPipelineManeger.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/Migration/migrations/MySQLToPostgresMigration.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/Migration/migrations/mysql_to_postgres_migration.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/db_compare/schema_inspector/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/db_compare/schema_inspector/mysql_schema_reader.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/db_compare/schema_inspector/postgres_schema_reader.py" beforeDir="false" />
-    </list>
+    <list default="true" id="16f505cf-1371-4bff-9441-22d339431234" name="Changes" comment="made best practice name conventions, made the code a bit more modular and orginazed" />
     <list id="b6354233-43bd-4259-89e9-c2a1dbaa965f" name="Changes by nivii" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -206,7 +200,15 @@
       <option name="project" value="LOCAL‎" />
       <updated>1744974889123</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL‎-00011" summary="made best practice name conventions, made the code a bit more modular and orginazed">
+      <option name="closed" value="true" />
+      <created>1744975171666</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL‎-00011" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1744975171666</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
