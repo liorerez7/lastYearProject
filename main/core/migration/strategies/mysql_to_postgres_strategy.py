@@ -3,12 +3,12 @@ import os
 from main.core.uploader.awsUploader import awsUploader
 from main.config.aws_config import aws_config
 from main.config.paths_config import SCHEMA_SQL, DATA_SQL, OUTPUT_SQL, MIGRATION_SCRIPT
-from main.core.Migration.migrations.base_strategy import MigrationStrategy
+from main.core.migration.strategies.base_migration_strategy import BaseMigrationStrategy
 from main.utils.network_utils import get_windows_host_ip
 
 
 
-class MySQLToPostgresMigration(MigrationStrategy):
+class MySQLToPostgresStrategy(BaseMigrationStrategy):
     def run(self, source_endpoint, destination_endpoint):
         self.source_endpoint = source_endpoint
         self.destination_endpoint = destination_endpoint
