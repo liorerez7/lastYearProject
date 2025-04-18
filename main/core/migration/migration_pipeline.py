@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 from main.config.aws_config import aws_config
-from main.core.Migration.migrations.mysql_to_postgres_migration import MySQLToPostgresMigration
+from main.core.migration.strategies.mysql_to_postgres_strategy import MySQLToPostgresStrategy
 from main.core.uploader.awsUploader import awsUploader
 
 
@@ -10,7 +10,7 @@ from main.core.uploader.awsUploader import awsUploader
 class MigrationPipeline:
 
     STRATEGY_REGISTRY = {
-        ("mysql", "postgres"): MySQLToPostgresMigration,
+        ("mysql", "postgres"): MySQLToPostgresStrategy,
         # Add more strategies here...
     }
 
@@ -22,14 +22,14 @@ class MigrationPipeline:
     def _get_strategy_class(self):
         key = (self.source_db, self.dest_db)
         if key not in self.STRATEGY_REGISTRY:
-            raise ValueError(f"🚫 Migration from {self.source_db} to {self.dest_db} is not supported.")
+            raise ValueError(f"🚫 migration from {self.source_db} to {self.dest_db} is not supported.")
         return self.STRATEGY_REGISTRY[key]
 
     def run(self, source_endpoint, destination_endpoint):
         print(f"🚀 Running migration from {self.source_db} to {self.dest_db}")
         migration_strategy = self.strategy_class()
         migration_strategy.run(source_endpoint, destination_endpoint)
-        print("✅ Migration completed.")
+        print("✅ migration completed.")
 
 
 if __name__ == '__main__':
