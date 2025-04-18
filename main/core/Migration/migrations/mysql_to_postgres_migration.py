@@ -72,7 +72,7 @@ class MySQLToPostgresMigration(MigrationStrategy):
         ]
 
         env = os.environ.copy()
-        env["PGPASSWORD"] = "lior"
+        env["PGPASSWORD"] = "postgres"
         #TODO: important!! my PGPASSWORD is: "lior" and Niv's is: "postgres"
 
         subprocess.run(command, env=env, check=True)

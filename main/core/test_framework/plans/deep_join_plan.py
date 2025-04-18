@@ -7,7 +7,6 @@ def deep_join_plan():
             "generator": DeepJoinQueryStrategy(),
             "repeat": 3,
             "delay": 1,
-
         }
     ]
 

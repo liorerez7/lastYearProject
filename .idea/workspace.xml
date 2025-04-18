@@ -5,11 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="16f505cf-1371-4bff-9441-22d339431234" name="Changes" comment="made best practice name conventions, made the code a bit more modular and orginazed">
+      <change afterPath="$PROJECT_DIR$/main/config/db_known_ports.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/core/uploader/config/db_defaults.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/LastYearProject.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/LastYearProject.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_16_04_2025_16_16__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_16_04_2025_16_16__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_17_04_2025_18_27__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_17_04_2025_18_27__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_17_04_2025_18_27__Changes_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_17_04_2025_18_27__Changes_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/config/aws_config.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/config/aws_config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/config/db_config.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/config/db_config.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/core/Migration/MigrationPipelineManeger.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/Migration/MigrationPipelineManeger.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/Migration/migrations/MySQLToPostgresMigration.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/Migration/migrations/mysql_to_postgres_migration.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/db_compare/schema_inspector/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/db_compare/schema_inspector/mysql_schema_reader.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/db_compare/schema_inspector/postgres_schema_reader.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/Migration/migrations/mysql_to_postgres_migration.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/Migration/migrations/mysql_to_postgres_migration.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/db_compare/query_generator/query_strategy_registry.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/db_compare/query_generator/query_strategy_registry.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/test_framework/plans/deep_join_plan.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/test_framework/plans/deep_join_plan.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/uploader/awsUploader.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/uploader/awsUploader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/data/output.sql" beforeDir="false" afterPath="$PROJECT_DIR$/main/data/output.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/scripts/mysql_to_postgres.sh" beforeDir="false" afterPath="$PROJECT_DIR$/main/scripts/mysql_to_postgres.sh" afterDir="false" />
     </list>
     <list id="b6354233-43bd-4259-89e9-c2a1dbaa965f" name="Changes by nivii" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -27,13 +39,15 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="cleanV2" />
+        <entry key="$PROJECT_DIR$" value="creating-db-to-hold-comparsions-liorV3" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/engine/DBconvertor/mysql_to_postgres_converter.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/main/core/Migration/MigrationPipelineManeger.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/main/core/Migration/migrations/base_strategy.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/main/core/uploader/awsUploader.py" root0="SKIP_INSPECTION" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
@@ -62,7 +76,7 @@
     "Python.testing_ExcutionPlanTest.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "creating-db-to-hold-comparsions-liorV3",
+    "git-widget-placeholder": "v3-niv",
     "last_opened_file_path": "C:/Users/Lior/Desktop/Lior/year3/project/LastYearProject",
     "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
@@ -229,5 +243,16 @@
     <MESSAGE value="genrate now also for mysql" />
     <MESSAGE value="made best practice name conventions, made the code a bit more modular and orginazed" />
     <option name="LAST_COMMIT_MESSAGE" value="made best practice name conventions, made the code a bit more modular and orginazed" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/main/core/Migration/MigrationPipelineManeger.py</url>
+          <line>34</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

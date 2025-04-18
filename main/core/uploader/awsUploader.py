@@ -1,10 +1,12 @@
 import os
 
+from botocore.exceptions import ClientError
+
+from main.config.db_known_ports import DEFAULT_PORTS
 from main.core.uploader.uploader import dbUploader
 import boto3
 import pymysql
 import subprocess
-
 
 class awsUploader(dbUploader):
     """
@@ -108,12 +110,91 @@ class awsUploader(dbUploader):
             raise
 
     def get_or_create_endpoints(self, aws_upload_config):
-        #TODO: if we creating new rds update the configfile(main.config.dbconfig.py) with the new endpoint
-
         """
         Retrieves endpoints for source and destination RDS instances.
         Creates them if they don't exist.
+        Updates the config with new endpoints and adds the correct inbound SG rules.
         """
+        rds = boto3.client('rds')
+        ec2 = boto3.client('ec2')
+        self.created_endpoints = {}
+
+        for db_type in ['source', 'destination']:
+            db_config = aws_upload_config[db_type]
+            instance_id = db_config['DBInstanceIdentifier']
+            engine = db_config['Engine'].lower()
+
+            try:
+                # Try getting existing instance
+                response = rds.describe_db_instances(DBInstanceIdentifier=instance_id)
+                db_instance = response['DBInstances'][0]
+                endpoint = db_instance['Endpoint']['Address']
+                print(f"🔁 RDS instance '{instance_id}' already exists.")
+            except rds.exceptions.DBInstanceNotFoundFault:
+                # Create new RDS instance
+                print(f"🚀 Creating RDS instance: {instance_id}")
+                rds.create_db_instance(
+                    DBInstanceIdentifier=instance_id,
+                    DBName=db_config['DBName'],
+                    Engine=engine,
+                    MasterUsername=db_config['MasterUsername'],
+                    MasterUserPassword=db_config['MasterUserPassword'],
+                    DBInstanceClass=db_config['DBInstanceClass'],
+                    AllocatedStorage=db_config['AllocatedStorage'],
+                    PubliclyAccessible=True  # ✅ Required to access externally
+                )
+
+                print("⏳ Waiting for RDS instance to become available...")
+                waiter = rds.get_waiter('db_instance_available')
+                waiter.wait(DBInstanceIdentifier=instance_id)
+
+                # Refresh instance info after creation
+                response = rds.describe_db_instances(DBInstanceIdentifier=instance_id)
+                db_instance = response['DBInstances'][0]
+                endpoint = db_instance['Endpoint']['Address']
+                print(f"✅ Created RDS instance '{instance_id}'.")
+
+                # ✅ Add correct inbound rule to SG
+                port = DEFAULT_PORTS.get(engine)
+                if not port:
+                    raise ValueError(f"❌ Unsupported engine or missing port: '{engine}'")
+
+                sg_id = db_instance['VpcSecurityGroups'][0]['VpcSecurityGroupId']
+                try:
+                    print(f"🔐 Adding inbound rule to SG {sg_id} for port {port} (engine: {engine})")
+                    ec2.authorize_security_group_ingress(
+                        GroupId=sg_id,
+                        IpPermissions=[
+                            {
+                                'IpProtocol': 'tcp',
+                                'FromPort': port,
+                                'ToPort': port,
+                                'IpRanges': [{'CidrIp': '0.0.0.0/0'}]
+                            }
+                        ]
+                    )
+                except ClientError as e:
+                    if "InvalidPermission.Duplicate" in str(e):
+                        print("⚠️ Inbound rule already exists, skipping.")
+                    else:
+                        raise
+
+            except Exception as e:
+                print(f"❌ Failed to get or create {db_type} RDS instance '{instance_id}': {e}")
+                raise
+
+            # ✅ Save and update config with endpoint
+            self.created_endpoints[db_type] = endpoint
+            aws_upload_config[db_type]["endpoint"] = endpoint
+            print(f"🌐 Endpoint for {db_type}: {endpoint}")
+
+        return self.created_endpoints
+
+
+    """
+        def get_or_create_endpoints(self, aws_upload_config):
+        #TODO: if we creating new rds update the configfile(main.config.dbconfig.py) with the new endpoint
+
         rds = boto3.client('rds')
         self.created_endpoints = {}
 
@@ -157,5 +238,7 @@ class awsUploader(dbUploader):
             print(f"🌐 Endpoint for {db_type}: {endpoint}")
 
         return self.created_endpoints
+}
 
 
+    """

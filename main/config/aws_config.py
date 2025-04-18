@@ -1,5 +1,6 @@
 aws_config = {
   "source": {
+    "endpoint": "",
     "DBInstanceIdentifier": "mysql-source-db2",
     "DBName": "sakila",
     "Engine": "mysql",
@@ -9,6 +10,7 @@ aws_config = {
     "AllocatedStorage": 20,
   },
   "destination": {
+    "endpoint": "",
     "DBInstanceIdentifier": "postgres-dest-db",
     "DBName": "sakila_migrated",
     "Engine": "postgres",
