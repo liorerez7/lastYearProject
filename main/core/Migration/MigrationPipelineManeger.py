@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 from main.config.aws_config import aws_config
-from main.core.Migration.migrations.MySQLToPostgresMigration import MySQLToPostgresMigration
+from main.core.Migration.migrations.mysql_to_postgres_migration import MySQLToPostgresMigration
 from main.core.uploader.awsUploader import awsUploader
 
 

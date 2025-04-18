@@ -4,27 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="16f505cf-1371-4bff-9441-22d339431234" name="Changes" comment="genrate now also for mysql">
-      <change afterPath="$PROJECT_DIR$/main/core/db_compare/query_generator/utils/table_utils.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/core/db_compare/schema_inspector/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/db_compare/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/query_generator/base_strategy.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/db_compare/query_generator/base_query_strategy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/query_generator/generator_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/db_compare/query_generator/query_generator_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/query_generator/registry.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/db_compare/query_generator/query_strategy_registry.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/query_generator/strategies/basic_select_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/db_compare/query_generator/strategies/basic_select_strategy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/query_generator/strategies/deep_join_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/db_compare/query_generator/strategies/deep_join_strategy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/query_generator/testWithAlchmey.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/db_compare/query_generator/test_with_alchemy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/sakila_benchmark/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/db_compare/query_generator/utils/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/sakila_benchmark/run_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/db_compare/sakila_benchmark/run_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/sakila_benchmark/sakila_comparsion_mySQL_postgres.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/db_compare/sakila_benchmark/sakila_comparsion_mySQL_postgres.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/schema_inspector/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/db_compare/sakila_benchmark/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/schema_inspector/mysql_schema_reader.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/db_compare/schema_inspector/mysql_schema_reader.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/schema_inspector/postgres_schema_reader.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/db_compare/schema_inspector/postgres_schema_reader.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/test_framework/plans/deep_join_plan.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/test_framework/plans/deep_join_plan.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/test_framework/testing_ExcutionPlanTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/test_framework/testing_ExcutionPlanTest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/scripts/inspect_mysql_schema.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/scripts/inspect_mysql_schema.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/scripts/inspect_postgres_schema.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/scripts/inspect_postgres_schema.py" afterDir="false" />
+    <list default="true" id="16f505cf-1371-4bff-9441-22d339431234" name="Changes" comment="made best practice name conventions, made the code a bit more modular and orginazed">
+      <change beforePath="$PROJECT_DIR$/main/core/Migration/MigrationPipelineManeger.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/Migration/MigrationPipelineManeger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/Migration/migrations/MySQLToPostgresMigration.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/Migration/migrations/mysql_to_postgres_migration.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/db_compare/schema_inspector/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/db_compare/schema_inspector/mysql_schema_reader.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/db_compare/schema_inspector/postgres_schema_reader.py" beforeDir="false" />
     </list>
     <list id="b6354233-43bd-4259-89e9-c2a1dbaa965f" name="Changes by nivii" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -213,7 +198,15 @@
       <option name="project" value="LOCAL‎" />
       <updated>1744917713901</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL‎-00010" summary="made best practice name conventions, made the code a bit more modular and orginazed">
+      <option name="closed" value="true" />
+      <created>1744974889123</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL‎-00010" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1744974889123</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -234,6 +227,7 @@
     <MESSAGE value="working but messy, i didnt delete a lot of code. in the next branch will be a clean version of the code" />
     <MESSAGE value="simple run convertAndUpload.py and it will work and upload to the RDS" />
     <MESSAGE value="genrate now also for mysql" />
-    <option name="LAST_COMMIT_MESSAGE" value="genrate now also for mysql" />
+    <MESSAGE value="made best practice name conventions, made the code a bit more modular and orginazed" />
+    <option name="LAST_COMMIT_MESSAGE" value="made best practice name conventions, made the code a bit more modular and orginazed" />
   </component>
 </project>
