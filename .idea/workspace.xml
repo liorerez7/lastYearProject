@@ -4,13 +4,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="16f505cf-1371-4bff-9441-22d339431234" name="Changes" comment="simple run convertAndUpload.py and it will work and upload to the RDS">
+    <list default="true" id="16f505cf-1371-4bff-9441-22d339431234" name="Changes" comment="genrate now also for mysql">
+      <change afterPath="$PROJECT_DIR$/main/core/db_compare/query_generator/utils/table_utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/core/db_compare/schema_inspector/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/query_generator/base_strategy.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/DBcomare/query_generator/base_strategy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/query_generator/generator_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/DBcomare/query_generator/generator_manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/query_generator/strategies/basic_select_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/DBcomare/query_generator/strategies/basic_select_generator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/query_generator/strategies/deep_join_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/DBcomare/query_generator/strategies/deep_join_generator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/query_generator/testWithAlchmey.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/DBcomare/query_generator/testWithAlchmey.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/db_compare/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/query_generator/base_strategy.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/db_compare/query_generator/base_query_strategy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/query_generator/generator_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/db_compare/query_generator/query_generator_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/query_generator/registry.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/db_compare/query_generator/query_strategy_registry.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/query_generator/strategies/basic_select_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/db_compare/query_generator/strategies/basic_select_strategy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/query_generator/strategies/deep_join_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/db_compare/query_generator/strategies/deep_join_strategy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/query_generator/testWithAlchmey.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/db_compare/query_generator/test_with_alchemy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/sakila_benchmark/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/db_compare/query_generator/utils/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/sakila_benchmark/run_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/db_compare/sakila_benchmark/run_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/sakila_benchmark/sakila_comparsion_mySQL_postgres.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/db_compare/sakila_benchmark/sakila_comparsion_mySQL_postgres.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/schema_inspector/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/db_compare/sakila_benchmark/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/schema_inspector/mysql_schema_reader.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/db_compare/schema_inspector/mysql_schema_reader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/DBcomare/schema_inspector/postgres_schema_reader.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/db_compare/schema_inspector/postgres_schema_reader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/test_framework/plans/deep_join_plan.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/test_framework/plans/deep_join_plan.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/core/test_framework/testing_ExcutionPlanTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/core/test_framework/testing_ExcutionPlanTest.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/scripts/inspect_mysql_schema.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/scripts/inspect_mysql_schema.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/scripts/inspect_postgres_schema.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/scripts/inspect_postgres_schema.py" afterDir="false" />
     </list>
     <list id="b6354233-43bd-4259-89e9-c2a1dbaa965f" name="Changes by nivii" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -45,28 +59,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.MigrationPipelineManeger.executor&quot;: &quot;Run&quot;,
-    &quot;Python.MySQLToPostgresMigration.executor&quot;: &quot;Run&quot;,
-    &quot;Python.awsUploader.executor&quot;: &quot;Run&quot;,
-    &quot;Python.aws_upload_config.executor&quot;: &quot;Run&quot;,
-    &quot;Python.config.executor&quot;: &quot;Run&quot;,
-    &quot;Python.convertAndDumpOnly.executor&quot;: &quot;Run&quot;,
-    &quot;Python.convertAndUpload.executor&quot;: &quot;Run&quot;,
-    &quot;Python.convert_local.executor&quot;: &quot;Run&quot;,
-    &quot;Python.deleteDatabase.executor&quot;: &quot;Run&quot;,
-    &quot;Python.run_example.executor&quot;: &quot;Run&quot;,
-    &quot;Python.testConnection.executor&quot;: &quot;Run&quot;,
-    &quot;Python.testWithAlchmey.executor&quot;: &quot;Run&quot;,
-    &quot;Python.testing_ExcutionPlanTest.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;creating-db-to-hold-comparsions-liorV3&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Lior/Desktop/Lior/year3/project/LastYearProject&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.MigrationPipelineManeger.executor": "Run",
+    "Python.MySQLToPostgresMigration.executor": "Run",
+    "Python.awsUploader.executor": "Run",
+    "Python.aws_upload_config.executor": "Run",
+    "Python.config.executor": "Run",
+    "Python.convertAndDumpOnly.executor": "Run",
+    "Python.convertAndUpload.executor": "Run",
+    "Python.convert_local.executor": "Run",
+    "Python.deleteDatabase.executor": "Run",
+    "Python.run_example.executor": "Run",
+    "Python.testConnection.executor": "Run",
+    "Python.testWithAlchmey.executor": "Run",
+    "Python.test_with_alchemy.executor": "Run",
+    "Python.testing_ExcutionPlanTest.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "creating-db-to-hold-comparsions-liorV3",
+    "last_opened_file_path": "C:/Users/Lior/Desktop/Lior/year3/project/LastYearProject",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Lior\Desktop\Lior\שנה 3\סדנה\LastYearProject" />
@@ -190,7 +205,15 @@
       <option name="project" value="LOCAL‎" />
       <updated>1744139683772</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL‎-00009" summary="genrate now also for mysql">
+      <option name="closed" value="true" />
+      <created>1744917713901</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL‎-00009" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1744917713901</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -210,6 +233,7 @@
     <MESSAGE value="now we have 2 databases in the aws which are exactly the same. sakila." />
     <MESSAGE value="working but messy, i didnt delete a lot of code. in the next branch will be a clean version of the code" />
     <MESSAGE value="simple run convertAndUpload.py and it will work and upload to the RDS" />
-    <option name="LAST_COMMIT_MESSAGE" value="simple run convertAndUpload.py and it will work and upload to the RDS" />
+    <MESSAGE value="genrate now also for mysql" />
+    <option name="LAST_COMMIT_MESSAGE" value="genrate now also for mysql" />
   </component>
 </project>

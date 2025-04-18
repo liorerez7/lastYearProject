@@ -1,8 +1,8 @@
-# base_strategy.py
+# base_query_strategy.py
 from abc import ABC, abstractmethod
 
 #TODO: Add more generators for different types of queries
-class QueryGenerationStrategy(ABC):
+class BaseQueryStrategy(ABC):
     """
     Base class for query generation strategies.
     strategies meaning the different types of  queries we can generate like

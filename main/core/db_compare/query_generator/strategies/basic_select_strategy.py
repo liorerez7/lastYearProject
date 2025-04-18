@@ -1,8 +1,8 @@
 from sqlalchemy.schema import MetaData
-from main.core.DBcomare.query_generator.base_strategy import QueryGenerationStrategy
+from main.core.db_compare.query_generator.base_query_strategy import BaseQueryStrategy
 
 
-class SimpleQueryGenerator(QueryGenerationStrategy):
+class SimpleBaseQueryGenerator(BaseQueryStrategy):
 
     def __init__(self, db_type="postgres"):
         self.db_type = db_type

@@ -1,10 +1,10 @@
-from main.core.DBcomare.query_generator.strategies.deep_join_generator import DeepJoinGenerator
+from main.core.db_compare.query_generator.strategies.deep_join_strategy import DeepJoinQueryStrategy
 #TODO: ADD MORE PLANS IDEAS
 def deep_join_plan():
     return [
         {
             "label": "Deep Join Test",
-            "generator": DeepJoinGenerator(),
+            "generator": DeepJoinQueryStrategy(),
             "repeat": 3,
             "delay": 1,
 

@@ -1,4 +1,4 @@
-from main.core.DBcomare.schema_inspector.mysql_schema_reader import MySQLSchemaReader
+from main.core.db_compare.schema_inspector.mysql_schema_reader import MySQLSchemaReader
 from main.config.db_config import MYSQL_CONFIG
 
 def main():
