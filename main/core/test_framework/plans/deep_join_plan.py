@@ -10,11 +10,17 @@ def deep_join_plan():
             "generator": QueryGeneratorService(test_type="deep_join",
                                                db_type="mysql",
                                                strategy_config={
-                                                   "min_join_size": 3,
-                                                   "max_join_size": 3,
-                                                   "longest": False
+                                                   "longest": True
                                                }).generator,
-            "repeat": 3,
+            "repeat": 2,
             "delay": 1,
-        }
+        },
+        {
+            "label": "Deep Join Test with Custom Config",
+            "generator": QueryGeneratorService(test_type="deep_join",
+                                               db_type="mysql",
+                                               strategy_config={}).generator,
+            "repeat": 1,
+            "delay": 1,
+        },
     ]

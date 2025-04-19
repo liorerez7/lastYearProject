@@ -1,7 +1,7 @@
 from typing import Optional
 from main.core.db_compare.query_generator.strategies.base_query_strategy import BaseQueryStrategy
 from main.core.db_compare.query_generator.utils.table_access_utils import resolve_table_key
-from main.core.db_compare.query_generator.utils.quoting_utils import quote_table_name
+from main.core.db_compare.query_generator.utils.quoting_utils import quote_table_name, quote_column_name
 from main.core.db_compare.query_generator.utils.schema_graph_utils import (
     build_foreign_key_graph,
     find_deep_join_path
@@ -9,16 +9,6 @@ from main.core.db_compare.query_generator.utils.schema_graph_utils import (
 
 
 class DeepJoinQueryStrategy(BaseQueryStrategy):
-    """
-    Strategy to generate SQL queries using deep joins across multiple tables
-    via foreign key paths.
-
-    Args:
-        min_join_size (int): Minimum number of tables to include in the join path.
-        max_join_size (Optional[int]): Maximum number of tables to include.
-        longest (bool): If True, finds the longest valid join path regardless of selector.
-    """
-
     def __init__(self, min_join_size: int = 2, max_join_size: Optional[int] = None, longest: bool = False):
         self.min_join_size = min_join_size
         self.max_join_size = max_join_size
@@ -42,7 +32,7 @@ class DeepJoinQueryStrategy(BaseQueryStrategy):
         if None in tables:
             return None  # Table resolution failed
 
-        base_table = quote_table_name(tables[0].name, db_type)
+        base_table = quote_table_name(tables[0], db_type)
         joins = []
 
         for i in range(1, len(tables)):
@@ -67,17 +57,18 @@ class DeepJoinQueryStrategy(BaseQueryStrategy):
                         break
 
             if fk:
+                curr_q = quote_table_name(curr, db_type)
+                prev_q = quote_table_name(prev, db_type)
+                parent_col = quote_column_name(fk.parent.name, db_type)
+                ref_col = quote_column_name(fk.column.name, db_type)
+
                 if direction == "forward":
                     joins.append(
-                        f"JOIN {quote_table_name(curr.name, db_type)} ON "
-                        f"{quote_table_name(curr.name, db_type)}.{quote_table_name(fk.parent.name, db_type)} = "
-                        f"{quote_table_name(prev.name, db_type)}.{quote_table_name(fk.column.name, db_type)}"
+                        f"JOIN {curr_q} ON {curr_q}.{parent_col} = {prev_q}.{ref_col}"
                     )
                 else:
                     joins.append(
-                        f"JOIN {quote_table_name(curr.name, db_type)} ON "
-                        f"{quote_table_name(prev.name, db_type)}.{quote_table_name(fk.parent.name, db_type)} = "
-                        f"{quote_table_name(curr.name, db_type)}.{quote_table_name(fk.column.name, db_type)}"
+                        f"JOIN {curr_q} ON {prev_q}.{parent_col} = {curr_q}.{ref_col}"
                     )
             else:
                 return None  # Could not find valid FK

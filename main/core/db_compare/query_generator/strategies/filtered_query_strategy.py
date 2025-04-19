@@ -8,6 +8,7 @@ from main.core.db_compare.query_generator.utils.quoting_utils import quote_table
 
 
 class FilteredQueryStrategy(BaseQueryStrategy):
+
     def generate_query(self, schema_metadata, db_type: str, selector: int = None) -> str:
         selector = self.ensure_selector(selector)
         table_names = sorted(schema_metadata.tables.keys())

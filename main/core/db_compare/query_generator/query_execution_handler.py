@@ -52,9 +52,7 @@ def test_execution_handler_deep_join():
         test_type="deep_join",
         schema="sakila",
         strategy_config={
-            "min_join_size": 3,
-            "max_join_size": 3,
-            "longest": False
+            "longest": True
         }
     )
 

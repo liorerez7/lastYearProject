@@ -19,3 +19,4 @@ class SelectorExplorer:
             if query and query.strip().lower().startswith("select"):
                 return selector
         return -1  # Not found
+

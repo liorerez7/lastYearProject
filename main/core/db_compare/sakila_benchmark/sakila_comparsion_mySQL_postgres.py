@@ -4,6 +4,7 @@ import argparse
 import psycopg2
 import mysql.connector
 
+
 # List of test queries
 queries_all = {
     "simple_select": "SELECT * FROM customer WHERE active = TRUE;",

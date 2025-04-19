@@ -3,12 +3,14 @@ from main.core.test_framework.execution_plan_test import ExecutionPlanTest
 from main.core.test_framework.plans.deep_join_plan import deep_join_plan
 
 if __name__ == '__main__':
-    # ✅ Step 1: Create DBConnector for Postgres
-    connector = DBConnector(db_type="mysql")
-
+    connector_mysql = DBConnector(db_type="mysql")
+    connector_postgres = DBConnector(db_type="postgres")
     # ✅ Step 2: Connect and reflect metadata
-    engine, metadata = connector.connect(schema="sakila")
+    engine1, metadata1 = connector_mysql.connect(schema="sakila")
+    test1 = ExecutionPlanTest(deep_join_plan())
+    test1.run(engine1, metadata1, "mysql")
 
+    engine2, metadata2 = connector_postgres.connect(schema="sakila")
     # ✅ Step 3: Load the plan and run it
-    test = ExecutionPlanTest(deep_join_plan())
-    test.run(engine, metadata,"mysql")
+    test2 = ExecutionPlanTest(deep_join_plan())
+    test2.run(engine2, metadata2, "postgres")

@@ -21,7 +21,7 @@ class ExecutionPlanTest(BaseTest):
             print(f"\n▶️ {label} — {repeat} runs")
 
             query = gen.generate_query(metadata,db_type)
-
+            print(f"  ↪ Query: {query}")
             for i in range(repeat):
                 start = time.perf_counter()
                 self.execute_query(engine, query)
