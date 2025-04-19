@@ -10,7 +10,7 @@ class ExecutionPlanTest(BaseTest):
         self.execution_plan = execution_plan
         self.results = []
 
-    def run(self, engine, metadata):
+    def run(self,engine, metadata, db_type):
         print("🚀 Starting Execution Plan...\n")
         for step_index, step in enumerate(self.execution_plan):
             gen = step["generator"]
@@ -20,7 +20,7 @@ class ExecutionPlanTest(BaseTest):
 
             print(f"\n▶️ {label} — {repeat} runs")
 
-            query = gen.generate_query(metadata)
+            query = gen.generate_query(metadata,db_type)
 
             for i in range(repeat):
                 start = time.perf_counter()

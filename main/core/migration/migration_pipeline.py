@@ -31,7 +31,6 @@ class MigrationPipeline:
         migration_strategy.run(source_endpoint, destination_endpoint)
         print("✅ migration completed.")
 
-
 if __name__ == '__main__':
     uploader = awsUploader()
     endpoints = uploader.get_or_create_endpoints(aws_config)
