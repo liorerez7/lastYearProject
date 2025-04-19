@@ -10,7 +10,6 @@ strategy == test type
 QUERY_GENERATOR_REGISTRY = {
     "deep_join": DeepJoinQueryStrategy,
     "basic_select": SimpleBaseQueryGenerator,
-
     # "aggregation": AggregationGenerator,
     # ...
 }

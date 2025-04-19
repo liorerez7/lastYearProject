@@ -1,66 +1,130 @@
-def get_quote_char(db_type: str) -> str:
-    return "`" if db_type == "mysql" else ""
+import networkx as nx
+from sqlalchemy.schema import MetaData, Table
+import random
 
 
-def normalize_table_name(table_name: str, db_type: str) -> str:
-    if db_type == "mysql":
-        return table_name.split(".")[-1]
-    return table_name
-
-
-def build_foreign_key_graph(metadata) -> dict:
-    graph = {}
-    for table_name, table in metadata.tables.items():
-        graph[table_name] = []
+def build_foreign_key_graph(metadata: MetaData):
+    graph = nx.DiGraph()
+    for table in metadata.tables.values():
+        graph.add_node(table.name)
+    for table in metadata.tables.values():
         for fk in table.foreign_keys:
-            ref_table = f"{fk.column.table.schema}.{fk.column.table.name}" if fk.column.table.schema else fk.column.table.name
-            graph[table_name].append(ref_table)
+            graph.add_edge(table.name, fk.column.table.name, fk=fk)
     return graph
 
 
-def find_deep_join_path(graph: dict, limit: int = 4) -> list:
-    def dfs(node, path):
-        if len(path) == limit:
-            return path
-        for neighbor in graph.get(node, []):
-            if neighbor not in path:
-                result = dfs(neighbor, path + [neighbor])
-                if result:
-                    return result
-        return path
-
-    for start in graph:
-        path = dfs(start, [start])
-        if len(path) >= 2:
-            return path
-    return []
+def build_reverse_foreign_key_graph(metadata: MetaData):
+    graph = nx.DiGraph()
+    for table in metadata.tables.values():
+        graph.add_node(table.name)
+    for table in metadata.tables.values():
+        for fk in table.foreign_keys:
+            source = fk.column.table.name  # the referenced table
+            target = table.name  # the table with the FK
+            graph.add_edge(source, target, fk=fk)
+    return graph
 
 
-def resolve_table_key(metadata, table_name: str) -> str:
-    # finds the correct table key in metadata
-    for k in metadata.tables:
-        if k.endswith(f".{table_name}") or k == table_name:
-            return k
-    raise ValueError(f"❌ Table '{table_name}' not found in metadata.")
+def find_deep_join_path(graph, limit: int = 4):
+    for start_node in graph.nodes:
+        for end_node in graph.nodes:
+            if start_node == end_node:
+                continue
+            try:
+                path = nx.shortest_path(graph, source=start_node, target=end_node)
+                if 2 <= len(path) <= limit:
+                    return path
+            except nx.NetworkXNoPath:
+                continue
+    return None
 
 
-def get_foreign_key_column(metadata, from_table: str, to_table: str, db_type: str) -> str:
-    from_key = resolve_table_key(metadata, from_table)
-    to_key = resolve_table_key(metadata, to_table)
-    table = metadata.tables[from_key]
+def find_reverse_join_path(graph, limit: int = 4):
+    leaves = [n for n in graph.nodes if graph.out_degree(n) == 0]
+    for start in leaves:
+        for target in graph.nodes:
+            if start == target:
+                continue
+            try:
+                path = nx.shortest_path(graph, source=start, target=target)
+                if 2 <= len(path) <= limit:
+                    return path
+            except nx.NetworkXNoPath:
+                continue
+    return None
 
-    for fk in table.foreign_keys:
-        ref_table = f"{fk.column.table.schema}.{fk.column.table.name}" if fk.column.table.schema else fk.column.table.name
-        if ref_table.endswith(f".{to_table}") or ref_table == to_table:
-            return fk.parent.name
 
-    raise ValueError(f"No FK from {from_table} to {to_table}")
+def get_foreign_key_column(src: Table, dst: Table):
+    for fk in src.foreign_keys:
+        if fk.column.table.name == dst.name:
+            return fk
+    return None
 
 
-def get_primary_key_column(metadata, table_name: str, db_type: str) -> str:
-    key = resolve_table_key(metadata, table_name)
-    table = metadata.tables[key]
+def get_primary_key_column(table: Table):
     pk = list(table.primary_key.columns)
-    if not pk:
-        raise ValueError(f"No primary key found for table: {table_name}")
-    return pk[0].name
+    return pk[0].name if pk else None
+
+
+def quote_identifier(name: str, db_type: str):
+    if db_type == "mysql":
+        return f"`{name}`"
+    return f'"{name}"'
+
+
+def get_quote_char(db_type: str):
+    return '`' if db_type == "mysql" else '"'
+
+
+def resolve_table_key(metadata: MetaData, name: str):
+    return metadata.tables[name] if name in metadata.tables else None
+
+
+def normalize_table_name(name: str, db_type: str):
+    return name.lower() if db_type == "postgresql" else name
+
+
+def get_groupable_column(self, columns, table):
+    for col in columns:
+        if col not in table.primary_key.columns:
+            return col
+    return None
+
+
+def get_aggregatable_column(self, columns):
+    for col in columns:
+        if hasattr(col.type, "python_type"):
+            try:
+                if issubclass(col.type.python_type, (int, float)):
+                    return col
+            except NotImplementedError:
+                continue
+    return None
+
+
+def get_filterable_column(table):
+    for col in table.columns:
+        if hasattr(col.type, "python_type"):
+            try:
+                py_type = col.type.python_type
+                if py_type in (int, float, str):
+                    return col
+            except NotImplementedError:
+                continue
+    return None
+
+
+def generate_condition(column):
+    try:
+        py_type = column.type.python_type
+    except NotImplementedError:
+        return "= 1"
+
+    if py_type == int:
+        return f"> {random.randint(1, 10)}"
+    elif py_type == float:
+        return f"> {round(random.uniform(1.0, 10.0), 2)}"
+    elif py_type == str:
+        return f"LIKE '%a%'"
+    else:
+        return "= 1"

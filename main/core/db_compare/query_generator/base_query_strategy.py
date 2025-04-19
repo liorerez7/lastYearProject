@@ -1,20 +1,13 @@
 # base_query_strategy.py
 from abc import ABC, abstractmethod
 
-#TODO: Add more generators for different types of queries
-class BaseQueryStrategy(ABC):
-    """
-    Base class for query generation strategies.
-    strategies meaning the different types of  queries we can generate like
-    deep join , simple join etc
-    this is how the class\design will look like
-    This class defines the interface for generating SQL queries based on schema metadata.
-    It serves as a blueprint for all concrete query generation strategies.
 
-    """
+class BaseQueryStrategy(ABC):
     @abstractmethod
-    def generate_query(self, schema_metadata, db_type: str) -> str:
+    def generate_query(self, schema_metadata, db_type: str, selector: int = 0) -> str:
         """
-        Generate a SQL query based on schema metadata.
+        Given schema metadata and a selector, generate a SQL query.
+        The selector is used to produce a different query each time,
+        but should generate the same logical query for both DBs.
         """
         pass
