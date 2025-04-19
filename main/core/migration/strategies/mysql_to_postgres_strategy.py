@@ -6,6 +6,8 @@ from main.config.paths_config import SCHEMA_SQL, DATA_SQL, OUTPUT_SQL, MIGRATION
 from main.core.migration.strategies.base_migration_strategy import BaseMigrationStrategy
 from main.utils.network_utils import get_windows_host_ip
 
+from dotenv import load_dotenv
+load_dotenv()
 
 
 class MySQLToPostgresStrategy(BaseMigrationStrategy):
@@ -72,7 +74,8 @@ class MySQLToPostgresStrategy(BaseMigrationStrategy):
         ]
 
         env = os.environ.copy()
-        env["PGPASSWORD"] = "postgres"
+        env["PGPASSWORD"] = os.getenv("PGPASSWORD")
+        # before it was: env["PGPASSWORD"] = "postgres"
         #TODO: important!! my PGPASSWORD is: "lior" and Niv's is: "postgres"
 
         subprocess.run(command, env=env, check=True)
