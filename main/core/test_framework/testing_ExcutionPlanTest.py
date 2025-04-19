@@ -1,7 +1,7 @@
 from main.config.db_config import POSTGRES_CONFIG
 from main.core.test_framework.execution_plan_test import ExecutionPlanTest
 from main.core.test_framework.plans.deep_join_plan import deep_join_plan
-from main.core.db_compare.query_generator import test_with_alchemy
+from main.core.db_compare.query_generator import query_execution_handler
 
 if __name__ == '__main__':
     postgres_url = (

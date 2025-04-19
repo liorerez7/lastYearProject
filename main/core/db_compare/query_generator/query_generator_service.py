@@ -19,10 +19,6 @@ class QueryGeneratorService:
         self.schema_metadata = schema_metadata
         self.db_type = db_type
 
-    def generate(self):
+    def generate(self, selector=None):
+        return self.generator.generate_query(self.schema_metadata, self.db_type, selector=selector)
 
-        """
-            Generates an SQL query based on the selected strategy.
-        """
-
-        return self.generator.generate_query(self.schema_metadata, self.db_type)
