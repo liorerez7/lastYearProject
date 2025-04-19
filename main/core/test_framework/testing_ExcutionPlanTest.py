@@ -1,15 +1,14 @@
-from main.config.db_config import POSTGRES_CONFIG
+from main.core.db_compare.connection.db_connector import DBConnector
 from main.core.test_framework.execution_plan_test import ExecutionPlanTest
 from main.core.test_framework.plans.deep_join_plan import deep_join_plan
-from main.core.db_compare.query_generator import query_execution_handler
 
 if __name__ == '__main__':
-    postgres_url = (
-        f"postgresql+psycopg2://{POSTGRES_CONFIG['user']}:{POSTGRES_CONFIG['password']}"
-        f"@{POSTGRES_CONFIG['host']}:{POSTGRES_CONFIG['port']}/{POSTGRES_CONFIG['dbname']}"
-    )
+    # ✅ Step 1: Create DBConnector for Postgres
+    connector = DBConnector(db_type="mysql")
 
-    engine, metadata = testWithAlchmey.load_metadata(postgres_url, schema="sakila")
+    # ✅ Step 2: Connect and reflect metadata
+    engine, metadata = connector.connect(schema="sakila")
+
+    # ✅ Step 3: Load the plan and run it
     test = ExecutionPlanTest(deep_join_plan())
-
-    test.run(engine,metadata)
+    test.run(engine, metadata,"mysql")

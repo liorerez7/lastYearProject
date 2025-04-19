@@ -4,7 +4,7 @@ from main.core.db_compare.query_generator.utils.column_analysis_utils import (
     get_filterable_column,
     generate_condition
 )
-from main.core.db_compare.query_generator.utils.quoting_utils import quote_identifier
+from main.core.db_compare.query_generator.utils.quoting_utils import quote_table_name
 
 
 class FilteredQueryStrategy(BaseQueryStrategy):
@@ -17,10 +17,10 @@ class FilteredQueryStrategy(BaseQueryStrategy):
         table_index = selector % len(table_names)
         table = resolve_table_key(schema_metadata, table_names[table_index])
         filter_col = get_filterable_column(table, selector)
-        table_id = quote_identifier(table.name, db_type)
+        table_id = quote_table_name(table.name, db_type)
 
         if filter_col:
-            col_id = quote_identifier(filter_col.name, db_type)
+            col_id = quote_table_name(filter_col.name, db_type)
             condition = generate_condition(filter_col, selector)
             return f"SELECT * FROM {table_id} WHERE {col_id} {condition} LIMIT 100;"
         else:

@@ -4,7 +4,7 @@ from main.core.db_compare.query_generator.utils.column_analysis_utils import (
     get_groupable_column,
     get_aggregatable_column
 )
-from main.core.db_compare.query_generator.utils.quoting_utils import quote_identifier
+from main.core.db_compare.query_generator.utils.quoting_utils import quote_table_name
 
 
 class AggregationQueryStrategy(BaseQueryStrategy):
@@ -18,18 +18,18 @@ class AggregationQueryStrategy(BaseQueryStrategy):
         columns = list(table.columns)
 
         if len(columns) < 2:
-            return f"SELECT * FROM {quote_identifier(table.name, db_type)} LIMIT 100;"
+            return f"SELECT * FROM {quote_table_name(table.name, db_type)} LIMIT 100;"
 
         group_col = get_groupable_column(columns,table, selector)
         agg_col = get_aggregatable_column(columns, selector)
 
         if group_col and agg_col:
             return (
-                f"SELECT {quote_identifier(group_col.name, db_type)}, COUNT({quote_identifier(agg_col.name, db_type)})\n"
-                f"FROM {quote_identifier(table.name, db_type)}\n"
-                f"GROUP BY {quote_identifier(group_col.name, db_type)}\n"
+                f"SELECT {quote_table_name(group_col.name, db_type)}, COUNT({quote_table_name(agg_col.name, db_type)})\n"
+                f"FROM {quote_table_name(table.name, db_type)}\n"
+                f"GROUP BY {quote_table_name(group_col.name, db_type)}\n"
                 f"LIMIT 100;"
             )
         else:
-            return f"SELECT * FROM {quote_identifier(table.name, db_type)} LIMIT 100;"
+            return f"SELECT * FROM {quote_table_name(table.name, db_type)} LIMIT 100;"
 

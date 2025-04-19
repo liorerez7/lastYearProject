@@ -1,6 +1,6 @@
 from main.core.db_compare.query_generator.strategies.base_query_strategy import BaseQueryStrategy
 from main.core.db_compare.query_generator.utils.table_access_utils import resolve_table_key
-from main.core.db_compare.query_generator.utils.quoting_utils import quote_identifier
+from main.core.db_compare.query_generator.utils.quoting_utils import quote_table_name
 
 
 class BasicSelectQueryStrategy(BaseQueryStrategy):
@@ -12,5 +12,5 @@ class BasicSelectQueryStrategy(BaseQueryStrategy):
 
         table_index = selector % len(table_names)
         table = resolve_table_key(schema_metadata, table_names[table_index])
-        table_name = quote_identifier(table.name, db_type)
+        table_name = quote_table_name(table.name, db_type)
         return f"SELECT * FROM {table_name} LIMIT 100;"
