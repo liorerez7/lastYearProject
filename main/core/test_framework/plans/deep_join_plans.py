@@ -1,5 +1,4 @@
-from main.core.db_compare.query_generator.query_generator_service import QueryGeneratorService
-from main.core.db_compare.query_generator.strategies.deep_join_strategy import DeepJoinQueryStrategy
+from main.core.query_generation.query_generator_service import QueryGeneratorService
 
 
 #TODO: ADD MORE PLANS IDEAS

@@ -2,9 +2,9 @@ from typing import Optional, Dict
 
 from sqlalchemy import text
 
-from main.core.db_compare.connection.db_connector import DBConnector
-from main.core.db_compare.query_generator.query_generator_service import QueryGeneratorService
-from main.core.db_compare.query_generator.selector_explorer import SelectorExplorer
+from main.core.schema_analysis.connection.db_connector import DBConnector
+from main.core.query_generation.query_generator import QueryGeneratorService
+from main.core.query_generation.query_generator import SelectorExplorer
 
 
 class QueryExecutionHandler:

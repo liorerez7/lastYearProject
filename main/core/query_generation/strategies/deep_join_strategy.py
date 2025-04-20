@@ -1,8 +1,8 @@
 from typing import Optional
-from main.core.db_compare.query_generator.strategies.base_query_strategy import BaseQueryStrategy
-from main.core.db_compare.query_generator.utils.table_access_utils import resolve_table_key
-from main.core.db_compare.query_generator.utils.quoting_utils import quote_table_name, quote_column_name
-from main.core.db_compare.query_generator.utils.schema_graph_utils import (
+from main.core.query_generation.strategies.base_query_strategy import BaseQueryStrategy
+from main.core.query_generation.utils.table_access_utils import resolve_table_key
+from main.core.query_generation.utils.quoting_utils import quote_table_name, quote_column_name
+from main.core.query_generation.utils.schema_graph_utils import (
     build_foreign_key_graph,
     find_deep_join_path
 )

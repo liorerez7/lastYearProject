@@ -1,10 +1,9 @@
+from main.core.query_generation.selector_explorer import SelectorExplorer
+from main.core.query_generation.strategies.deep_join_strategy import DeepJoinQueryStrategy
 from main.core.test_framework.plans.aggregation_plans import aggregation_test
 from main.core.test_framework.plans.basic_select_plans import basic_select
-from main.core.test_framework.plans.deep_join_plans import deep_join_longest, deep_join_default
-from main.core.db_compare.connection.db_connector import DBConnector
+from main.core.schema_analysis.connection.db_connector import DBConnector
 from main.core.test_framework.execution_plan_test import ExecutionPlanTest
-from main.core.db_compare.query_generator.selector_explorer import SelectorExplorer
-from main.core.db_compare.query_generator.strategies.deep_join_strategy import DeepJoinQueryStrategy
 from main.core.test_framework.plans.selector_helpers import find_selector_for
 
 

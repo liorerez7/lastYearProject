@@ -1,7 +1,7 @@
-from main.core.db_compare.query_generator.selector_explorer import SelectorExplorer
-from main.core.db_compare.query_generator.strategies.aggregation_query_strategy import AggregationQueryStrategy
-from main.core.db_compare.query_generator.strategies.deep_join_strategy import DeepJoinQueryStrategy
-from main.core.db_compare.query_generator.strategies.basic_select_strategy import BasicSelectQueryStrategy
+from main.core.query_generation.selector_explorer import SelectorExplorer
+from main.core.query_generation.strategies.aggregation_query_strategy import AggregationQueryStrategy
+from main.core.query_generation.strategies.basic_select_strategy import BasicSelectQueryStrategy
+from main.core.query_generation.strategies.deep_join_strategy import DeepJoinQueryStrategy
 
 STRATEGY_SELECTOR_MAP = {
     "deep_join": DeepJoinQueryStrategy,
