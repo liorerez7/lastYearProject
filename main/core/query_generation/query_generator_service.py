@@ -1,6 +1,6 @@
 # query_generator_service.py
 
-from main.core.db_compare.query_generator.query_generator_registry_defaults import build_strategy
+from main.core.query_generation.registry_defaults import build_strategy
 
 
 class QueryGeneratorService:

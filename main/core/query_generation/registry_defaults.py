@@ -1,9 +1,9 @@
-# query_generator_registry_defaults.py
-from main.core.db_compare.query_generator.strategies.aggregation_query_strategy import AggregationQueryStrategy
-from main.core.db_compare.query_generator.strategies.basic_select_strategy import BasicSelectQueryStrategy
-from main.core.db_compare.query_generator.strategies.deep_join_strategy import DeepJoinQueryStrategy
-from main.core.db_compare.query_generator.strategies.filtered_query_strategy import FilteredQueryStrategy
-from main.core.db_compare.query_generator.strategies.reverse_join_strategy import ReverseJoinStrategy
+# registry_defaults.py
+from main.core.query_generation.strategies.aggregation_query_strategy import AggregationQueryStrategy
+from main.core.query_generation.strategies.basic_select_strategy import BasicSelectQueryStrategy
+from main.core.query_generation.strategies.deep_join_strategy import DeepJoinQueryStrategy
+from main.core.query_generation.strategies.filtered_query_strategy import FilteredQueryStrategy
+from main.core.query_generation.strategies.reverse_join_strategy import ReverseJoinStrategy
 
 """
 This module contains a registry for different query generation strategies.

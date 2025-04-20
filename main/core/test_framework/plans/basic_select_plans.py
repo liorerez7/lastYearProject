@@ -1,4 +1,5 @@
-from main.core.db_compare.query_generator.query_generator_service import QueryGeneratorService
+from main.core.query_generation.query_generator_service import QueryGeneratorService
+
 
 def basic_select(db_type: str, selector: int):
     return [

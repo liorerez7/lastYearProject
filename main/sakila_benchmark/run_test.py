@@ -1,6 +1,6 @@
 
 import psycopg2
-from main.core.db_compare.sakila_benchmark.sakila_comparsion_mySQL_postgres import (
+from main.sakila_benchmark.sakila_comparsion_mySQL_postgres import (
     SUPABASE_DB_CONFIG,
     PG_CONFIG,
     MYSQL_CONFIG,
@@ -15,8 +15,6 @@ def connect_to_supabase():
 
 
 def main():
-    import uuid
-
     # Step 1: Connect to Supabase and databases
     supabase_conn = connect_to_supabase()
     supabase_cursor = supabase_conn.cursor()
