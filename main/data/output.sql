@@ -48413,313 +48413,313 @@ SELECT pg_catalog.setval('sakila.store_store_id_seq', 2, true);
 
 
 --
--- Name: actor idx_33522_primary; Type: CONSTRAINT; Schema: sakila; Owner: postgres
+-- Name: actor idx_33320_primary; Type: CONSTRAINT; Schema: sakila; Owner: postgres
 --
 
 ALTER TABLE ONLY sakila.actor
-    ADD CONSTRAINT idx_33522_primary PRIMARY KEY (actor_id);
+    ADD CONSTRAINT idx_33320_primary PRIMARY KEY (actor_id);
 
 
 --
--- Name: address idx_33527_primary; Type: CONSTRAINT; Schema: sakila; Owner: postgres
+-- Name: address idx_33325_primary; Type: CONSTRAINT; Schema: sakila; Owner: postgres
 --
 
 ALTER TABLE ONLY sakila.address
-    ADD CONSTRAINT idx_33527_primary PRIMARY KEY (address_id);
+    ADD CONSTRAINT idx_33325_primary PRIMARY KEY (address_id);
 
 
 --
--- Name: category idx_33532_primary; Type: CONSTRAINT; Schema: sakila; Owner: postgres
+-- Name: category idx_33330_primary; Type: CONSTRAINT; Schema: sakila; Owner: postgres
 --
 
 ALTER TABLE ONLY sakila.category
-    ADD CONSTRAINT idx_33532_primary PRIMARY KEY (category_id);
+    ADD CONSTRAINT idx_33330_primary PRIMARY KEY (category_id);
 
 
 --
--- Name: city idx_33537_primary; Type: CONSTRAINT; Schema: sakila; Owner: postgres
+-- Name: city idx_33335_primary; Type: CONSTRAINT; Schema: sakila; Owner: postgres
 --
 
 ALTER TABLE ONLY sakila.city
-    ADD CONSTRAINT idx_33537_primary PRIMARY KEY (city_id);
+    ADD CONSTRAINT idx_33335_primary PRIMARY KEY (city_id);
 
 
 --
--- Name: country idx_33542_primary; Type: CONSTRAINT; Schema: sakila; Owner: postgres
+-- Name: country idx_33340_primary; Type: CONSTRAINT; Schema: sakila; Owner: postgres
 --
 
 ALTER TABLE ONLY sakila.country
-    ADD CONSTRAINT idx_33542_primary PRIMARY KEY (country_id);
+    ADD CONSTRAINT idx_33340_primary PRIMARY KEY (country_id);
 
 
 --
--- Name: customer idx_33547_primary; Type: CONSTRAINT; Schema: sakila; Owner: postgres
+-- Name: customer idx_33345_primary; Type: CONSTRAINT; Schema: sakila; Owner: postgres
 --
 
 ALTER TABLE ONLY sakila.customer
-    ADD CONSTRAINT idx_33547_primary PRIMARY KEY (customer_id);
+    ADD CONSTRAINT idx_33345_primary PRIMARY KEY (customer_id);
 
 
 --
--- Name: film idx_33553_primary; Type: CONSTRAINT; Schema: sakila; Owner: postgres
+-- Name: film idx_33351_primary; Type: CONSTRAINT; Schema: sakila; Owner: postgres
 --
 
 ALTER TABLE ONLY sakila.film
-    ADD CONSTRAINT idx_33553_primary PRIMARY KEY (film_id);
+    ADD CONSTRAINT idx_33351_primary PRIMARY KEY (film_id);
 
 
 --
--- Name: film_actor idx_33563_primary; Type: CONSTRAINT; Schema: sakila; Owner: postgres
+-- Name: film_actor idx_33361_primary; Type: CONSTRAINT; Schema: sakila; Owner: postgres
 --
 
 ALTER TABLE ONLY sakila.film_actor
-    ADD CONSTRAINT idx_33563_primary PRIMARY KEY (actor_id, film_id);
+    ADD CONSTRAINT idx_33361_primary PRIMARY KEY (actor_id, film_id);
 
 
 --
--- Name: film_category idx_33566_primary; Type: CONSTRAINT; Schema: sakila; Owner: postgres
+-- Name: film_category idx_33364_primary; Type: CONSTRAINT; Schema: sakila; Owner: postgres
 --
 
 ALTER TABLE ONLY sakila.film_category
-    ADD CONSTRAINT idx_33566_primary PRIMARY KEY (film_id, category_id);
+    ADD CONSTRAINT idx_33364_primary PRIMARY KEY (film_id, category_id);
 
 
 --
--- Name: film_text idx_33569_primary; Type: CONSTRAINT; Schema: sakila; Owner: postgres
+-- Name: film_text idx_33367_primary; Type: CONSTRAINT; Schema: sakila; Owner: postgres
 --
 
 ALTER TABLE ONLY sakila.film_text
-    ADD CONSTRAINT idx_33569_primary PRIMARY KEY (film_id);
+    ADD CONSTRAINT idx_33367_primary PRIMARY KEY (film_id);
 
 
 --
--- Name: inventory idx_33575_primary; Type: CONSTRAINT; Schema: sakila; Owner: postgres
+-- Name: inventory idx_33373_primary; Type: CONSTRAINT; Schema: sakila; Owner: postgres
 --
 
 ALTER TABLE ONLY sakila.inventory
-    ADD CONSTRAINT idx_33575_primary PRIMARY KEY (inventory_id);
+    ADD CONSTRAINT idx_33373_primary PRIMARY KEY (inventory_id);
 
 
 --
--- Name: language idx_33580_primary; Type: CONSTRAINT; Schema: sakila; Owner: postgres
+-- Name: language idx_33378_primary; Type: CONSTRAINT; Schema: sakila; Owner: postgres
 --
 
 ALTER TABLE ONLY sakila.language
-    ADD CONSTRAINT idx_33580_primary PRIMARY KEY (language_id);
+    ADD CONSTRAINT idx_33378_primary PRIMARY KEY (language_id);
 
 
 --
--- Name: payment idx_33585_primary; Type: CONSTRAINT; Schema: sakila; Owner: postgres
+-- Name: payment idx_33383_primary; Type: CONSTRAINT; Schema: sakila; Owner: postgres
 --
 
 ALTER TABLE ONLY sakila.payment
-    ADD CONSTRAINT idx_33585_primary PRIMARY KEY (payment_id);
+    ADD CONSTRAINT idx_33383_primary PRIMARY KEY (payment_id);
 
 
 --
--- Name: rental idx_33590_primary; Type: CONSTRAINT; Schema: sakila; Owner: postgres
+-- Name: rental idx_33388_primary; Type: CONSTRAINT; Schema: sakila; Owner: postgres
 --
 
 ALTER TABLE ONLY sakila.rental
-    ADD CONSTRAINT idx_33590_primary PRIMARY KEY (rental_id);
+    ADD CONSTRAINT idx_33388_primary PRIMARY KEY (rental_id);
 
 
 --
--- Name: staff idx_33595_primary; Type: CONSTRAINT; Schema: sakila; Owner: postgres
+-- Name: staff idx_33393_primary; Type: CONSTRAINT; Schema: sakila; Owner: postgres
 --
 
 ALTER TABLE ONLY sakila.staff
-    ADD CONSTRAINT idx_33595_primary PRIMARY KEY (staff_id);
+    ADD CONSTRAINT idx_33393_primary PRIMARY KEY (staff_id);
 
 
 --
--- Name: store idx_33603_primary; Type: CONSTRAINT; Schema: sakila; Owner: postgres
+-- Name: store idx_33401_primary; Type: CONSTRAINT; Schema: sakila; Owner: postgres
 --
 
 ALTER TABLE ONLY sakila.store
-    ADD CONSTRAINT idx_33603_primary PRIMARY KEY (store_id);
+    ADD CONSTRAINT idx_33401_primary PRIMARY KEY (store_id);
 
 
 --
--- Name: idx_33522_idx_actor_last_name; Type: INDEX; Schema: sakila; Owner: postgres
+-- Name: idx_33320_idx_actor_last_name; Type: INDEX; Schema: sakila; Owner: postgres
 --
 
-CREATE INDEX idx_33522_idx_actor_last_name ON sakila.actor USING btree (last_name);
-
-
---
--- Name: idx_33527_idx_fk_city_id; Type: INDEX; Schema: sakila; Owner: postgres
---
-
-CREATE INDEX idx_33527_idx_fk_city_id ON sakila.address USING btree (city_id);
+CREATE INDEX idx_33320_idx_actor_last_name ON sakila.actor USING btree (last_name);
 
 
 --
--- Name: idx_33527_idx_location; Type: INDEX; Schema: sakila; Owner: postgres
+-- Name: idx_33325_idx_fk_city_id; Type: INDEX; Schema: sakila; Owner: postgres
 --
 
-CREATE INDEX idx_33527_idx_location ON sakila.address USING gist (location);
-
-
---
--- Name: idx_33537_idx_fk_country_id; Type: INDEX; Schema: sakila; Owner: postgres
---
-
-CREATE INDEX idx_33537_idx_fk_country_id ON sakila.city USING btree (country_id);
+CREATE INDEX idx_33325_idx_fk_city_id ON sakila.address USING btree (city_id);
 
 
 --
--- Name: idx_33547_idx_fk_address_id; Type: INDEX; Schema: sakila; Owner: postgres
+-- Name: idx_33325_idx_location; Type: INDEX; Schema: sakila; Owner: postgres
 --
 
-CREATE INDEX idx_33547_idx_fk_address_id ON sakila.customer USING btree (address_id);
-
-
---
--- Name: idx_33547_idx_fk_store_id; Type: INDEX; Schema: sakila; Owner: postgres
---
-
-CREATE INDEX idx_33547_idx_fk_store_id ON sakila.customer USING btree (store_id);
+CREATE INDEX idx_33325_idx_location ON sakila.address USING gist (location);
 
 
 --
--- Name: idx_33547_idx_last_name; Type: INDEX; Schema: sakila; Owner: postgres
+-- Name: idx_33335_idx_fk_country_id; Type: INDEX; Schema: sakila; Owner: postgres
 --
 
-CREATE INDEX idx_33547_idx_last_name ON sakila.customer USING btree (last_name);
-
-
---
--- Name: idx_33553_idx_fk_language_id; Type: INDEX; Schema: sakila; Owner: postgres
---
-
-CREATE INDEX idx_33553_idx_fk_language_id ON sakila.film USING btree (language_id);
+CREATE INDEX idx_33335_idx_fk_country_id ON sakila.city USING btree (country_id);
 
 
 --
--- Name: idx_33553_idx_fk_original_language_id; Type: INDEX; Schema: sakila; Owner: postgres
+-- Name: idx_33345_idx_fk_address_id; Type: INDEX; Schema: sakila; Owner: postgres
 --
 
-CREATE INDEX idx_33553_idx_fk_original_language_id ON sakila.film USING btree (original_language_id);
-
-
---
--- Name: idx_33553_idx_title; Type: INDEX; Schema: sakila; Owner: postgres
---
-
-CREATE INDEX idx_33553_idx_title ON sakila.film USING btree (title);
+CREATE INDEX idx_33345_idx_fk_address_id ON sakila.customer USING btree (address_id);
 
 
 --
--- Name: idx_33563_idx_fk_film_id; Type: INDEX; Schema: sakila; Owner: postgres
+-- Name: idx_33345_idx_fk_store_id; Type: INDEX; Schema: sakila; Owner: postgres
 --
 
-CREATE INDEX idx_33563_idx_fk_film_id ON sakila.film_actor USING btree (film_id);
-
-
---
--- Name: idx_33566_fk_film_category_category; Type: INDEX; Schema: sakila; Owner: postgres
---
-
-CREATE INDEX idx_33566_fk_film_category_category ON sakila.film_category USING btree (category_id);
+CREATE INDEX idx_33345_idx_fk_store_id ON sakila.customer USING btree (store_id);
 
 
 --
--- Name: idx_33569_idx_title_description; Type: INDEX; Schema: sakila; Owner: postgres
+-- Name: idx_33345_idx_last_name; Type: INDEX; Schema: sakila; Owner: postgres
 --
 
-CREATE INDEX idx_33569_idx_title_description ON sakila.film_text USING btree (title, description);
-
-
---
--- Name: idx_33575_idx_fk_film_id; Type: INDEX; Schema: sakila; Owner: postgres
---
-
-CREATE INDEX idx_33575_idx_fk_film_id ON sakila.inventory USING btree (film_id);
+CREATE INDEX idx_33345_idx_last_name ON sakila.customer USING btree (last_name);
 
 
 --
--- Name: idx_33575_idx_store_id_film_id; Type: INDEX; Schema: sakila; Owner: postgres
+-- Name: idx_33351_idx_fk_language_id; Type: INDEX; Schema: sakila; Owner: postgres
 --
 
-CREATE INDEX idx_33575_idx_store_id_film_id ON sakila.inventory USING btree (store_id, film_id);
-
-
---
--- Name: idx_33585_fk_payment_rental; Type: INDEX; Schema: sakila; Owner: postgres
---
-
-CREATE INDEX idx_33585_fk_payment_rental ON sakila.payment USING btree (rental_id);
+CREATE INDEX idx_33351_idx_fk_language_id ON sakila.film USING btree (language_id);
 
 
 --
--- Name: idx_33585_idx_fk_customer_id; Type: INDEX; Schema: sakila; Owner: postgres
+-- Name: idx_33351_idx_fk_original_language_id; Type: INDEX; Schema: sakila; Owner: postgres
 --
 
-CREATE INDEX idx_33585_idx_fk_customer_id ON sakila.payment USING btree (customer_id);
-
-
---
--- Name: idx_33585_idx_fk_staff_id; Type: INDEX; Schema: sakila; Owner: postgres
---
-
-CREATE INDEX idx_33585_idx_fk_staff_id ON sakila.payment USING btree (staff_id);
+CREATE INDEX idx_33351_idx_fk_original_language_id ON sakila.film USING btree (original_language_id);
 
 
 --
--- Name: idx_33590_idx_fk_customer_id; Type: INDEX; Schema: sakila; Owner: postgres
+-- Name: idx_33351_idx_title; Type: INDEX; Schema: sakila; Owner: postgres
 --
 
-CREATE INDEX idx_33590_idx_fk_customer_id ON sakila.rental USING btree (customer_id);
-
-
---
--- Name: idx_33590_idx_fk_inventory_id; Type: INDEX; Schema: sakila; Owner: postgres
---
-
-CREATE INDEX idx_33590_idx_fk_inventory_id ON sakila.rental USING btree (inventory_id);
+CREATE INDEX idx_33351_idx_title ON sakila.film USING btree (title);
 
 
 --
--- Name: idx_33590_idx_fk_staff_id; Type: INDEX; Schema: sakila; Owner: postgres
+-- Name: idx_33361_idx_fk_film_id; Type: INDEX; Schema: sakila; Owner: postgres
 --
 
-CREATE INDEX idx_33590_idx_fk_staff_id ON sakila.rental USING btree (staff_id);
-
-
---
--- Name: idx_33590_rental_date; Type: INDEX; Schema: sakila; Owner: postgres
---
-
-CREATE UNIQUE INDEX idx_33590_rental_date ON sakila.rental USING btree (rental_date, inventory_id, customer_id);
+CREATE INDEX idx_33361_idx_fk_film_id ON sakila.film_actor USING btree (film_id);
 
 
 --
--- Name: idx_33595_idx_fk_address_id; Type: INDEX; Schema: sakila; Owner: postgres
+-- Name: idx_33364_fk_film_category_category; Type: INDEX; Schema: sakila; Owner: postgres
 --
 
-CREATE INDEX idx_33595_idx_fk_address_id ON sakila.staff USING btree (address_id);
-
-
---
--- Name: idx_33595_idx_fk_store_id; Type: INDEX; Schema: sakila; Owner: postgres
---
-
-CREATE INDEX idx_33595_idx_fk_store_id ON sakila.staff USING btree (store_id);
+CREATE INDEX idx_33364_fk_film_category_category ON sakila.film_category USING btree (category_id);
 
 
 --
--- Name: idx_33603_idx_fk_address_id; Type: INDEX; Schema: sakila; Owner: postgres
+-- Name: idx_33367_idx_title_description; Type: INDEX; Schema: sakila; Owner: postgres
 --
 
-CREATE INDEX idx_33603_idx_fk_address_id ON sakila.store USING btree (address_id);
+CREATE INDEX idx_33367_idx_title_description ON sakila.film_text USING btree (title, description);
 
 
 --
--- Name: idx_33603_idx_unique_manager; Type: INDEX; Schema: sakila; Owner: postgres
+-- Name: idx_33373_idx_fk_film_id; Type: INDEX; Schema: sakila; Owner: postgres
 --
 
-CREATE UNIQUE INDEX idx_33603_idx_unique_manager ON sakila.store USING btree (manager_staff_id);
+CREATE INDEX idx_33373_idx_fk_film_id ON sakila.inventory USING btree (film_id);
+
+
+--
+-- Name: idx_33373_idx_store_id_film_id; Type: INDEX; Schema: sakila; Owner: postgres
+--
+
+CREATE INDEX idx_33373_idx_store_id_film_id ON sakila.inventory USING btree (store_id, film_id);
+
+
+--
+-- Name: idx_33383_fk_payment_rental; Type: INDEX; Schema: sakila; Owner: postgres
+--
+
+CREATE INDEX idx_33383_fk_payment_rental ON sakila.payment USING btree (rental_id);
+
+
+--
+-- Name: idx_33383_idx_fk_customer_id; Type: INDEX; Schema: sakila; Owner: postgres
+--
+
+CREATE INDEX idx_33383_idx_fk_customer_id ON sakila.payment USING btree (customer_id);
+
+
+--
+-- Name: idx_33383_idx_fk_staff_id; Type: INDEX; Schema: sakila; Owner: postgres
+--
+
+CREATE INDEX idx_33383_idx_fk_staff_id ON sakila.payment USING btree (staff_id);
+
+
+--
+-- Name: idx_33388_idx_fk_customer_id; Type: INDEX; Schema: sakila; Owner: postgres
+--
+
+CREATE INDEX idx_33388_idx_fk_customer_id ON sakila.rental USING btree (customer_id);
+
+
+--
+-- Name: idx_33388_idx_fk_inventory_id; Type: INDEX; Schema: sakila; Owner: postgres
+--
+
+CREATE INDEX idx_33388_idx_fk_inventory_id ON sakila.rental USING btree (inventory_id);
+
+
+--
+-- Name: idx_33388_idx_fk_staff_id; Type: INDEX; Schema: sakila; Owner: postgres
+--
+
+CREATE INDEX idx_33388_idx_fk_staff_id ON sakila.rental USING btree (staff_id);
+
+
+--
+-- Name: idx_33388_rental_date; Type: INDEX; Schema: sakila; Owner: postgres
+--
+
+CREATE UNIQUE INDEX idx_33388_rental_date ON sakila.rental USING btree (rental_date, inventory_id, customer_id);
+
+
+--
+-- Name: idx_33393_idx_fk_address_id; Type: INDEX; Schema: sakila; Owner: postgres
+--
+
+CREATE INDEX idx_33393_idx_fk_address_id ON sakila.staff USING btree (address_id);
+
+
+--
+-- Name: idx_33393_idx_fk_store_id; Type: INDEX; Schema: sakila; Owner: postgres
+--
+
+CREATE INDEX idx_33393_idx_fk_store_id ON sakila.staff USING btree (store_id);
+
+
+--
+-- Name: idx_33401_idx_fk_address_id; Type: INDEX; Schema: sakila; Owner: postgres
+--
+
+CREATE INDEX idx_33401_idx_fk_address_id ON sakila.store USING btree (address_id);
+
+
+--
+-- Name: idx_33401_idx_unique_manager; Type: INDEX; Schema: sakila; Owner: postgres
+--
+
+CREATE UNIQUE INDEX idx_33401_idx_unique_manager ON sakila.store USING btree (manager_staff_id);
 
 
 --
