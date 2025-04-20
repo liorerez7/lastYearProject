@@ -14,8 +14,7 @@ class DeepJoinQueryStrategy(BaseQueryStrategy):
         self.max_join_size = max_join_size
         self.longest = longest
 
-    def generate_query(self, schema_metadata, db_type: str, selector: int = None) -> Optional[str]:
-        selector = self.ensure_selector(selector)
+    def generate_query(self, schema_metadata, db_type: str, selector: int) -> Optional[str]:
         graph = build_foreign_key_graph(schema_metadata)
         path = find_deep_join_path(
             graph,
@@ -24,6 +23,8 @@ class DeepJoinQueryStrategy(BaseQueryStrategy):
             max_length=self.max_join_size,
             longest=self.longest
         )
+        if selector is None:
+            raise ValueError("❌ selector must be explicitly provided for DeepJoinQueryStrategy.")
 
         if not path:
             return None  # No path found

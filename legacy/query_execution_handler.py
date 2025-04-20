@@ -20,6 +20,9 @@ class QueryExecutionHandler:
     def run(self, sample_size: int = 5, selector: Optional[int] = None):
         engine, metadata = self.connector.connect(schema=self.schema)
 
+        # generator is an instance of the QueryGeneratorService thats holds inside the strategy class
+        # (for example DeepJoinQueryStrategy)
+
         generator = QueryGeneratorService(self.test_type, self.db_type, strategy_config=self.strategy_config)
         query = generator.generate(metadata,selector)
 

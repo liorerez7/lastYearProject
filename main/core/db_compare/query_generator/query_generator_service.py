@@ -12,7 +12,4 @@ class QueryGeneratorService:
 #
     def __init__(self, test_type, db_type, strategy_config=None):
         self.generator = build_strategy(test_type, strategy_config or {})
-        self.db_type = db_type #TODO: can dleete db_type param class doesnt use generate function just the_build stragedy
-
-    def generate(self, schema_metadata, selector=None):
-        return self.generator.generate_query(schema_metadata, self.db_type, selector=selector)
+        self.db_type = db_type
