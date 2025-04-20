@@ -8,7 +8,6 @@ def find_selector(schema: str, db_type: str):
     connector = DBConnector(db_type)
     engine, metadata = connector.connect(schema)
     explorer = SelectorExplorer(DeepJoinQueryStrategy, metadata, db_type)
-    print(f"explorer: {explorer}")
     return explorer.find_first_valid_selector()
 
 def run_test(schema: str):

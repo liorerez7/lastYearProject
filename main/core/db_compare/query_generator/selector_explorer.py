@@ -10,10 +10,6 @@ class SelectorExplorer:
 
     def find_first_valid_selector(self, max_tries: int = 100) -> int:
         for selector in range(max_tries):
-             # needs to be random from the max selector
-             #selector = return random.randint(0, max_selectors - 1)
-             #TODO:  depending on the strategy max tries will be max selector's for example for deep join strategy
-             # max selector is 	Number of nodes (tables) in the graph
             strategy = self.strategy_class()
             query = strategy.generate_query(self.schema_metadata, self.db_type, selector=selector)
             if query and query.strip().lower().startswith("select"):
