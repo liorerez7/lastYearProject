@@ -19,5 +19,4 @@ class BaseQueryStrategy(ABC):
         """
         pass
 
-    def ensure_selector(self, selector):
-        return selector if selector is not None else random.randint(0, 1000)
+

@@ -5,12 +5,13 @@ from main.core.test_framework.base_test import BaseTest
 #TODO: MODULER TO FUNCTIONS , ADD MORE FUNCRTILITY TO EXCUTION PLAN LIE (BOOLEAN IF WE WANT TO USE INDEXS OR NOT )
 # TODO : WE NEED TO MAKE DEFAULT VALUES FOR A PLAN
 class ExecutionPlanTest(BaseTest):
-    def __init__(self, execution_plan: list):
+    def __init__(self, execution_plan: list, db_type: str):
         super().__init__()
         self.execution_plan = execution_plan
         self.results = []
+        self.db_type = db_type
 
-    def run(self,engine, metadata, db_type):
+    def run(self,engine, metadata):
         print("🚀 Starting Execution Plan...\n")
         for step_index, step in enumerate(self.execution_plan):
             gen = step["generator"]
@@ -20,7 +21,7 @@ class ExecutionPlanTest(BaseTest):
 
             print(f"\n▶️ {label} — {repeat} runs")
 
-            query = gen.generate_query(metadata,db_type)
+            query = gen.generate_query(metadata,self.db_type,selector=step.get("selector"))
             print(f"  ↪ Query: {query}")
             for i in range(repeat):
                 start = time.perf_counter()
@@ -45,6 +46,7 @@ class ExecutionPlanTest(BaseTest):
         print("\n📊 Test Summary:")
         print(f"Total runs: {len(durations)}")
         print(f"Average time: {sum(durations) / len(durations):.4f}s")
+        print(f"DB Type: {self.db_type}")
         return self.results
 
     def preview(self, metadata):
