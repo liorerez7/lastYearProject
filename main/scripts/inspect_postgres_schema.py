@@ -1,4 +1,4 @@
-from main.core.db_compare.schema_inspector.postgres_schema_reader import PostgreSQLSchemaReader
+rom main.core.db_compare.schema_inspector.postgres_schema_reader import PostgreSQLSchemaReader
 from main.config.db_config import POSTGRES_CONFIG
 
 def main():
