@@ -1,8 +1,12 @@
+from main.core.test_framework.plans.aggregation_plans import aggregation_test
+from main.core.test_framework.plans.basic_select_plans import basic_select
 from main.core.test_framework.plans.deep_join_plans import deep_join_longest, deep_join_default
 from main.core.db_compare.connection.db_connector import DBConnector
 from main.core.test_framework.execution_plan_test import ExecutionPlanTest
 from main.core.db_compare.query_generator.selector_explorer import SelectorExplorer
 from main.core.db_compare.query_generator.strategies.deep_join_strategy import DeepJoinQueryStrategy
+from main.core.test_framework.plans.selector_helpers import find_selector_for
+
 
 def find_selector(schema: str, db_type: str):
     connector = DBConnector(db_type)
@@ -11,16 +15,26 @@ def find_selector(schema: str, db_type: str):
     return explorer.find_first_valid_selector()
 
 def run_test(schema: str):
-    selector = find_selector(schema, "mysql")
-    print(f"✅ Using selector {selector} for both MySQL and PostgreSQL")
+    connector = DBConnector("mysql")
+    engine, metadata = connector.connect(schema)
 
-    for db_type in ["mysql", "postgres"]:
+    selector_deep = find_selector_for("deep_join", metadata, "mysql")
+    selector_basic = find_selector_for("basic_select", metadata, "mysql")
+    selector_agg = find_selector_for("aggregation", metadata, "mysql")
+
+    print(f"✅ DeepJoin selector = {selector_deep}")
+    print(f"✅ BasicSelect selector = {selector_basic}")
+    print(f"✅ Aggregation selector = {selector_agg}")
+
+    for db_type in ["postgres", "mysql"]:
         connector = DBConnector(db_type)
         engine, metadata = connector.connect(schema=schema)
 
         steps = (
-            deep_join_longest(db_type, selector) +
-            deep_join_default(db_type, selector)
+            # deep_join_longest(db_type, selector_deep) +
+            # deep_join_default(db_type, selector_deep) +
+            basic_select(db_type, selector_basic) +
+            aggregation_test(db_type, selector_agg)
         )
 
         test = ExecutionPlanTest(steps, db_type)
