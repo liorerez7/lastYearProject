@@ -1,34 +1,74 @@
+from typing import Optional
+
 from main.core.query_generation.strategies.base_query_strategy import BaseQueryStrategy
-from main.core.query_generation.utils.table_access_utils import resolve_table_key
-from main.core.query_generation.utils.quoting_utils import quote_table_name
+from main.core.query_generation.utils.quoting_utils import (
+    quote_table_name,
+    quote_column_name,
+    get_quote_char,
+)
 from main.core.query_generation.utils.schema_graph_utils import (
     build_reverse_foreign_key_graph,
-    find_reverse_join_path
+    find_reverse_join_path,
 )
+from main.core.query_generation.utils.table_access_utils import resolve_table_key
 
+class ReverseJoinQueryStrategy(BaseQueryStrategy):
+    def __init__(self, limit: int = 8):
+        super().__init__()
+        self.limit = limit
 
-class ReverseJoinStrategy(BaseQueryStrategy):
-    def generate_query(self, schema_metadata, db_type: str, selector: int = None) -> str:
-        selector = self.ensure_selector(selector)
+    def generate_query(
+        self, schema_metadata, db_type: str, selector: int = None
+    ) -> Optional[str]:
+        if selector is None:
+            raise ValueError("❌ selector must be explicitly provided for ReverseJoinQueryStrategy.")
+
+        # 1) build the “reverse” FK graph and pick a path
         graph = build_reverse_foreign_key_graph(schema_metadata)
-        path = find_reverse_join_path(graph, selector=selector, limit=4)
-
+        path = find_reverse_join_path(graph, selector=selector, limit=self.limit)
         if not path:
-            return "-- No reverse join path found"
+            return None
 
+        # 2) turn each node name into a SQLAlchemy Table object
         tables = [resolve_table_key(schema_metadata, name) for name in path]
-        base_table = quote_table_name(tables[0].name, db_type)
-        joins = []
+        if None in tables:
+            return None
 
-        for i in range(1, len(tables)):
-            curr = tables[i]
-            prev = tables[i - 1]
-            fk = next((fk for fk in curr.foreign_keys if fk.column.table.name == prev.name), None)
-            if fk:
+        # 3) quote the base table
+        base = quote_table_name(tables[0], db_type)
+
+        # 4) for each hop, find the FK and emit a JOIN
+        joins = []
+        for prev, curr in zip(tables, tables[1:]):
+            # try “curr → prev” first
+            fk = next(
+                (fk for fk in curr.foreign_keys if fk.column.table == prev),
+                None
+            )
+            if not fk:
+                # otherwise “prev → curr”
+                fk = next(
+                    (fk for fk in prev.foreign_keys if fk.column.table == curr),
+                    None
+                )
+                if not fk:
+                    return None
+                # reverse direction: prev.parent = curr.pk
                 joins.append(
-                    f"JOIN {quote_table_name(curr.name, db_type)} ON "
-                    f"{quote_table_name(curr.name, db_type)}.{quote_table_name(fk.parent.name, db_type)} = "
-                    f"{quote_table_name(prev.name, db_type)}.{quote_table_name(fk.column_keys[0], db_type)}"
+                    f"JOIN {quote_table_name(curr, db_type)} "
+                    f"ON {quote_table_name(prev, db_type)}."
+                    f"{quote_column_name(fk.parent.name, db_type)} = "
+                    f"{quote_table_name(curr, db_type)}."
+                    f"{quote_column_name(fk.column.name, db_type)}"
+                )
+            else:
+                # forward direction: curr.parent = prev.pk
+                joins.append(
+                    f"JOIN {quote_table_name(curr, db_type)} "
+                    f"ON {quote_table_name(curr, db_type)}."
+                    f"{quote_column_name(fk.parent.name, db_type)} = "
+                    f"{quote_table_name(prev, db_type)}."
+                    f"{quote_column_name(fk.column.name, db_type)}"
                 )
 
-        return f"SELECT *\nFROM {base_table}\n" + "\n".join(joins) + "\nLIMIT 100;"
+        return "SELECT *\nFROM " + base + "\n" + "\n".join(joins) + "\nLIMIT 100;"

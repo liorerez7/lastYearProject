@@ -2,11 +2,20 @@ from main.core.query_generation.selector_explorer import SelectorExplorer
 from main.core.query_generation.strategies.aggregation_query_strategy import AggregationQueryStrategy
 from main.core.query_generation.strategies.basic_select_strategy import BasicSelectQueryStrategy
 from main.core.query_generation.strategies.deep_join_strategy import DeepJoinQueryStrategy
+from main.core.query_generation.strategies.filtered_query_strategy import FilteredQueryStrategy
+from main.core.query_generation.strategies.group_by_query_strategy import GroupByQueryStrategy
+from main.core.query_generation.strategies.reverse_join_strategy import ReverseJoinQueryStrategy
+from main.core.schema_analysis.connection.db_connector import DBConnector
+from main.core.schema_analysis.table_profiler import get_rowcounts, pick_s_m_l_selectors
 
 STRATEGY_SELECTOR_MAP = {
     "deep_join": DeepJoinQueryStrategy,
     "basic_select": BasicSelectQueryStrategy,
     "aggregation": AggregationQueryStrategy,
+    "filtered": FilteredQueryStrategy,
+    "group_by": GroupByQueryStrategy,
+    "reverse_join": ReverseJoinQueryStrategy,  # ReverseJoinStrategy is not used in this context
+
 }
 
 
@@ -22,3 +31,14 @@ def find_selector_for(test_type: str, schema_metadata, db_type: str) -> int:
         raise ValueError(f"❌ No valid selector found for test type '{test_type}' on {db_type}")
 
     return selector
+
+def get_size_based_selectors(schema: str,
+                             db_type: str = "mysql") -> dict[str, int]:
+    """
+    Compute selectors for small / medium / large tables.
+    Called once before the plan is built.
+    """
+    conn = DBConnector(db_type)
+    engine, metadata = conn.connect(schema)
+    counts = get_rowcounts(engine, schema)
+    return pick_s_m_l_selectors(metadata, db_type, counts)
