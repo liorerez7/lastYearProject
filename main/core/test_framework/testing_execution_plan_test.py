@@ -46,10 +46,14 @@
 #
 from main.core.query_generation.selector_explorer import SelectorExplorer
 from main.core.query_generation.strategies.deep_join_strategy import DeepJoinQueryStrategy
+
+
+
 from main.core.test_framework.plans.aggregation_plans import aggregation_test
 from main.core.test_framework.plans.basic_select_plans import basic_select
 from main.core.schema_analysis.connection.db_connector import DBConnector
 from main.core.test_framework.execution_plan_test import ExecutionPlanTest
+from main.core.test_framework.plans.deep_join_plans import deep_join_longest
 from main.core.test_framework.plans.filtered_query_plans import filtered_test
 from main.core.test_framework.plans.group_by_plans import group_by
 from main.core.test_framework.plans.reverse_join_plans import reverse_join
@@ -90,7 +94,14 @@ def run_test_aggregation(schema: str):
         aggregation_test(db, sizes["medium"], repeat=2) +
         aggregation_test(db, sizes["large"], repeat=1)
     ))
+def run_test_deep_join(schema: str):
+    try:
+        sel = find_selector_for("deep_join", _get_metadata(schema, "mysql"), "mysql")
+    except ValueError:
+        print("⚠️  No valid DeepJoin selector found – skipping.")
+        return
 
+    run("deep_join", schema, steps_fn=lambda db: deep_join_longest(db, sel))
 
 def run_test_reverse_join(schema: str):
     try:
@@ -119,8 +130,9 @@ def _get_metadata(schema: str, db_type: str):
 
 
 if __name__ == '__main__':
-    run_test_select("sakila")
+    #run_test_select("sakila")
     #run_test_filtered("sakila")
     #run_test_group_by("sakila")
     #run_test_aggregation("sakila")
     #run_test_reverse_join("sakila")
+    run_test_deep_join("sakila")
