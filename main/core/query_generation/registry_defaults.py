@@ -3,7 +3,8 @@ from main.core.query_generation.strategies.aggregation_query_strategy import Agg
 from main.core.query_generation.strategies.basic_select_strategy import BasicSelectQueryStrategy
 from main.core.query_generation.strategies.deep_join_strategy import DeepJoinQueryStrategy
 from main.core.query_generation.strategies.filtered_query_strategy import FilteredQueryStrategy
-from main.core.query_generation.strategies.reverse_join_strategy import ReverseJoinStrategy
+from main.core.query_generation.strategies.group_by_query_strategy import GroupByQueryStrategy
+from main.core.query_generation.strategies.reverse_join_strategy import ReverseJoinQueryStrategy
 
 """
 This module contains a registry for different query generation strategies.
@@ -25,7 +26,7 @@ STRATEGY_CONFIG = {
         "params": {}
     },
     "reverse_join": {
-        "class": ReverseJoinStrategy,
+        "class": ReverseJoinQueryStrategy,
         "params": {}
     },
     "filtered": {
@@ -34,6 +35,10 @@ STRATEGY_CONFIG = {
     },
     "aggregation": {
         "class": AggregationQueryStrategy,
+        "params": {}
+    },
+    "group_by": {
+        "class": GroupByQueryStrategy,
         "params": {}
     }
 }
