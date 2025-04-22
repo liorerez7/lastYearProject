@@ -50,6 +50,7 @@ docker stop mysql57 >/dev/null
 docker rm mysql57 >/dev/null
 echo "🗑️ Docker container 'mysql57' removed."
 #how to run:
+
 #./mysql_to_postgres.sh  root rootpass postgresql://postgres:postgres@172.24.128.1:5432/sakila sakila-schema.sql sakila-data.sql
 #change ip in pgloader.sh to my ip (write ipconfig: Ethernet adapter vEthernet (WSL (Hyper-V firewall)):
                                                     #
