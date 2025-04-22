@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Usage:
-# ./migrate.sh <mysql_user> <mysql_pass> <postgres_conn_string> <sql_file1> [sql_file2 ... sql_fileN]
+# ./migrate.sh <mysql_user> <mysql_pass> <postgres_conn_string> <schema_name> <sql_file1> [sql_file2 ... sql_fileN]
 
 # Check minimum args
 if [ "$#" -lt 4 ]; then
@@ -12,8 +12,9 @@ fi
 MYSQL_USER=$1
 MYSQL_PASS=$2
 POSTGRES_CONN=$3
+SCHEMA_NAME=$4
 MYSQL_PORT=3307
-SQL_FILES=("${@:4}")  # All remaining args are SQL files
+SQL_FILES=("${@:5}")  # All remaining args are SQL files
 
 # Step 1: Start MySQL 5.7 container
 echo "🚀 Starting MySQL 5.7 Docker container..."
@@ -25,22 +26,22 @@ docker run --name mysql57 \
 # Step 2: Wait for MySQL to initialize
 echo "⏳ Waiting for MySQL to initialize..."
 sleep 10
-# Step 3: Create database 'sakila'
-echo "📦 Creating 'sakila' database..."
-docker exec -i mysql57 mysql -u $MYSQL_USER -p$MYSQL_PASS -e "CREATE DATABASE IF NOT EXISTS employees;"
+
+echo "📦 Creating '$SCHEMA_NAME' database..."
+docker exec -i mysql57 mysql -u $MYSQL_USER -p$MYSQL_PASS -e "CREATE DATABASE IF NOT EXISTS $SCHEMA_NAME;"
 
 # Step 4: Copy and execute each SQL file
 for file in "${SQL_FILES[@]}"; do
   echo "📤 Copying and running $file..."
   docker cp "$file" mysql57:/tmp.sql
-  docker exec -i mysql57 mysql -u $MYSQL_USER -p$MYSQL_PASS employees < "$file"
+  docker exec -i mysql57 mysql -u $MYSQL_USER -p$MYSQL_PASS $SCHEMA_NAME < "$file"
 done
 
 # Step 5: Run pgloader to migrate to PostgreSQL
 echo "🔄 Running pgloader to migrate from MySQL to PostgreSQL..."
 docker run --rm dimitri/pgloader:latest \
   pgloader \
-  mysql://$MYSQL_USER:$MYSQL_PASS@host.docker.internal:$MYSQL_PORT/employees \
+  mysql://$MYSQL_USER:$MYSQL_PASS@host.docker.internal:$MYSQL_PORT/$SCHEMA_NAME \
   $POSTGRES_CONN
 
 echo "✅ Migration completed!"

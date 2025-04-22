@@ -21,7 +21,7 @@ STRATEGY_CONFIG = {
             "longest": False
         }
     },
-    "basic_select": {
+"basic_select": {
         "class": BasicSelectQueryStrategy,
         "params": {}
     },

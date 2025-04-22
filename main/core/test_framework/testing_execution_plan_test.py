@@ -7,8 +7,8 @@ from main.core.test_framework.plans.filtered_query_plans import filtered_test
 from main.core.test_framework.plans.group_by_plans import group_by
 from main.core.test_framework.plans.reverse_join_plans import reverse_join
 from main.core.test_framework.plans.selector_helpers import find_selector_for, get_size_based_selectors
-
-
+from main.core.test_framework.plans.workload_test_chat import realistic_workload
+from main.core.test_framework.plans.workload_test_chat import realistic_workload
 def run_test_select(schema: str):
     sizes = get_size_based_selectors(schema, "mysql")
     run("basic_select", schema, steps_fn=lambda db: (
@@ -17,6 +17,14 @@ def run_test_select(schema: str):
         basic_select(db, sizes["large"], repeat=1)
     ))
 
+
+def run_realistic_workload(schema: str):
+    # Run against MySQL
+    sizes = get_size_based_selectors(schema, "mysql")
+    run("realistic_workload", schema, steps_fn=lambda db: realistic_workload(db_type="mysql", selector=sizes["large"]))
+
+    # Run against PostgreSQL
+    run("realistic_workload", schema, steps_fn=lambda db: realistic_workload(db_type="postgres", selector=sizes["large"]))
 
 def run_test_filtered(schema: str):
     sizes = get_size_based_selectors(schema, "mysql")
@@ -34,7 +42,6 @@ def run_test_group_by(schema: str):
         group_by(db, sizes["medium"], repeat=2) +
         group_by(db, sizes["large"], repeat=1)
     ))
-
 
 def run_test_aggregation(schema: str):
     sizes = get_size_based_selectors(schema, "mysql")
@@ -79,7 +86,7 @@ def _get_metadata(schema: str, db_type: str):
 
 
 if __name__ == '__main__':
-    run_test_select("sakila")
+    run_realistic_workload("employees")
     #run_test_filtered("sakila")
     #run_test_group_by("sakila")
     #run_test_aggregation("sakila")
