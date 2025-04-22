@@ -3,7 +3,10 @@ import random
 from sqlalchemy.schema import MetaData
 
 
+##TODO: here we want to add params that fits to all queries
+
 class BaseQueryStrategy(ABC):
+
     @abstractmethod
     def generate_query(self, schema_metadata: MetaData, db_type: str, selector: int = None) -> str:
         """
