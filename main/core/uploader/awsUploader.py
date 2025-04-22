@@ -1,6 +1,6 @@
 import os
 
-from botocore.exceptions import ClientError
+from botocore.exceptions import ClientError, NoCredentialsError
 
 from main.config.db_known_ports import DEFAULT_PORTS
 from main.core.uploader.uploader import dbUploader

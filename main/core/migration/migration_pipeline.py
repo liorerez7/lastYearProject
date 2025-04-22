@@ -7,6 +7,7 @@ from main.config.logger_config import setup_logger
 
 logger = setup_logger(__name__)
 
+
 # Add more imports as you add strategies
 
 class MigrationPipeline:
@@ -15,10 +16,11 @@ class MigrationPipeline:
         # Add more strategies here...
     }
 
-    def __init__(self, source_db_type, destination_db_type):
+    def __init__(self, source_db_type, destination_db_type, schema_name):
         self.source_db = source_db_type.lower()
         self.dest_db = destination_db_type.lower()
         self.strategy_class = self._get_strategy_class()
+        self.schema_name = schema_name
 
     def _get_strategy_class(self):
         key = (self.source_db, self.dest_db)
@@ -28,8 +30,8 @@ class MigrationPipeline:
 
     def run(self, source_endpoint, destination_endpoint):
         logger.info(f"🚀 Starting migration from {self.source_db} to {self.dest_db}...")
-        migration_strategy = self.strategy_class()
-        migration_strategy.run(source_endpoint, destination_endpoint)
+        migration_strategy = self.strategy_class(self.schema_name)
+        migration_strategy.run(source_endpoint, destination_endpoint, self.schema_name)
         logger.info(f"✅ Migration from {self.source_db} to {self.dest_db} completed successfully.")
 
 
@@ -37,5 +39,5 @@ if __name__ == '__main__':
     uploader = awsUploader()
     endpoints = uploader.get_or_create_endpoints(aws_config)
     print(endpoints)
-    pipeline = MigrationPipeline("mysql", "postgres")
+    pipeline = MigrationPipeline("mysql", "postgres", "employees")
     pipeline.run(endpoints['source'], endpoints['destination'])
