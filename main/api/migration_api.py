@@ -14,7 +14,6 @@ class MigrationRequest(BaseModel):
     source: str  # optional if you want React to send DB types
     destination: str
 
-
 @app.post("/run-migration")
 def run_migration(request: MigrationRequest):
     try:
