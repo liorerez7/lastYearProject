@@ -3,12 +3,13 @@ from abc import ABC, abstractmethod
 from main.config.aws_config import aws_config
 from main.core.migration.strategies.mysql_to_postgres_strategy import MySQLToPostgresStrategy
 from main.core.uploader.awsUploader import awsUploader
+from main.config.logger_config import setup_logger
 
+logger = setup_logger(__name__)
 
 # Add more imports as you add strategies
 
 class MigrationPipeline:
-
     STRATEGY_REGISTRY = {
         ("mysql", "postgres"): MySQLToPostgresStrategy,
         # Add more strategies here...
@@ -26,10 +27,11 @@ class MigrationPipeline:
         return self.STRATEGY_REGISTRY[key]
 
     def run(self, source_endpoint, destination_endpoint):
-        print(f"🚀 Running migration from {self.source_db} to {self.dest_db}")
+        logger.info(f"🚀 Starting migration from {self.source_db} to {self.dest_db}...")
         migration_strategy = self.strategy_class()
         migration_strategy.run(source_endpoint, destination_endpoint)
-        print("✅ migration completed.")
+        logger.info(f"✅ Migration from {self.source_db} to {self.dest_db} completed successfully.")
+
 
 if __name__ == '__main__':
     uploader = awsUploader()
