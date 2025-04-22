@@ -7,6 +7,7 @@ from main.core.migration.strategies.base_migration_strategy import BaseMigration
 from main.utils.network_utils import get_windows_host_ip
 
 from dotenv import load_dotenv
+
 load_dotenv()
 
 
@@ -14,10 +15,10 @@ class MySQLToPostgresStrategy(BaseMigrationStrategy):
     def run(self, source_endpoint, destination_endpoint):
         self.source_endpoint = source_endpoint
         self.destination_endpoint = destination_endpoint
+        # self.run_pgloader_script()
+        # self.export_pg_dump_from_windows()
+        # self.upload_to_postgres_rds()
         self.upload_to_mysql_rds()
-        self.run_pgloader_script()
-        self.export_pg_dump_from_windows()
-        self.upload_to_postgres_rds()
 
     def run_pgloader_script(self):
         print("🚀 Running pgloader migration script via WSL...")
@@ -86,7 +87,7 @@ class MySQLToPostgresStrategy(BaseMigrationStrategy):
 
         uploader = awsUploader()
         uploader.set_postgres_connection_details(
-            self.destination_endpoint,   # ← dynamic endpoint!
+            self.destination_endpoint,  # ← dynamic endpoint!
             aws_config["destination"]
         )
         uploader.upload_postgres(OUTPUT_SQL)
@@ -108,3 +109,7 @@ class MySQLToPostgresStrategy(BaseMigrationStrategy):
         # ואז נוסיף את הנתונים
         uploader.upload(DATA_SQL)
         print("✅ Data uploaded to MySQL.")
+
+
+if __name__ == '__main__':
+    MySQLToPostgresStrategy().run("mysql-source-db2.cr6a6e6uczdi.us-east-1.rds.amazonaws.com","postgres-dest-db.cr6a6e6uczdi.us-east-1.rds.amazonaws.com")

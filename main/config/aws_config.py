@@ -2,7 +2,7 @@ aws_config = {
   "source": {
     "endpoint": "",
     "DBInstanceIdentifier": "mysql-source-db2",
-    "DBName": "sakila",
+    "DBName": "employees",
     "Engine": "mysql",
     "MasterUsername": "admin",
     "MasterUserPassword": "StrongPassword123",

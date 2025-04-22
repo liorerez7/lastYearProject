@@ -27,20 +27,20 @@ echo "⏳ Waiting for MySQL to initialize..."
 sleep 10
 # Step 3: Create database 'sakila'
 echo "📦 Creating 'sakila' database..."
-docker exec -i mysql57 mysql -u $MYSQL_USER -p$MYSQL_PASS -e "CREATE DATABASE IF NOT EXISTS sakila;"
+docker exec -i mysql57 mysql -u $MYSQL_USER -p$MYSQL_PASS -e "CREATE DATABASE IF NOT EXISTS employees;"
 
 # Step 4: Copy and execute each SQL file
 for file in "${SQL_FILES[@]}"; do
   echo "📤 Copying and running $file..."
   docker cp "$file" mysql57:/tmp.sql
-  docker exec -i mysql57 mysql -u $MYSQL_USER -p$MYSQL_PASS sakila < "$file"
+  docker exec -i mysql57 mysql -u $MYSQL_USER -p$MYSQL_PASS employees < "$file"
 done
 
 # Step 5: Run pgloader to migrate to PostgreSQL
 echo "🔄 Running pgloader to migrate from MySQL to PostgreSQL..."
 docker run --rm dimitri/pgloader:latest \
   pgloader \
-  mysql://$MYSQL_USER:$MYSQL_PASS@host.docker.internal:$MYSQL_PORT/sakila \
+  mysql://$MYSQL_USER:$MYSQL_PASS@host.docker.internal:$MYSQL_PORT/employees \
   $POSTGRES_CONN
 
 echo "✅ Migration completed!"
