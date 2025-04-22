@@ -145,7 +145,7 @@ class awsUploader(dbUploader):
             except rds.exceptions.DBInstanceNotFoundFault:
                 rds.create_db_instance(
                     DBInstanceIdentifier=instance_id,
-                    DBName=db_config['DBName'],
+                    DBName=db_config['DBName'],# TODO: first db when creating
                     Engine=engine,
                     MasterUsername=db_config['MasterUsername'],
                     MasterUserPassword=db_config['MasterUserPassword'],
