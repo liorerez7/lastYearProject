@@ -16,7 +16,8 @@ function App() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           source: "mysql",
-          destination: "postgres"
+          destination: "postgres",
+          schema_name: "employees"
         })
       });
 
