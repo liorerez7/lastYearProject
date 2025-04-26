@@ -1,7 +1,7 @@
 from datetime import datetime
 from models.test_model import TestMetadata, TestExecution
 from main.services.dynamo_service import insert_item
-from typing import List
+from typing import List, Dict, Any
 
 
 def create_test_service(data) -> str:
@@ -30,7 +30,7 @@ def create_test_service(data) -> str:
     return test_id
 
 
-def create_simple_test_service() -> str:
+def create_simple_test_service() -> dict[str, Any]:
     test_id = f"user_demo#test#{datetime.utcnow().isoformat()}"
 
     metadata = TestMetadata(
@@ -38,10 +38,11 @@ def create_simple_test_service() -> str:
         cloud_provider="aws",
         source_db="mysql",
         destination_db="postgres",
-        timestamp=datetime.utcnow().isoformat(),
-        status="pending"
+        status="pending",
+        mail="stam mail"
     )
-    insert_item(metadata.to_dynamo_item())
+    metadata_dict = metadata.to_dynamo_item()
+    insert_item(metadata_dict)
 
     execution = TestExecution(
         test_id=test_id,
@@ -58,6 +59,10 @@ def create_simple_test_service() -> str:
         ]
 
     )
-    insert_item(execution.to_dynamo_item())
+    execution_dict = execution.to_dynamo_item()
+    insert_item(execution_dict)
 
-    return test_id
+    return {
+        "metadata": metadata_dict,
+        "execution": execution_dict
+    }
