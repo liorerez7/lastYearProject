@@ -76,7 +76,9 @@ def run(test_type: str, schema: str, steps_fn):
         engine, metadata = connector.connect(schema=schema)
         steps = steps_fn(db_type)
         test = ExecutionPlanTest(steps, db_type, schema)
+        test.build(engine, metadata)
         test.run(engine, metadata)
+        test.print_summary(metadata)
 
 
 def _get_metadata(schema: str, db_type: str):
