@@ -51,7 +51,7 @@ def create_simple_test_service():
         status="pending",
         mail="lior@example.com"
     )
-    # insert_item(metadata.to_dynamo_item())
+    insert_item(metadata.to_dynamo_item())
 
     # 3. צור ובנה את תכנית הבדיקה
     schema = "employees"
@@ -78,7 +78,7 @@ def create_simple_test_service():
             schema=schema,
             queries=list(built.values())
         )
-        # insert_item(execution.to_dynamo_item())
+        insert_item(execution.to_dynamo_item())
 
         execution_results[db_type] = execution.to_dynamo_item()
 
