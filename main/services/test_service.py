@@ -54,7 +54,7 @@ def create_simple_test_service():
     # insert_item(metadata.to_dynamo_item())
 
     # 3. צור ובנה את תכנית הבדיקה
-    schema = "employee"
+    schema = "employees"
     test_type = "basic_select"
     sizes = get_size_based_selectors(schema, "mysql")
     timestamp = datetime.utcnow().isoformat()
