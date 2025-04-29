@@ -15,7 +15,6 @@ def create_test_service(data) -> str:
     metadata.test_id = test_id
     insert_item(metadata.to_dynamo_item())
 
-    insert_item(plan.to_dynamo_item())
 
     for db_type in ["mysql", "postgres"]:
         execution = TestExecution(
@@ -31,38 +30,42 @@ def create_test_service(data) -> str:
 
 
 def create_simple_test_service() -> dict[str, Any]:
-    test_id = f"user_demo#test#{datetime.utcnow().isoformat()}"
+    # test_id = f"user_demo#test#{datetime.utcnow().isoformat()}"
+    #
+    # metadata = TestMetadata(
+    #     test_id=test_id,
+    #     cloud_provider="aws",
+    #     source_db="mysql",
+    #     destination_db="postgres",
+    #     status="pending",
+    #     mail="stam mail"
+    # )
+    # metadata_dict = metadata.to_dynamo_item()
+    # insert_item(metadata_dict)
+    #
+    # execution = TestExecution(
+    #     test_id=test_id,
+    #     timestamp=datetime.utcnow().isoformat(),
+    #     db_type="mysql",
+    #     test_type="filtered",
+    #     schema="sakila",
+    #     queries=[
+    #         {
+    #             "sql": "SELECT * FROM actor WHERE actor_id > 50;",
+    #             "size": "small",
+    #             "repeat": 1
+    #         }
+    #     ]
+    #
+    # )
+    # execution_dict = execution.to_dynamo_item()
+    # insert_item(execution_dict)
 
-    metadata = TestMetadata(
-        test_id=test_id,
-        cloud_provider="aws",
-        source_db="mysql",
-        destination_db="postgres",
-        status="pending",
-        mail="stam mail"
-    )
-    metadata_dict = metadata.to_dynamo_item()
-    insert_item(metadata_dict)
-
-    execution = TestExecution(
-        test_id=test_id,
-        timestamp=datetime.utcnow().isoformat(),
-        db_type="mysql",
-        test_type="filtered",
-        schema="sakila",
-        queries=[
-            {
-                "sql": "SELECT * FROM actor WHERE actor_id > 50;",
-                "size": "small",
-                "repeat": 1
-            }
-        ]
-
-    )
-    execution_dict = execution.to_dynamo_item()
-    insert_item(execution_dict)
-
+    # return {
+    #     "metadata": metadata_dict,
+    #     "execution": execution_dict
+    # }
     return {
-        "metadata": metadata_dict,
-        "execution": execution_dict
+        "metadata": "hey",
+        "execution": "bye"
     }
