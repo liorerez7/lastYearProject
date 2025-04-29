@@ -1,13 +1,15 @@
 import boto3
 
 def get_dynamo_table():
-    dynamodb = boto3.resource('dynamodb')
+    session = boto3.Session(profile_name="niv-aws-academy")
+    dynamodb = session.resource("dynamodb")  # or use session.client("dynamodb")
     return dynamodb.Table('TestRuns')
 
 def insert_item(item: dict):
     table = get_dynamo_table()
     response = table.put_item(Item=item)
     return response
+
 
 def get_item(test_id: str, sk: str):
     table = get_dynamo_table()

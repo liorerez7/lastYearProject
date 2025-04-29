@@ -86,7 +86,8 @@ def _get_metadata(schema: str, db_type: str):
 
 
 if __name__ == '__main__':
-    run_test_select("sakila")
+    run_test_select("employees")
+
     #run_test_filtered("sakila")
     #run_test_group_by("sakila")
     #run_test_aggregation("sakila")

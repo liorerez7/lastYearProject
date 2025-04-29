@@ -1,5 +1,5 @@
 export async function createSimpleTest() {
-  const response = await fetch("http://localhost:8000/test/create-simple-test", {
+  const response = await fetch("http://localhost:8080/test/create-simple-test", {
     method: "POST",
     headers: { "Content-Type": "application/json" }
   });
