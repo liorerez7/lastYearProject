@@ -1,10 +1,11 @@
 from fastapi.middleware.cors import CORSMiddleware
-
+from main.api.file_upload_controller import uploadRouter
 from main.api.migration_controller import migrationRouter
-from main.api1.test_controller import testRouter
+from main.api.test_controller import testRouter
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 import traceback
+
 app = FastAPI(debug=True)
 app.add_middleware(
     CORSMiddleware,
@@ -16,6 +17,7 @@ app.add_middleware(
 
 app.include_router(migrationRouter, prefix="/migration")
 app.include_router(testRouter, prefix="/test")
+app.include_router(uploadRouter)
 
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
