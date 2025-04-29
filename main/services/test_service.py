@@ -1,3 +1,4 @@
+import statistics
 from datetime import datetime
 
 from main.core.test_framework.plans.selector_helpers import get_size_based_selectors
@@ -76,7 +77,7 @@ def create_simple_test_service():
             db_type=db_type,
             test_type=test_type,
             schema=schema,
-            queries=list(built.values())
+            queries=list(test.get_built_plan_with_durations().values())
         )
         insert_item(execution.to_dynamo_item())
 
@@ -88,3 +89,5 @@ def create_simple_test_service():
         "metadata": f"Test created for schema={schema}",
         "execution": execution_results
     }
+
+
