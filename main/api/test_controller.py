@@ -1,9 +1,9 @@
-from fastapi import APIRouter
-from main.services.test_service import create_test_service, create_simple_test_service
+from fastapi import APIRouter, HTTPException
 from typing import List
-from fastapi import HTTPException
-testRouter = APIRouter()
 
+from main.services.test_service import create_simple_test_service
+
+testRouter = APIRouter()
 
 
 @testRouter.post("/create-simple-test")

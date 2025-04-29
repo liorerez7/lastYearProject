@@ -15,8 +15,6 @@ def create_test_service(data) -> str:
     metadata.test_id = test_id
     insert_item(metadata.to_dynamo_item())
 
-    insert_item(plan.to_dynamo_item())
-
     for db_type in ["mysql", "postgres"]:
         execution = TestExecution(
             test_id=test_id,
