@@ -86,7 +86,6 @@ def create_simple_test_service():
     # 5. נחזיר ל־UI תוצאה ברורה
     return {
         "test_id": test_id,
-        "metadata": f"Test created for schema={schema}",
         "execution": execution_results
     }
 
