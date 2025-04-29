@@ -6,6 +6,7 @@ import React, { useState, useRef } from "react";
 import { FaAws, FaGoogle, FaMicrosoft } from "react-icons/fa";
 import { BiUpload, BiRun, BiTestTube, BiCloud } from "react-icons/bi";
 import "./home.css";
+import { useNavigate } from 'react-router-dom';
 
 // UI ONLY: כאן רק עיצובי – אפשר לשנות את האייקונים
 const cloudIcons = {
@@ -27,6 +28,7 @@ const dbIcons = {
 export default function HomePage() {
   const clouds = ["AWS", "Google Cloud", "Azure"];
   const databases = ["MySQL", "PostgreSQL", "MongoDB"];
+  const navigate = useNavigate();
 
   const [srcCloud, setSrcCloud] = useState("");
   const [dstCloud, setDstCloud] = useState("");
@@ -113,13 +115,21 @@ export default function HomePage() {
   // ✅ BACKEND: הרצת Benchmark
   // כנ"ל, צריך להחליף בעתיד ב־fetch ל־/test
   //-----------------------------
-  const handleRunTest = () => {
-    setLoadingTest(true);
-    setTimeout(() => {
-      setLoadingTest(false);
-      window.location.href = "/test-result";
-    }, 1500);
-  };
+  const handleRunTest = async () => {
+      setLoadingTest(true);
+      try {
+        const response = await fetch("http://localhost:8080/test/create-simple-test", {
+          method: "POST",
+        });
+        const result = await response.json();
+        navigate("/test-result", { state: { testData: result } }); // ⬅ שליחה ל־Result
+      } catch (err) {
+        console.error("❌ Failed to create test", err);
+        alert("Failed to create benchmark test");
+      } finally {
+        setLoadingTest(false);
+      }
+    };
 
   //-----------------------------
   // 🔹 RETURN: קומפוננטת UI בלבד
