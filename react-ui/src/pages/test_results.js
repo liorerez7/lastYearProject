@@ -15,13 +15,10 @@ export default function TestResult() {
   }
 
   return (
-    <div style={{ padding: "2rem", fontFamily: "Arial" }}>
-      <h1>✅ Test Created Successfully!</h1>
-      <h2>Test ID:</h2>
-      <p>{testData.test_id}</p>
-
-      <h2>Full Server Response:</h2>
-      <pre>{JSON.stringify(testData, null, 2)}</pre>
-    </div>
+      <div style={{padding: "2rem", fontFamily: "Arial"}}>
+          <h1>✅ Test Created Successfully!</h1>
+          <h2>Test Data:</h2>
+          <pre>{JSON.stringify(testData, null, 2)}</pre>
+      </div>
   );
 }

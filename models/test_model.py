@@ -11,6 +11,7 @@ class TestMetadata:
     source_db: str
     destination_db: str
     status: str
+
     mail:str
 
     def to_dynamo_item(self) -> dict:

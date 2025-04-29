@@ -1,5 +1,5 @@
 export async function runMigration() {
-  const response = await fetch("http://localhcost:8000/migration/run-migration", {
+  const response = await fetch("http://localhcost:8080/migration/run-migration", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
