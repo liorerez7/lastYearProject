@@ -21,7 +21,7 @@ def create_simple_test():
 def test1():
     try:
         # Simulate some processing
-        result = {"message": "Test 1 succes"}
+        result = {"message": "Test 1 succesדדד"}
         return result
     except Exception as e:
         print("🔥 Caught Exception:", str(e))
