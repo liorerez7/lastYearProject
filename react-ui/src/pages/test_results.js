@@ -1,38 +1,12 @@
-//import React from 'react';
-//import { useLocation } from 'react-router-dom';
-//
-//export default function TestResult() {
-//  const location = useLocation();
-//  const { testData } = location.state || {}; // Get passed data
-//
-//  if (!testData) {
-//    return (
-//      <div style={{ padding: "2rem" }}>
-//        <h2>❗ No test data found</h2>
-//        <p>Please create a simple test first.</p>
-//      </div>
-//    );
-//  }
-//
-//  return (
-//    <div style={{ padding: "2rem", fontFamily: "Arial" }}>
-//      <h1>✅ Test Created Successfully!</h1>
-//      <h2>Test ID:</h2>
-//      <p>{testData.test_id}</p>
-//
-//      <h2>Full Server Response:</h2>
-//      <pre>{JSON.stringify(testData, null, 2)}</pre>
-//    </div>
-//  );
-//}
-
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import DBResults from '../components/DBResults';
+import './test_results.css';
 
 export default function TestResult() {
   const location = useLocation();
-  const { testData } = location.state || {}; // Get passed data
-
+  const { testData } = location.state || {};
+  console.log(testData);
   if (!testData) {
     return (
       <div style={{ padding: "2rem" }}>
@@ -42,18 +16,23 @@ export default function TestResult() {
     );
   }
 
+  const mysql = testData.test_id?.execution?.mysql;
+  const postgres = testData.test_id?.execution?.postgres;
+  console.log("mysql", mysql);
+  console.log("postgres", postgres);
+
   return (
-    <div style={{ padding: "2rem", fontFamily: "Arial" }}>
+    <div className="test-result-container">
       <h1>✅ Test Created Successfully!</h1>
 
       <h2>Metadata:</h2>
       <p>{testData.metadata}</p>
 
       <h2>Execution:</h2>
-      <p>{testData.execution}</p>
-
-      <h2>Full Server Response:</h2>
-      <pre>{JSON.stringify(testData, null, 2)}</pre>
+      <div className="db-columns">
+        <DBResults dbName="mysql" execution={mysql} />
+        <DBResults dbName="postgres" execution={postgres} />
+      </div>
     </div>
   );
 }
