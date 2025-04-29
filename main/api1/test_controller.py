@@ -26,7 +26,3 @@ def test1():
     except Exception as e:
         print("🔥 Caught Exception:", str(e))
         raise HTTPException(status_code=500, detail=str(e))
-
-if __name__ == '__main__':
-    test_data = create_simple_test_service()
-    print("Test data created:", test_data)
