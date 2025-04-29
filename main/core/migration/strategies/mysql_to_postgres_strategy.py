@@ -19,7 +19,8 @@ class MySQLToPostgresStrategy(BaseMigrationStrategy):
         self.run_pgloader_script(schema_name)
         self.export_pg_dump_from_windows(schema_name)
         self.upload_to_postgres_rds()
-        self.upload_to_mysql_rds()
+        #self.upload_to_mysql_rds()
+
     def run_pgloader_script(self, schema_name):
         print("🚀 Running pgloader migration script via WSL...")
 
