@@ -9,12 +9,9 @@ const DBResults = ({ dbName, execution }) => {
       <h3>{dbName}</h3>
       {execution ? (
         <>
-          <p><b>Test ID:</b> {execution.test_id}</p>
-          <p><b>SK:</b> {execution.SK}</p>
           <p><b>DB Type:</b> {execution.dbType}</p>
           <p><b>Test Type:</b> {execution.testType}</p>
           <p><b>Schema:</b> {execution.schema}</p>
-          <p><b>Timestamp:</b> {execution.timestamp}</p>
 
           <div className="query-scroll">
             <h4>Queries:</h4>
