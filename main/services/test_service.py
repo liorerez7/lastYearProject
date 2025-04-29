@@ -64,7 +64,8 @@ def create_simple_test_service():
 
     for db_type in ["mysql", "postgres"]:
         engine, metadata_obj = DBConnector(db_type).connect(schema)
-        plan = basic_select(db_type, sizes["small"], repeat=1)
+        plan = (basic_select(db_type, sizes["small"], repeat=1) +
+                basic_select(db_type, sizes["large"], repeat=2))
 
         test = ExecutionPlanTest(plan, db_type, schema, test_name=test_type)
         built = test.build(engine, metadata_obj)
