@@ -1,7 +1,7 @@
 import boto3
 
 def get_dynamo_table():
-    session = boto3.Session(profile_name="niv-aws-academy")
+    session = boto3.Session(profile_name="niv")
     dynamodb = session.resource("dynamodb")  # or use session.client("dynamodb")
     return dynamodb.Table('TestRuns')
 
