@@ -6,7 +6,6 @@ import './test_results.css';
 export default function TestResult() {
   const location = useLocation();
   const { testData } = location.state || {};
-  console.log(testData);
   if (!testData) {
     return (
       <div style={{ padding: "2rem" }}>
@@ -25,8 +24,6 @@ export default function TestResult() {
     <div className="test-result-container">
       <h1>✅ Test Created Successfully!</h1>
 
-      <h2>Metadata:</h2>
-      <p>{testData.metadata}</p>
 
       <h2>Execution:</h2>
       <div className="db-columns">

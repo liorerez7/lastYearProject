@@ -1,7 +1,7 @@
 import boto3
 
 def get_dynamo_table():
-    session = boto3.Session(profile_name="niv")
+    session = boto3.Session(profile_name="niv",region_name="us-east-1")
     dynamodb = session.resource("dynamodb")  # or use session.client("dynamodb")
     return dynamodb.Table('TestRuns')
 
