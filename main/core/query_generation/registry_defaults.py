@@ -4,6 +4,8 @@ from main.core.query_generation.strategies.basic_select_strategy import BasicSel
 from main.core.query_generation.strategies.deep_join_strategy import DeepJoinQueryStrategy
 from main.core.query_generation.strategies.filtered_query_strategy import FilteredQueryStrategy
 from main.core.query_generation.strategies.group_by_query_strategy import GroupByQueryStrategy
+from main.core.query_generation.strategies.pagination_query_strategy import PaginationQueryStrategy
+from main.core.query_generation.strategies.pure_count_query_strategy import PureCountQueryStrategy
 from main.core.query_generation.strategies.reverse_join_strategy import ReverseJoinQueryStrategy
 
 """
@@ -21,7 +23,7 @@ STRATEGY_CONFIG = {
             "longest": False
         }
     },
-"basic_select": {
+    "basic_select": {
         "class": BasicSelectQueryStrategy,
         "params": {}
     },
@@ -39,6 +41,14 @@ STRATEGY_CONFIG = {
     },
     "group_by": {
         "class": GroupByQueryStrategy,
+        "params": {}
+    },
+    "pagination": {
+        "class": PaginationQueryStrategy,
+        "parms": {}
+    },
+    "pure_count": {
+        "class": PureCountQueryStrategy,
         "params": {}
     }
 }
