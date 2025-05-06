@@ -114,7 +114,7 @@ def create_full_test_benchmark():
     )
     insert_metadata(metadata.to_dynamo_item())
 
-    schema = "employees"
+    schema = "extendedEmp"
     sizes = get_size_based_selectors(schema, "mysql")
     timestamp = datetime.utcnow().isoformat()
     execution_results = {}

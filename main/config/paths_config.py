@@ -15,8 +15,8 @@ DATA_DIR = os.path.join(BASE_DIR, "data")
 #DATA_SQL = os.path.join(DATA_DIR, "employees-data.sql")
 
 OUTPUT_SQL = os.path.join(DATA_DIR, "output2.sql")
-SCHEMA_SQL = os.path.join(DATA_DIR, "employee-schema-extended.sql")
-DATA_SQL = os.path.join(DATA_DIR, "employee-data-extended.sql")
+SCHEMA_SQL = os.path.join(DATA_DIR, "employee-schema-extended-fixed.sql")
+DATA_SQL = os.path.join(DATA_DIR, "employee-data-extended-fixed.sql")
 
 
 # Scripts
