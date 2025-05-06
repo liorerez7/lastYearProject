@@ -143,4 +143,5 @@ class MySQLToPostgresStrategy(BaseMigrationStrategy):
 
 
 if __name__ == '__main__':
-    MySQLToPostgresStrategy(shcema_name="employees").create_postgres_database_if_not_exists(get_windows_host_ip(), "employees")
+    #MySQLToPostgresStrategy(shcema_name="employees").create_postgres_database_if_not_exists(get_windows_host_ip(), "employees")
+    MySQLToPostgresStrategy(shcema_name="extendedEmp").create_postgres_database_if_not_exists(get_windows_host_ip(), "extendedEmp")

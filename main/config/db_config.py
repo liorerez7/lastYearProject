@@ -3,7 +3,8 @@ MYSQL_CONFIG = {
     "port": 3306,
     "user": "admin",
     "password": "StrongPassword123",
-    "database": "sakila"
+    #"database": "sakila"
+    "database": "extendedEmp"
 }
 POSTGRES_CONFIG = {
     "host": "postgres-dest-db.cr6a6e6uczdi.us-east-1.rds.amazonaws.com",
