@@ -1,7 +1,16 @@
 import statistics
 from datetime import datetime
 
+from main.core.test_framework.plans.aggregation_plans import aggregation_test
+from main.core.test_framework.plans.deep_join_plans import deep_join_longest
+from main.core.test_framework.plans.filtered_query_plans import filtered_test
+from main.core.test_framework.plans.group_by_plans import group_by
+from main.core.test_framework.plans.pagination_plans import pagination_test
+from main.core.test_framework.plans.pure_count_plans import pure_count
+from main.core.test_framework.plans.reverse_join_plans import reverse_join
 from main.core.test_framework.plans.selector_helpers import get_size_based_selectors
+from main.core.test_framework.plans.workload_test_chat import realistic_workload
+from main.services.supabase_service import insert_metadata, insert_execution
 from models.test_model import TestMetadata, TestExecution
 from main.services.dynamo_service import insert_item
 from typing import List, Dict, Any
@@ -52,7 +61,8 @@ def create_simple_test_service():
         status="pending",
         mail="lior@example.com"
     )
-    insert_item(metadata.to_dynamo_item())
+    #insert_item(metadata.to_dynamo_item())
+    insert_metadata(metadata.to_dynamo_item())
 
     # 3. צור ובנה את תכנית הבדיקה
     schema = "employees"
@@ -80,7 +90,8 @@ def create_simple_test_service():
             schema=schema,
             queries=list(test.get_built_plan_with_durations().values())
         )
-        insert_item(execution.to_dynamo_item())
+        #insert_item(execution.to_dynamo_item())
+        insert_execution(execution.to_dynamo_item())
 
         execution_results[db_type] = execution.to_dynamo_item()
 
@@ -89,5 +100,59 @@ def create_simple_test_service():
         "test_id": test_id,
         "execution": execution_results
     }
+
+def create_full_test_benchmark():
+    test_id = f"user_demo#test#{datetime.utcnow().isoformat()}"
+
+    metadata = TestMetadata(
+        test_id=test_id,
+        cloud_provider="aws",
+        source_db="mysql",
+        destination_db="postgres",
+        status="pending",
+        mail="lior@example.com"
+    )
+    insert_metadata(metadata.to_dynamo_item())
+
+    schema = "employees"
+    sizes = get_size_based_selectors(schema, "mysql")
+    timestamp = datetime.utcnow().isoformat()
+    execution_results = {}
+
+    for db_type in ["mysql", "postgres"]:
+        engine, metadata_obj = DBConnector(db_type).connect(schema)
+
+        steps = (
+            basic_select(db_type, sizes["small"], repeat=3) +
+            basic_select(db_type, sizes["large"], repeat=3) +
+            group_by(db_type, sizes["medium"], repeat=5) +
+            aggregation_test(db_type, sizes["large"], repeat=5) +
+            deep_join_longest(db_type, sizes["large"]) +
+            filtered_test(db_type, sizes["medium"], repeat=3) +
+            pure_count(db_type, sizes["large"], repeat=2) +
+            pagination_test(db_type, sizes["large"], repeat=2)
+
+        )
+
+        test = ExecutionPlanTest(steps, db_type, schema, test_name="extreme_suite")
+        test.build(engine, metadata_obj)
+        test.run(engine, metadata_obj)
+
+        execution = TestExecution(
+            test_id=test_id,
+            timestamp=timestamp,
+            db_type=db_type,
+            test_type="extreme_suite",
+            schema=schema,
+            queries=list(test.get_built_plan_with_durations().values())
+        )
+        insert_execution(execution.to_dynamo_item())
+        execution_results[db_type] = execution.to_dynamo_item()
+
+    return {
+        "test_id": test_id,
+        "execution": execution_results
+    }
+
 
 

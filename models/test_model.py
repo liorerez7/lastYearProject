@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from decimal import Decimal
 from typing import List, Dict
 
 
@@ -11,18 +12,18 @@ class TestMetadata:
     source_db: str
     destination_db: str
     status: str
-    mail:str
+    mail: str
 
     def to_dynamo_item(self) -> dict:
         return {
             "test_id": self.test_id,
-            "SK": f"metadata#{self.cloud_provider}#{self.source_db}#{self.destination_db}",
-            "cloudProvider": self.cloud_provider,
-            "sourceDB": self.source_db,
-            "destinationDB": self.destination_db,
+            "cloud_provider": self.cloud_provider,
+            "source_db": self.source_db,
+            "destination_db": self.destination_db,
             "status": self.status,
-            "mail":self.mail
+            "mail": self.mail
         }
+
 
 
 
@@ -33,16 +34,26 @@ class TestExecution:
     db_type: str
     test_type: str
     schema: str
-    queries: List[Dict]  # each dict contains: sql, size, repeat
+    queries: List[Dict]
 
     def to_dynamo_item(self) -> dict:
+        # המרה של Decimal ל-float בכל queries
+        def convert_query(q):
+            return {
+                "query": q["query"],
+                "query_type": q["query_type"],
+                "repeat": q["repeat"],
+                "selector": q["selector"],
+                "durations": [float(d) if isinstance(d, Decimal) else d for d in q["durations"]],
+                "stddev": float(q["stddev"]) if isinstance(q["stddev"], Decimal) else q["stddev"]
+            }
+
         return {
             "test_id": self.test_id,
-            "SK": f"execution#{self.db_type}#{self.test_type}#v{self.timestamp}",
-            "dbType": self.db_type,
-            "testType": self.test_type,
+            "timestamp": self.timestamp,
+            "db_type": self.db_type,
+            "test_type": self.test_type,
             "schema": self.schema,
-            "queries": self.queries,
-            "timestamp": self.timestamp
+            "queries": [convert_query(q) for q in self.queries]
         }
 
