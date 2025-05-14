@@ -23,4 +23,4 @@ class GroupByQueryStrategy(BaseQueryStrategy):
         col1 = quote_column_name(columns[0].name, db_type)
         col2 = quote_column_name(columns[1].name, db_type)
 
-        return f"SELECT {col1}, {col2}, COUNT(*) FROM {table_name} GROUP BY {col1}, {col2} LIMIT 100;"
+        return f"SELECT {col1}, {col2}, COUNT(*) FROM {table_name} GROUP BY {col1}, {col2} LIMIT {self.LIMIT};"

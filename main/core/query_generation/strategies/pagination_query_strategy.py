@@ -13,4 +13,4 @@ class PaginationQueryStrategy(BaseQueryStrategy):
         table = resolve_table_key(schema_metadata, table_names[table_index])
         table_name = quote_table_name(table, db_type)
 
-        return f"SELECT * FROM {table_name} ORDER BY 1 LIMIT 50 OFFSET 1000;"
+        return f"SELECT * FROM {table_name} ORDER BY 1 LIMIT {self.LIMIT} OFFSET {self.OFFSET};"
