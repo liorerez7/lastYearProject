@@ -113,4 +113,3 @@ def _get_metadata(schema: str, db_type: str):
     return metadata
 
 
-
