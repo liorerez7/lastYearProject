@@ -1,3 +1,6 @@
+from gevent import monkey
+monkey.patch_all()
+
 from fastapi.middleware.cors import CORSMiddleware
 from main.api.file_upload_controller import uploadRouter
 from main.api.migration_controller import migrationRouter

@@ -148,12 +148,13 @@ def create_full_test_benchmark():
         test = ExecutionPlanTest(steps, db_type, schema, test_name="extreme_suite")
         test.build(engine, metadata_obj)
         locust_config = {
-          "wait_time_min": 1,
-          "wait_time_max": 3,
-          "users": 10,
-          "spawn_rate": 2,
-          "run_time": "10s"
+            "wait_time_min": 1,
+            "wait_time_max": 3,
+            "users": 10,
+            "spawn_rate": 2,
+            "run_time": 20,
         }
+
         test.run(engine, metadata_obj, locust_config=locust_config)
 
         execution = TestExecution(
