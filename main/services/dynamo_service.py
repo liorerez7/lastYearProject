@@ -1,9 +1,11 @@
 import boto3
 
+
 def get_dynamo_table():
-    session = boto3.Session(profile_name="niv",region_name="us-east-1")
+    session = boto3.Session(profile_name="niv", region_name="us-east-1")
     dynamodb = session.resource("dynamodb")  # or use session.client("dynamodb")
     return dynamodb.Table('TestRuns')
+
 
 def insert_item(item: dict):
     table = get_dynamo_table()
@@ -20,6 +22,7 @@ def get_item(test_id: str, sk: str):
         }
     )
     return response.get('Item')
+
 
 def query_all_items_for_test(test_id: str):
     table = get_dynamo_table()
