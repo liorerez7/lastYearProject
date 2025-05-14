@@ -9,7 +9,10 @@ MYSQL_INDEX_QUERIES = [
     ("dept_emp", "idx_dept_no_dept_emp", "CREATE INDEX idx_dept_no_dept_emp ON dept_emp(dept_no);"),
     ("departments", "idx_dept_no_departments", "CREATE INDEX idx_dept_no_departments ON departments(dept_no);"),
     ("employees", "idx_birth_date_employees", "CREATE INDEX idx_birth_date_employees ON employees(birth_date);"),
-    ("employees", "idx_emp_birth_employees", "CREATE INDEX idx_emp_birth_employees ON employees(emp_no, birth_date);")
+    ("employees", "idx_emp_birth_employees", "CREATE INDEX idx_emp_birth_employees ON employees(emp_no, birth_date);"),
+    ("salaries", "idx_emp_to_date", "CREATE INDEX idx_emp_to_date ON salaries(emp_no, to_date);"),
+    ("salaries", "idx_emp_salary", "CREATE INDEX idx_emp_salary ON salaries(emp_no, salary);")
+
 ]
 
 PG_INDEX_QUERIES = [
@@ -19,7 +22,13 @@ PG_INDEX_QUERIES = [
     ("dept_emp", "idx_dept_no_dept_emp", 'CREATE INDEX idx_dept_no_dept_emp ON "extendedEmp".dept_emp(dept_no);'),
     ("departments", "idx_dept_no_departments", 'CREATE INDEX idx_dept_no_departments ON "extendedEmp".departments(dept_no);'),
     ("employees", "idx_birth_date_employees", 'CREATE INDEX idx_birth_date_employees ON "extendedEmp".employees(birth_date);'),
-    ("employees", "idx_emp_birth_employees", 'CREATE INDEX idx_emp_birth_employees ON "extendedEmp".employees(emp_no, birth_date);')
+    ("employees", "idx_emp_birth_employees", 'CREATE INDEX idx_emp_birth_employees ON "extendedEmp".employees(emp_no, birth_date);'),
+    ("salaries", "idx_emp_to_date",
+     'CREATE INDEX IF NOT EXISTS idx_emp_to_date '
+     'ON "extendedEmp".salaries(emp_no, to_date);'),
+    ("salaries", "idx_emp_salary",
+     'CREATE INDEX IF NOT EXISTS idx_emp_salary '
+     'ON "extendedEmp".salaries(emp_no, salary);')
 ]
 
 
