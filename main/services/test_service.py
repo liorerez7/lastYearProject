@@ -116,7 +116,7 @@ def create_full_test_benchmark() -> Dict[str, Any]:
                 "wait_time_max": 3,
                 "users": users,
                 "spawn_rate": 2,
-                "run_time": 30,
+                "run_time": 5, # seconds. for 30 second it will be slower but alot more reliable
             }
             test.run(engine, meta_obj, locust_config=locust_cfg)
 
