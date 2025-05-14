@@ -1,9 +1,11 @@
-# main/core/test_framework/execution_plan_test.py
-import random, time, statistics, gevent
+import random
+import time
+import statistics
+from statistics import quantiles  # NEW: for P95 calculation
+import gevent
 from collections import defaultdict
-from decimal import Decimal
 from sqlalchemy import text
-from locust import User, task, between, events
+from locust import User, task, between
 from locust.env import Environment
 
 from main.core.test_framework.base_test import BaseTest
@@ -11,13 +13,14 @@ from main.core.test_framework.base_test import BaseTest
 
 class ExecutionPlanTest(BaseTest):
     """
-    • build()  – בונה self.built_plan בדיוק כמו קודם
-    • run_without_locust() – לא השתנה
-    • run_with_locust() – *חדש*: דוחף את המדידות חזרה ל‑_dur / _sqls / _sels
-      › כך ה‑UI מקבל שוב durations + stddev + query_type
+    • build()  – unchanged
+    • run()   – unchanged signature but now warms‑up and supports longer runs
+    • _run_with_locust() – adds warm‑up call
+    • get_built_plan_with_durations() – returns avg / p95 / stddev, dropping first sample
     """
 
-    def __init__(self, execution_plan, db_type, schema, test_name="unknown"):
+    # ---------------------------------------------------------------------
+    def __init__(self, execution_plan, db_type, schema, test_name: str = "unknown"):
         super().__init__()
         self.plan       = execution_plan
         self.db_type    = db_type.upper()
@@ -26,11 +29,9 @@ class ExecutionPlanTest(BaseTest):
 
         self._dur, self._sels, self._sqls = defaultdict(list), {}, {}
         self.built_plan: dict[int, dict]  = {}
-
-        # טבלה הפוכה: sql → label  (ייתכן כמה sqlים זהים – הכול תחת אותו label)
         self._sql_to_label: dict[str, str] = {}
 
-    # ---------- build --------------------------------------------------------
+    # ------------------------------------------------------------------ build
     def build(self, engine, metadata):
         self.built_plan = {}
         for idx, step in enumerate(self.plan, 1):
@@ -47,23 +48,38 @@ class ExecutionPlanTest(BaseTest):
                 "repeat"     : repeat,
                 "selector"   : selector,
             }
-            self._sql_to_label[sql] = label   # קישור לטבלה ההפוכה
+            self._sql_to_label[sql] = label
         return self.built_plan
 
-    # ---------- public run ---------------------------------------------------
+    # --------------------------------------------------------- warm‑up helper
+    def _warm_up(self, engine, rounds: int = 2):
+        """Run each unique SQL a few times to prime caches before measurement."""
+        unique_sql = {step["query"] for step in self.built_plan.values()}
+        for _ in range(rounds):
+            for sql in unique_sql:
+                try:
+                    with engine.connect() as conn:
+                        conn.execute(text(sql))
+                except Exception:
+                    pass  # ignore warm‑up errors – they will surface in real run
+
+    # --------------------------------------------------------------- public run
     def run(self, engine, metadata, locust_config: dict | None = None):
         if not self.built_plan:
             raise RuntimeError("build() must run first")
 
         print(f"\n🚀 Benchmark for {self.db_type} against schema {self.schema}")
-        print("─"*60)
+        print("─" * 60)
+
+        # warm‑up before every run
+        self._warm_up(engine)
 
         if locust_config:
             self._run_with_locust(engine, locust_config)
         else:
             self._run_without_locust(engine)
 
-    # ---------- single‑thread run (כמו בעבר) --------------------------------
+    # --------------------------------------------- single‑thread no‑locust run
     def _run_without_locust(self, engine):
         for idx, step in self.built_plan.items():
             sql, label = step["query"], f"Step {idx}"
@@ -75,26 +91,12 @@ class ExecutionPlanTest(BaseTest):
                 self.execute_query(engine, sql)
                 self._dur[label].append(time.perf_counter() - t0)
 
-    # ---------- locust multi‑user run ---------------------------------------
-    def _run_with_locust(self, engine, cfg):
-        """
-        cfg example:
-        {
-          "wait_time_min": 1,
-          "wait_time_max": 3,
-          "users"       : 10,
-          "spawn_rate"  : 2,
-          "run_time"    : 20          # שניות
-        }
-        """
+    # ----------------------------------------------------- locust multi‑user run
+    def _run_with_locust(self, engine, cfg: dict):
+        # 1. flat list of queries (respecting repeat)
+        flat_queries = [step["query"] for step in self.built_plan.values() for _ in range(step["repeat"])]
 
-        # 1. הכנת רשימה שטוחה של כל השאילתות (כולל repeat)
-        flat_queries: list[str] = []
-        for step in self.built_plan.values():
-            flat_queries.extend([step["query"]] * step["repeat"])
-
-        # 2. מחלקת‑Locust פנימית
-        parent = self               # סגירה עבור DatabaseUser
+        parent = self
 
         class DatabaseUser(User):
             wait_time = between(cfg["wait_time_min"], cfg["wait_time_max"])
@@ -102,7 +104,7 @@ class ExecutionPlanTest(BaseTest):
             @task
             def random_query(self):
                 sql = random.choice(flat_queries)
-                t0  = time.perf_counter()
+                t0 = time.perf_counter()
                 try:
                     with engine.connect() as conn:
                         conn.execute(text(sql))
@@ -110,31 +112,42 @@ class ExecutionPlanTest(BaseTest):
                     print("❌", e)
 
                 duration = time.perf_counter() - t0
-                label    = parent._sql_to_label[sql]          # "Step X"
-
+                label = parent._sql_to_label[sql]
                 parent._sqls[label] = sql
                 parent._sels[label] = parent.built_plan[int(label.split()[1])]["selector"]
                 parent._dur[label].append(duration)
 
-                print(f"Executed query in {duration:.4f}s")
-
-        # 3. הפעלת Locust (headless)
         env = Environment(user_classes=[DatabaseUser])
         env.create_local_runner()
         env.runner.start(cfg["users"], spawn_rate=cfg["spawn_rate"])
 
-        # סיום אוטומטי אחרי run_time שניות
+        # auto‑stop
         gevent.spawn_later(cfg["run_time"], lambda: env.runner.quit())
         env.runner.greenlet.join()
+        print(f"Locust run finished after {cfg['run_time']} s")
 
-        print(f"Locust run finished after {cfg['run_time']} s")
-
-    # ---------- תוצרים ל‑UI ---------------------------------------------------
+    # --------------------------------------------------------- results to UI
     def get_built_plan_with_durations(self):
-        res = {}
+        results = {}
         for idx, step in self.built_plan.items():
-            label      = f"Step {idx}"
-            durations  = [Decimal(f"{d:.8f}") for d in self._dur.get(label, [])]
-            stddev     = Decimal(f"{statistics.stdev(durations):.8f}") if len(durations) > 1 else Decimal("0.0")
-            res[idx]   = {**step, "durations": durations, "stddev": stddev}
-        return res
+            label = f"Step {idx}"
+            durs = self._dur.get(label, [])
+            # drop first measurement (already warmed‑up, but extra safety)
+            if durs:
+                durs = durs[1:]
+
+            if durs:
+                avg = statistics.mean(durs)
+                p95 = quantiles(durs, n=20)[-1]  # 95th percentile
+                std = statistics.stdev(durs) if len(durs) > 1 else 0.0
+            else:
+                avg = p95 = std = 0.0
+
+            results[idx] = {
+                **step,
+                "durations": [round(d, 6) for d in durs],
+                "avg": round(avg, 6),
+                "p95": round(p95, 6),
+                "stddev": round(std, 6),
+            }
+        return results
