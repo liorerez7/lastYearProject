@@ -129,10 +129,10 @@ def create_full_test_benchmark():
             # basic_select(db_type, sizes["small"], repeat=3) +
             # basic_select(db_type, sizes["large"], repeat=3) +
             # group_by(db_type, sizes["medium"], repeat=5) +
-            # aggregation_test(db_type, sizes["large"], repeat=5) +
+            aggregation_test(db_type, sizes["large"], repeat=5) +
             # deep_join_longest(db_type, sizes["large"]) +
             # filtered_test(db_type, sizes["medium"], repeat=3) +
-            # pure_count(db_type, sizes["large"], repeat=2) +
+            pure_count(db_type, sizes["large"], repeat=2) +
             # pagination_test(db_type, sizes["large"], repeat=2) +
             # window_query(db_type, sizes["medium"], repeat=3) +
             # large_offset(db_type, sizes["large"], repeat=3) +
@@ -147,15 +147,14 @@ def create_full_test_benchmark():
 
         test = ExecutionPlanTest(steps, db_type, schema, test_name="extreme_suite")
         test.build(engine, metadata_obj)
-        locust_config = {
+        locust_cfg = {
             "wait_time_min": 1,
             "wait_time_max": 3,
             "users": 10,
             "spawn_rate": 2,
-            "run_time": 20,
+            "run_time": 30,
         }
-
-        test.run(engine, metadata_obj, locust_config=locust_config)
+        test.run(engine, metadata_obj, locust_config=locust_cfg)
 
         execution = TestExecution(
             test_id=test_id,
