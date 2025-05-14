@@ -5,10 +5,13 @@ from main.core.test_framework.plans.aggregation_plans import aggregation_test
 from main.core.test_framework.plans.deep_join_plans import deep_join_longest
 from main.core.test_framework.plans.filtered_query_plans import filtered_test
 from main.core.test_framework.plans.group_by_plans import group_by
+from main.core.test_framework.plans.large_offset_plans import large_offset
 from main.core.test_framework.plans.pagination_plans import pagination_test
 from main.core.test_framework.plans.pure_count_plans import pure_count
+from main.core.test_framework.plans.recursive_cte_plans import recursive_cte
 from main.core.test_framework.plans.reverse_join_plans import reverse_join
 from main.core.test_framework.plans.selector_helpers import get_size_based_selectors
+from main.core.test_framework.plans.window_query_plans import window_query
 from main.core.test_framework.plans.workload_test_chat import realistic_workload
 from main.services.supabase_service import insert_metadata, insert_execution
 from models.test_model import TestMetadata, TestExecution
@@ -123,14 +126,23 @@ def create_full_test_benchmark():
         engine, metadata_obj = DBConnector(db_type).connect(schema)
 
         steps = (
-            basic_select(db_type, sizes["small"], repeat=3) +
-            basic_select(db_type, sizes["large"], repeat=3) +
-            group_by(db_type, sizes["medium"], repeat=5) +
-            aggregation_test(db_type, sizes["large"], repeat=5) +
-            deep_join_longest(db_type, sizes["large"]) +
-            filtered_test(db_type, sizes["medium"], repeat=3) +
-            pure_count(db_type, sizes["large"], repeat=2) +
-            pagination_test(db_type, sizes["large"], repeat=2)
+            # basic_select(db_type, sizes["small"], repeat=3) +
+            # basic_select(db_type, sizes["large"], repeat=3) +
+            # group_by(db_type, sizes["medium"], repeat=5) +
+            # aggregation_test(db_type, sizes["large"], repeat=5) +
+            # deep_join_longest(db_type, sizes["large"]) +
+            # filtered_test(db_type, sizes["medium"], repeat=3) +
+            # pure_count(db_type, sizes["large"], repeat=2) +
+            # pagination_test(db_type, sizes["large"], repeat=2) +
+            # window_query(db_type, sizes["medium"], repeat=3) +
+            # large_offset(db_type, sizes["large"], repeat=3) +
+            # recursive_cte(db_type, sizes["large"], repeat=3)
+            basic_select(db_type, sizes["small"], repeat=30) +  # ≈60 %
+            filtered_test(db_type, sizes["medium"], repeat=20) +  # 20 %
+            pagination_test(db_type, sizes["large"], repeat=10) +  # 10 %
+            window_query(db_type, sizes["medium"], repeat=5) +  # 5 %
+            deep_join_longest(db_type, sizes["large"]) +  # 1‑2 כבדות
+            group_by(db_type, sizes["medium"], repeat=5)
         )
 
         test = ExecutionPlanTest(steps, db_type, schema, test_name="extreme_suite")

@@ -4,7 +4,12 @@ from main.core.query_generation.strategies.basic_select_strategy import BasicSel
 from main.core.query_generation.strategies.deep_join_strategy import DeepJoinQueryStrategy
 from main.core.query_generation.strategies.filtered_query_strategy import FilteredQueryStrategy
 from main.core.query_generation.strategies.group_by_query_strategy import GroupByQueryStrategy
+from main.core.query_generation.strategies.large_offset_query_strategy import LargeOffsetQueryStrategy
+from main.core.query_generation.strategies.pagination_query_strategy import PaginationQueryStrategy
+from main.core.query_generation.strategies.pure_count_query_strategy import PureCountQueryStrategy
+from main.core.query_generation.strategies.recursive_cte_query_strategy import RecursiveCTEQueryStrategy
 from main.core.query_generation.strategies.reverse_join_strategy import ReverseJoinQueryStrategy
+from main.core.query_generation.strategies.window_query_strategy import WindowQueryStrategy
 from main.core.schema_analysis.connection.db_connector import DBConnector
 from main.core.schema_analysis.table_profiler import get_rowcounts, pick_s_m_l_selectors
 
@@ -14,7 +19,12 @@ STRATEGY_SELECTOR_MAP = {
     "aggregation": AggregationQueryStrategy,
     "filtered": FilteredQueryStrategy,
     "group_by": GroupByQueryStrategy,
-    "reverse_join": ReverseJoinQueryStrategy,  # ReverseJoinStrategy is not used in this context
+    "reverse_join": ReverseJoinQueryStrategy,
+    "pagination": PaginationQueryStrategy,
+    "pure_count": PureCountQueryStrategy,
+    "window_query": WindowQueryStrategy,
+    "large_offset": LargeOffsetQueryStrategy,
+    "recursive_cte": RecursiveCTEQueryStrategy,
 
 }
 

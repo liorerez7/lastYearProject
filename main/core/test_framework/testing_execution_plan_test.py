@@ -9,6 +9,8 @@ from main.core.test_framework.plans.reverse_join_plans import reverse_join
 from main.core.test_framework.plans.selector_helpers import find_selector_for, get_size_based_selectors
 from main.core.test_framework.plans.workload_test_chat import realistic_workload
 from main.core.test_framework.plans.workload_test_chat import realistic_workload
+
+
 def run_test_select(schema: str):
     sizes = get_size_based_selectors(schema, "mysql")
     run("basic_select", schema, steps_fn=lambda db: (
@@ -16,7 +18,6 @@ def run_test_select(schema: str):
         basic_select(db, sizes["medium"], repeat=2) +
         basic_select(db, sizes["large"], repeat=1)
     ))
-
 
 def run_realistic_workload(schema: str):
     # Run against MySQL
@@ -69,6 +70,8 @@ def run_test_reverse_join(schema: str):
     run("reverse_join", schema, steps_fn=lambda db: reverse_join(db, sel, repeat=3))
 
 
+
+
 def run(test_type: str, schema: str, steps_fn):
     print(f"\n🚀 Running test: {test_type.upper()}")
     for db_type in ["mysql", "postgres"]:
@@ -87,11 +90,4 @@ def _get_metadata(schema: str, db_type: str):
     return metadata
 
 
-if __name__ == '__main__':
-    run_test_select("extendedEmp")
 
-    #run_test_filtered("sakila")
-    #run_test_group_by("sakila")
-    #run_test_aggregation("sakila")
-    #run_test_reverse_join("sakila")
-    #run_test_deep_join("sakila")
