@@ -7,8 +7,8 @@ from sqlalchemy.schema import MetaData
 
 class BaseQueryStrategy(ABC):
 
-    LIMIT = "500"
-    OFFSET = "3000"
+    LIMIT = "700"
+    OFFSET = "5000"
 
     @abstractmethod
     def generate_query(self, schema_metadata: MetaData, db_type: str, selector: int = None) -> str:
