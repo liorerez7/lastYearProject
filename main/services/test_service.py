@@ -137,11 +137,11 @@ def create_full_test_benchmark():
             # window_query(db_type, sizes["medium"], repeat=3) +
             # large_offset(db_type, sizes["large"], repeat=3) +
             # recursive_cte(db_type, sizes["large"], repeat=3)
-            basic_select(db_type, sizes["small"], repeat=30) +  # ≈60 %
-            filtered_test(db_type, sizes["medium"], repeat=20) +  # 20 %
-            pagination_test(db_type, sizes["large"], repeat=10) +  # 10 %
-            window_query(db_type, sizes["medium"], repeat=5) +  # 5 %
-            deep_join_longest(db_type, sizes["large"]) +  # 1‑2 כבדות
+            basic_select(db_type, sizes["small"], repeat=30) +
+            filtered_test(db_type, sizes["medium"], repeat=20) +
+            pagination_test(db_type, sizes["large"], repeat=10) +
+            window_query(db_type, sizes["medium"], repeat=5) +
+            deep_join_longest(db_type, sizes["large"]) +
             group_by(db_type, sizes["medium"], repeat=5)
         )
 
