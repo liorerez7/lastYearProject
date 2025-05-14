@@ -98,13 +98,14 @@ def run(test_type: str, schema: str, steps_fn):
         locust_config = {
             "wait_time_min": 1,
             "wait_time_max": 3,
-            "num_users": 10,
+            "users": 10,
             "hatch_rate": 2,
-            "run_time": "10s"
+            "run_time": 10.0,
+            "spawn_rate": 2,
         }
 
         test.run(engine, metadata, locust_config=locust_config)  # add  locust_config=locust_config
-        test.print_summary(metadata)
+
 
 
 def _get_metadata(schema: str, db_type: str):
@@ -112,5 +113,7 @@ def _get_metadata(schema: str, db_type: str):
     _, metadata = conn.connect(schema)
     return metadata
 
+if __name__ == '__main__':
+    run_test_select("extendedEmp")
 
 

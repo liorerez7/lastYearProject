@@ -16,7 +16,6 @@ from main.core.test_framework.execution_plan_test import ExecutionPlanTest
 from main.services.supabase_service import insert_metadata, insert_execution
 from models.test_model import TestMetadata, TestExecution
 
-
 def create_simple_test_service():
     # 1. צור מזהה טסט ייחודי
     test_id = f"user_demo#test#{datetime.utcnow().isoformat()}"
