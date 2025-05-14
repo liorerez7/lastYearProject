@@ -1,5 +1,5 @@
 MYSQL_CONFIG = {
-"host": "mysql-source-db2.cr6a6e6uczdi.us-east-1.rds.amazonaws.com",
+"host": "mysql-source-db2.clgv02zlwo5b.us-east-1.rds.amazonaws.com",
     "port": 3306,
     "user": "admin",
     "password": "StrongPassword123",
@@ -7,7 +7,7 @@ MYSQL_CONFIG = {
     "database": "extendedEmp"
 }
 POSTGRES_CONFIG = {
-    "host": "postgres-dest-db.cr6a6e6uczdi.us-east-1.rds.amazonaws.com",
+    "host": "postgres-dest-db.clgv02zlwo5b.us-east-1.rds.amazonaws.com",
     "port": 5432,
     "user": "pgadmin",
     "password": "StrongPassword456",

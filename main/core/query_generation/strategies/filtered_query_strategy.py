@@ -16,4 +16,4 @@ class FilteredQueryStrategy(BaseQueryStrategy):
         table_name = quote_table_name(table, db_type)
 
         column = quote_column_name(list(table.columns)[0].name, db_type)
-        return f"SELECT * FROM {table_name} WHERE {column} IS NOT NULL LIMIT 100;"
+        return f"SELECT * FROM {table_name} WHERE {column} IS NOT NULL LIMIT {self.LIMIT};"

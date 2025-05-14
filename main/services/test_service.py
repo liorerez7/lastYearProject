@@ -131,7 +131,6 @@ def create_full_test_benchmark():
             filtered_test(db_type, sizes["medium"], repeat=3) +
             pure_count(db_type, sizes["large"], repeat=2) +
             pagination_test(db_type, sizes["large"], repeat=2)
-
         )
 
         test = ExecutionPlanTest(steps, db_type, schema, test_name="extreme_suite")

@@ -21,4 +21,4 @@ class AggregationQueryStrategy(BaseQueryStrategy):
 
         col = quote_column_name(columns[0].name, db_type)
 
-        return f"SELECT {col}, COUNT(*) FROM {table_name} GROUP BY {col} LIMIT 100;"
+        return f"SELECT {col}, COUNT(*) FROM {table_name} GROUP BY {col} LIMIT {self.LIMIT};"
