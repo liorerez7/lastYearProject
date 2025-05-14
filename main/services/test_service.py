@@ -1,3 +1,4 @@
+import pprint
 from datetime import datetime
 from typing import Dict, Any
 import statistics
@@ -57,6 +58,7 @@ def create_simple_test_service():
             schema=schema,
             queries=list(test.get_built_plan_with_durations().values())
         )
+
         insert_execution(execution.to_dynamo_item())
 
         execution_results[db_type] = execution.to_dynamo_item()
@@ -113,7 +115,7 @@ def create_full_test_benchmark() -> Dict[str, Any]:
                 "wait_time_max": 3,
                 "users": users,
                 "spawn_rate": 2,
-                "run_time": 60,
+                "run_time": 5, # seconds. for 30 second it will be slower but alot more reliable
             }
             test.run(engine, meta_obj, locust_config=locust_cfg)
 
@@ -125,6 +127,8 @@ def create_full_test_benchmark() -> Dict[str, Any]:
                 schema=schema,
                 queries=list(test.get_built_plan_with_durations().values()),
             )
+
+            pprint.pprint(test.get_built_plan_with_durations())
             insert_execution(exec_obj.to_dynamo_item())
             key = f"{db_type}_{users}u"
             execution_results[key] = exec_obj.to_dynamo_item()

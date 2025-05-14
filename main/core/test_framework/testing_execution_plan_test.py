@@ -116,4 +116,3 @@ def _get_metadata(schema: str, db_type: str):
 if __name__ == '__main__':
     run_test_select("extendedEmp")
 
-
