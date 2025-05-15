@@ -2,8 +2,7 @@ aws_config = {
   "source": {
     "endpoint": "",
     "DBInstanceIdentifier": "mysql-source-db2",
-    #"DBName": "employees",extendedEmp
-    "DBName": "extendedEmp",
+    "DBName": "finalEmp",
     "Engine": "mysql",
     "MasterUsername": "admin",
     "MasterUserPassword": "StrongPassword123",

@@ -14,9 +14,9 @@ DATA_DIR = os.path.join(BASE_DIR, "data")
 #SCHEMA_SQL = os.path.join(DATA_DIR, "employees-schema.sql")
 #DATA_SQL = os.path.join(DATA_DIR, "employees-data.sql")
 
-OUTPUT_SQL = os.path.join(DATA_DIR, "output2.sql")
-SCHEMA_SQL = os.path.join(DATA_DIR, "employee-schema-extended-fixed.sql")
-DATA_SQL = os.path.join(DATA_DIR, "employee-data-extended-fixed.sql")
+OUTPUT_SQL = os.path.join(DATA_DIR, "output-for-postgres-950mb.sql")
+SCHEMA_SQL = os.path.join(DATA_DIR, "employee-schema-extended-5.7-950mb.sql")
+DATA_SQL = os.path.join(DATA_DIR, "employee-data-extended-5.7-950mb.sql")
 
 
 # Scripts

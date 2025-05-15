@@ -5,8 +5,8 @@ base_dir = pathlib.Path(__file__).resolve().parents[2]   # .../LastYearProject
 data_dir = base_dir / "data"
 
 FILES = [
-    ("employee-schema-extended.sql", "employee-schema-extended-fixed.sql"),
-    ("employee-data-extended.sql",   "employee-data-extended-fixed.sql"),
+    ("finalEmp-schema1.sql", "employee-schema-extended-5.7-950mb.sql"),
+    ("finalEmp-data1.sql",   "employee-data-extended-5.7-950mb.sql"),
 ]
 
 def fix(text: str, is_schema: bool) -> str:
