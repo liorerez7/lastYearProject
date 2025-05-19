@@ -389,7 +389,7 @@ export default function HomePage() {
             <BiTable className="config-icon" />
             <h2>Table Selection</h2>
           </div>
-          <p className="config-description">Select tables to include in the migration and testing process</p>
+          <p className="config-description">Select tables to include in the testing process</p>
 
           <div className="table-checkboxes">
             {availableTables.map((table) => (
