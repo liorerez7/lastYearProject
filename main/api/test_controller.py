@@ -25,7 +25,7 @@ from main.services import test_service
 #CURRENT_PLAN = test_service.run_mix_workload
 #CURRENT_PLAN = test_service.run_multi_user_smoke
 #CURRENT_PLAN = test_service.run_index_stress  # ← זוהי הפעילה כרגע
-CURRENT_PLAN = test_service.run_full_benchmark_suite
+CURRENT_PLAN = test_service.run_everything
 
 
 

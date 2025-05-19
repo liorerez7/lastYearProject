@@ -13,6 +13,15 @@ MYSQL_INDEX_QUERIES = [
     ("salaries", "idx_emp_to_date", "CREATE INDEX idx_emp_to_date ON salaries(emp_no, to_date);"),
     ("salaries", "idx_emp_salary", "CREATE INDEX idx_emp_salary ON salaries(emp_no, salary);")
 
+    ("dept_emp", "idx_dept_emp_combo", "CREATE INDEX idx_dept_emp_combo ON dept_emp(emp_no, dept_no, from_date);"),
+    ("salaries", "idx_salaries_emp_to_date", "CREATE INDEX idx_salaries_emp_to_date ON salaries(emp_no, to_date);"),
+    ("titles", "idx_titles_emp_no", "CREATE INDEX idx_titles_emp_no ON titles(emp_no);")
+    ("salaries", "idx_salary_to_date", "CREATE INDEX idx_salary_to_date ON salaries(salary, to_date);"),
+    ("salaries", "idx_window_salary_to_date_emp", "CREATE INDEX idx_window_salary_to_date_emp ON salaries(salary, to_date DESC, emp_no);")
+    ("salaries", "idx_window_emp_to_date_salary", "CREATE INDEX idx_window_emp_to_date_salary ON salaries(emp_no, to_date DESC, salary);")
+
+
+
 ]
 
 PG_INDEX_QUERIES = [
@@ -29,12 +38,23 @@ PG_INDEX_QUERIES = [
     ("salaries", "idx_emp_salary",
      'CREATE INDEX IF NOT EXISTS idx_emp_salary '
      'ON "extendedEmp".salaries(emp_no, salary);')
+
+    ("dept_emp", "idx_dept_emp_combo",
+     'CREATE INDEX idx_dept_emp_combo ON "extendedEmp".dept_emp(emp_no, dept_no, from_date);'),
+    ("salaries", "idx_salaries_emp_to_date",
+     'CREATE INDEX idx_salaries_emp_to_date ON "extendedEmp".salaries(emp_no, to_date);'),
+    ("titles", "idx_titles_emp_no", 'CREATE INDEX idx_titles_emp_no ON "extendedEmp".titles(emp_no);')
+
+    ("salaries", "idx_salary_to_date", 'CREATE INDEX idx_salary_to_date ON "extendedEmp".salaries(salary, to_date);'),
+    ("salaries", "idx_window_salary_to_date_emp", 'CREATE INDEX idx_window_salary_to_date_emp ON "extendedEmp".salaries(salary, to_date DESC, emp_no);')
+
+
 ]
 
 
 def create_indexes_if_missing(db_type: str):
     print(f"\n🔧 Checking indexes for {db_type.upper()}...")
-    engine, _ = DBConnector(db_type).connect("extendedEmp")
+    engine, _ = DBConnector(db_type).connect("finalEmp")
 
     if db_type == "mysql":
         index_queries = MYSQL_INDEX_QUERIES
@@ -50,7 +70,7 @@ def create_indexes_if_missing(db_type: str):
         check_index_sql = """
             SELECT COUNT(*)
             FROM pg_indexes
-            WHERE schemaname = 'extendedEmp'
+            WHERE schemaname = 'finalEmp'
               AND tablename = :table
               AND indexname = :index;
         """
