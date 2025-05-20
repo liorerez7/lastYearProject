@@ -16,7 +16,8 @@ from main.core.test_framework.plans.recursive_cte_plans   import recursive_cte
 from main.core.schema_analysis.connection.db_connector    import DBConnector
 from main.core.test_framework.execution_plan_test         import ExecutionPlanTest
 from main.services.supabase_service                       import insert_metadata, insert_execution
-from models.test_model                                    import TestMetadata, TestExecution
+from models.models import TestMetadata, TestExecution
+
 
 def run_mix_workload():
     return _generic_extreme_suite(tag="mix", users=[10, 20], run_time=45, spread=True)
@@ -145,7 +146,7 @@ def _generic_extreme_suite(*, users: list[int], run_time: int, tag: str,
                 schema=schema,
                 queries=list(test.get_built_plan_with_durations().values()),
             )
-            insert_execution(exec_obj.to_dynamo_item())
+            insert_execution(**exec_obj.to_dynamo_item())
             exec_results[f"{db_type}_{u}u"] = exec_obj.to_dynamo_item()
 
     return {"test_id": test_id, "execution": exec_results}
