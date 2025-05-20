@@ -201,10 +201,12 @@ export default function HomePage() {
                 ))}
               </select>
               {srcCloud && (
-                <span className="cloud-icon">
-                  {cloudIcons[srcCloud]}
-                </span>
-              )}
+                  <span className="cloud-icon flex items-center gap-1">
+                   <BiCloud className="text-blue-500" />
+                   {/* סמל ספק הענן ( AWS / GCP / Azure ) */}
+                   {cloudIcons[srcCloud]}
+                  </span>
+                )}
             </div>
           </div>
 
@@ -254,10 +256,11 @@ export default function HomePage() {
                 ))}
               </select>
               {dstCloud && (
-                <span className="cloud-icon">
-                  {cloudIcons[dstCloud]}
-                </span>
-              )}
+               <span className="cloud-icon flex items-center gap-1">
+                <BiCloud className="text-blue-500" />
+                {cloudIcons[dstCloud]}
+              </span>
+            )}
             </div>
           </div>
 
@@ -448,7 +451,10 @@ export default function HomePage() {
           <div className="summary-details">
             <div className="summary-item">
               <span className="summary-label">Source:</span>
-              <span className="summary-value">{srcCloud} ({srcDB})</span>
+              <span className="summary-value flex items-center gap-1">
+                {typeof srcCloud === "string" && <>{srcCloud}</>}
+                {srcDB && typeof srcDB === "string" && <> ({srcDB})</>}
+              </span>
             </div>
             <div className="summary-item">
               <span className="summary-label">Destination:</span>

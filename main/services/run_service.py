@@ -1,6 +1,7 @@
 from typing import List, Dict, Any
 from collections import defaultdict
-from services.supabase_service import fetch_runs as sb_fetch_runs, fetch_run as sb_fetch_run
+from main.services.supabase_service import fetch_runs as sb_fetch_runs, fetch_run as sb_fetch_run
+
 
 # ---------- public ----------
 def fetch_runs(limit: int = 100) -> List[Dict[str, Any]]:

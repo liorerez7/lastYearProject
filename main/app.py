@@ -40,14 +40,18 @@
 #
 #
 #
+# --- imports נכונים ---
 
-from api import file_upload_controller, migration_controller
+from gevent import monkey
+monkey.patch_all()
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from api import test_controller, runs_controller   # ודא __init__.py ב־api
-from main.api.migration_controller import migrationRouter
-from main.api.test_controller import testRouter
-
+from main.api import (
+    file_upload_controller,
+    migration_controller,
+    test_controller,
+    runs_controller,
+)
 app = FastAPI(title="DB Benchmark API", version="1.0.0")
 
 app.add_middleware(
@@ -58,12 +62,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-app.include_router(runs_controller.router, tags=["runs"])
-app.include_router(migrationRouter, prefix="/migration")
+app.include_router(test_controller.testRouter, tags=["tests"], prefix="/test")
+app.include_router(runs_controller.router,   tags=["runs"])
+app.include_router(migration_controller.migrationRouter, prefix="/migration")
 app.include_router(file_upload_controller.uploadRouter)
-app.include_router(testRouter, prefix="/test")
-
 
 @app.on_event("startup")
 def list_routes():
