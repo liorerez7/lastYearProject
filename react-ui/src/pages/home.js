@@ -458,7 +458,10 @@ export default function HomePage() {
             </div>
             <div className="summary-item">
               <span className="summary-label">Destination:</span>
-              <span className="summary-value">{dstCloud} ({dstDB})</span>
+              <span className="summary-value">
+                {typeof dstCloud === "string" ? dstCloud : ""}
+                {typeof dstDB === "string"    ? ` (${dstDB})` : ""}
+              </span>
             </div>
             <div className="summary-item">
               <span className="summary-label">Tables:</span>
