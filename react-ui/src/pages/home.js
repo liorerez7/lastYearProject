@@ -440,7 +440,11 @@
 //              <span className="summary-label">Source:</span>
 //              <span className="summary-value flex items-center gap-1">
 //                {typeof srcCloud === "string" && <>{srcCloud}</>}
-//                {srcDB && typeof srcDB === "string" && <> ({srcDB})</>}
+//                {srcDB && typeof srcDB === "string" && (
+//                 <>
+//                   {" ("}{srcDB}{")"}
+//                 </>
+//                )}
 //              </span>
 //            </div>
 //            <div className="summary-item">
@@ -515,17 +519,21 @@
 //    </div>
 //  );
 //}
+
+
+
 import React, { useState, useRef } from "react";
-import { BiUpload, BiRun, BiTestTube, BiTable, BiAnalyse } from "react-icons/bi";
+import { BiUpload, BiRun, BiTestTube, BiCloud, BiTable, BiAnalyse } from "react-icons/bi";
 import "./home.css";
 
-// Using simple text representations for cloud and database icons
+// Using simple string representations instead of React icon components
 const cloudLabels = {
   "AWS": "AWS",
   "Google Cloud": "GCP",
   "Azure": "Azure"
 };
 
+// Using emoji strings for database icons
 const dbIcons = {
   "MySQL": "🗄️",
   "PostgreSQL": "🐘",
@@ -670,11 +678,11 @@ export default function HomePage() {
   return (
     <div className="home-container">
       <header className="header">
+        <BiCloud className="logo-icon" />
         <h1>Cloud Database Migration Tool</h1>
-        <p className="tagline">
-          Seamlessly migrate and test your databases across cloud platforms
-        </p>
+        <p className="tagline">Seamlessly migrate and test your databases across cloud platforms</p>
       </header>
+
       {/* Progress Indicator */}
       <div className="progress-tracker">
         <div className={`progress-step ${cloudReady ? 'complete' : 'active'}`}>
