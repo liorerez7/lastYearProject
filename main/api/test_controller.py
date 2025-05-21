@@ -17,7 +17,7 @@ TEST_TYPE_TO_FUNCTION = {
 def create_simple_test(
     test_type: Literal["Basic Queries", "Advanced Workload", "Balanced Suite"] = Body(..., embed=True)):
     try:
-        suite = TEST_TYPE_TO_FUNCTION[test_type]()  # ← כעת יש run_id למעלה
+        suite = TEST_TYPE_TO_FUNCTION[test_type]()
         return {"run_id": suite["run_id"]}
 
     except Exception as e:
