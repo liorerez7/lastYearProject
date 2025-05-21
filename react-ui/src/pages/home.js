@@ -3,12 +3,13 @@ import { FaAws, FaGoogle, FaMicrosoft } from "react-icons/fa";
 import { BiUpload, BiRun, BiTestTube, BiTable } from "react-icons/bi";
 import { BiAnalyse } from "react-icons/bi";
 import "./home.css";
+import { useNavigate } from "react-router-dom";
 
-//const cloudIcons = {
-//  "AWS": <FaAws size={24} />,
-//  "Google Cloud": <FaGoogle size={24} />,
-//  "Azure": <FaMicrosoft size={24} />
-//};
+const cloudIcons = {
+  "AWS": <FaAws size={24} />,
+  "Google Cloud": <FaGoogle size={24} />,
+  "Azure": <FaMicrosoft size={24} />
+};
 
 const dbIcons = {
   "MySQL": "🗄️",
@@ -22,6 +23,7 @@ export default function HomePage() {
   const databases = ["MySQL", "PostgreSQL", "MongoDB"];
   const [availableTables, setAvailableTables] = useState([]);
   const testTypes = ["Basic Queries", "Advanced Workload", "Balanced Suite"];
+  const navigate = useNavigate();
 
   const [srcCloud, setSrcCloud] = useState("");
   const [dstCloud, setDstCloud] = useState("");
@@ -143,7 +145,9 @@ export default function HomePage() {
     });
     const result = await res.json();
     console.log("✅ Test response:", result);
-    window.location.href = "/test-result";
+    navigate("/test-result", {
+      state: { testData: result }
+    });
   } catch (e) {
     console.error("🔥 Test run failed:", e);
   } finally {
@@ -200,6 +204,11 @@ export default function HomePage() {
                   </option>
                 ))}
               </select>
+              {srcCloud && (
+              <span className="cloud-icon">
+                {cloudIcons[srcCloud]}
+              </span>
+            )}
             </div>
           </div>
 
@@ -248,6 +257,11 @@ export default function HomePage() {
                   </option>
                 ))}
               </select>
+              {dstCloud && (
+              <span className="cloud-icon">
+                {cloudIcons[dstCloud]}
+              </span>
+            )}
             </div>
           </div>
 

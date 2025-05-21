@@ -55,8 +55,8 @@ def run_edge_case_offsets():
 
 def run_point_lookup():
     return _generic_extreme_suite(tag="lookup", users=[2], run_time=20, spread=True,
-        steps_override=lambda s: basic_select(":db", s["t1"], repeat=10) +
-                                 basic_select(":db", s["t7"], repeat=10))
+        steps_override=lambda s: basic_select(":db", s["t1"], repeat=10)) #needs to be more run time
+
 
 def run_small_join_select():
     return _generic_extreme_suite(tag="smalljoin", users=[2], run_time=25, spread=True,
