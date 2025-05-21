@@ -7,8 +7,8 @@ from main.services.supabase_service import fetch_runs as sb_fetch_runs, fetch_ru
 def fetch_runs(limit: int = 100) -> List[Dict[str, Any]]:
     return sb_fetch_runs(limit).data
 
-def fetch_run(run_id: str) -> Dict[str, Any]:
-    pack = sb_fetch_run(run_id)
+def fetch_run(run_id: int) -> Dict[str, Any]:
+    pack = sb_fetch_run(run_id)  # SELECT * WHERE id = run_id
     meta, execs = pack["metadata"], pack["executions"]
 
     # format results

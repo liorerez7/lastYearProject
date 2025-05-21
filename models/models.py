@@ -8,8 +8,13 @@ Base = declarative_base()
 class TestMetadata(Base):
     __tablename__ = "test_metadata"
 
-    id             = Column(String, primary_key=True)
-    plan_name      = Column(String)
+    id = Column(String, primary_key=True)
+    plan_name = Column(String)
+    cloud_provider = Column(String)
+    source_db = Column(String)
+    destination_db = Column(String)
+    mail = Column(String)
+
     started_at     = Column(DateTime, default=datetime.datetime.utcnow)
     finished_at    = Column(DateTime, nullable=True)
     status         = Column(String, default="pending")  # pending / running / finished / error
@@ -20,13 +25,15 @@ class TestMetadata(Base):
 
     def to_dict(self):
         return {
-            "id"            : self.id,
-            "plan_name"     : self.plan_name,
-            "started_at"    : self.started_at.isoformat() if self.started_at else None,
-            "finished_at"   : self.finished_at.isoformat() if self.finished_at else None,
-            "status"        : self.status,
-            "summary_json"  : self.summary_json,
-            "recommendations": self.recommendations,
+            "id": self.test_id,
+            "query_type": self.query_type,
+            "selector": self.selector,
+            "mysql_time": self.mysql_time,
+            "postgres_time": self.postgres_time,
+            "avg": self.avg,
+            "p95": self.p95,
+            "p99": self.p99,
+            "winner": self.winner,
         }
 
 class TestExecution(Base):
@@ -34,7 +41,12 @@ class TestExecution(Base):
 
     id            = Column(Integer, primary_key=True, autoincrement=True)
     test_id       = Column(String, ForeignKey("test_metadata.id"))
+    db_type       = Column(String)
     query_type    = Column(String)
+    test_type     = Column(String)
+    schema        = Column(String)
+    timestamp     = Column(DateTime)
+    queries       = Column(JSON)
     selector      = Column(String)
     mysql_time    = Column(Float)
     postgres_time = Column(Float)
@@ -48,14 +60,18 @@ class TestExecution(Base):
 
     def to_dict(self):
         return {
-            "id"           : self.id,
-            "test_id"      : self.test_id,
-            "query_type"   : self.query_type,
-            "selector"     : self.selector,
-            "mysql_time"   : self.mysql_time,
+            "test_id": self.test_id,
+            "db_type": self.db_type,
+            "test_type": self.test_type,
+            "schema": self.schema,
+            "timestamp": self.timestamp,
+            "queries": self.queries,
+            "query_type": self.query_type,
+            "selector": self.selector,
+            "mysql_time": self.mysql_time,
             "postgres_time": self.postgres_time,
-            "avg"          : self.avg,
-            "p95"          : self.p95,
-            "p99"          : self.p99,
-            "winner"       : self.winner,
+            "avg": self.avg,
+            "p95": self.p95,
+            "p99": self.p99,
+            "winner": self.winner,
         }

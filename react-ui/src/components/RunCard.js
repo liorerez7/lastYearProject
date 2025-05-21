@@ -20,7 +20,7 @@ const RunCard = ({ run }) => {
   return (
     <div
       className="border rounded-lg p-4 mb-4 hover:shadow-md cursor-pointer transition-shadow"
-      onClick={() => navigate(`/runs/${id}`)}
+      onClick={() => navigate(`/runs/${encodeURIComponent(id)}`)}
     >
       <div className="flex justify-between items-center">
         <h3 className="font-semibold text-lg">{plan_name}</h3>

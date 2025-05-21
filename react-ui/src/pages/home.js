@@ -135,26 +135,51 @@ export default function HomePage() {
     }, 1500);
   };
 
- const handleRunTest = async () => {
+
+const handleRunTest = async () => {
   setLoadingTest(true);
   try {
-    const res = await fetch("http://localhost:8080/test/create-simple-test", {
-      method: "POST",
+    const res  = await fetch("http://localhost:8080/test/create-simple-test", {
+      method : "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ test_type: testLevel })
+      body   : JSON.stringify({ test_type: testLevel })
     });
-    const result = await res.json();
-    console.log("✅ Test response:", result);
-    navigate("/test-result", {
-      state: { testData: result }
-    });
-  } catch (e) {
-    console.error("🔥 Test run failed:", e);
+
+    if (!res.ok) throw new Error("Server error");
+    const { run_id } = await res.json();   // שולף רק run_id
+
+    navigate(`/runs/${run_id}`);
+  } catch (err) {
+    console.error("🔥 Test run failed:", err);
   } finally {
     setLoadingTest(false);
   }
 };
 
+
+
+// const handleRunTest = async () => {
+//  setLoadingTest(true);
+//  try {
+//    const res = await fetch("http://localhost:8080/test/create-simple-test", {
+//      method: "POST",
+//      headers: { "Content-Type": "application/json" },
+//      body: JSON.stringify({ test_type: testLevel })
+//    });
+//    const result = await res.json();
+//    console.log("✅ Test response:", result);
+//    const testId = result.results.lookup.test_id;
+//    navigate(`/runs/${testId}`);
+////    navigate("/test-result", {
+////      state: { testData: result }
+////    });
+//
+//  } catch (e) {
+//    console.error("🔥 Test run failed:", e);
+//  } finally {
+//    setLoadingTest(false);
+//  }
+//};
 
   return (
     <div className="home-container">

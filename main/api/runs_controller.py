@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from typing import List, Dict, Any
-
+from pydantic import BaseModel
 from main.services.run_service import fetch_runs, fetch_run
 
 router = APIRouter()
@@ -13,7 +13,7 @@ def list_runs(limit: int = 100):
         raise HTTPException(500, f"Error: {e}")
 
 @router.get("/runs/{run_id}", response_model=Dict[str, Any])
-def get_run(run_id: str):
+def get_run(run_id: int):
     try:
         return fetch_run(run_id)
     except Exception as e:

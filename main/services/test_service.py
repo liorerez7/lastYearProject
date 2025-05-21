@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime
 import time
 import statistics
@@ -19,64 +20,7 @@ from main.services.supabase_service                       import insert_metadata
 from models.models import TestMetadata, TestExecution
 
 
-def run_mix_workload():
-    return _generic_extreme_suite(tag="mix", users=[10, 20], run_time=45, spread=True)
 
-def run_multi_user_smoke():
-    return _generic_extreme_suite(tag="smoke", users=[5, 10], run_time=15, spread=True,
-        steps_override=lambda s: basic_select(":db", s["t1"], repeat=25) +
-                                 filtered_test(":db", s["t2"], repeat=25) +
-                                 pure_count(":db", s["t1"], repeat=5))
-
-def run_index_stress():
-    return _generic_extreme_suite(tag="index", users=[15], run_time=45, spread=True,
-        steps_override=lambda s: filtered_test(":db", s["t3"], repeat=25) +
-                                 group_by(":db", s["t4"], repeat=20) +
-                                 pagination_test(":db", s["t5"], repeat=15))
-
-def run_heavy_read_write():
-    return _generic_extreme_suite(tag="rw", users=[8, 16], run_time=120, spread=True,
-        steps_override=lambda s: pagination_test(":db", s["t6"], repeat=15) +
-                                 basic_select(":db", s["t2"], repeat=15) +
-                                 aggregation_test(":db", s["t5"], repeat=12) +
-                                 pure_count(":db", s["t1"], repeat=12))
-
-def run_reporting_analytics():
-    return _generic_extreme_suite(tag="report", users=[5], run_time=50, spread=True,
-        steps_override=lambda s: window_query(":db", s["t5"], repeat=20) +
-                                 group_by(":db", s["t6"], repeat=20) +
-                                 aggregation_test(":db", s["t6"], repeat=20))
-
-def run_edge_case_offsets():
-    return _generic_extreme_suite(tag="edge", users=[12], run_time=50, spread=True,
-        steps_override=lambda s: large_offset(":db", s["t7"], repeat=18) +
-                                 recursive_cte(":db", s["t2"], repeat=10) +
-                                 filtered_test(":db", s["t4"], repeat=12))
-
-def run_point_lookup():
-    return _generic_extreme_suite(tag="lookup", users=[2], run_time=20, spread=True,
-        steps_override=lambda s: basic_select(":db", s["t1"], repeat=10)) #needs to be more run time
-
-
-def run_small_join_select():
-    return _generic_extreme_suite(tag="smalljoin", users=[2], run_time=25, spread=True,
-        steps_override=lambda s: deep_join_default(":db", selector=s["t2"], join_size=2) +
-                                 group_by(":db", s["t2"], repeat=6))
-
-def run_dashboard_reads():
-    return _generic_extreme_suite(tag="dash", users=[3], run_time=30, spread=True,
-        steps_override=lambda s: basic_select(":db", s["t1"], repeat=40) +
-                                 pagination_test(":db", s["t1"], repeat=10))
-
-def run_spike_30_users():
-    return _generic_extreme_suite(tag="spike30", users=[30], run_time=600, spread=True)
-
-def run_heavy_only():
-    return _generic_extreme_suite(tag="heavy", users=[4], run_time=180, spread=True,
-        steps_override=lambda s: pure_count(":db", s["t6"], repeat=6) +
-                                 window_query(":db", s["t5"], repeat=6) +
-                                 deep_join_longest(":db", s["t7"]) +
-                                 pagination_test(":db", s["t7"], repeat=8))
 
 
 
@@ -84,15 +28,17 @@ def _generic_extreme_suite(*, users: list[int], run_time: int, tag: str,
                            steps_override: Callable | None = None, spread: bool = False) -> Dict[str, Any]:
     """Build + run the suite for both engines and multiple user counts."""
 
-    test_id = f"user_demo#{tag}#{datetime.utcnow().isoformat()}"
-    insert_metadata(TestMetadata(
-        test_id=test_id,
-        cloud_provider="aws",
-        source_db="mysql",
-        destination_db="postgres",
-        status="pending",
-        mail="lior@example.com",
-    ).to_dynamo_item())
+    run_uid = uuid.uuid4().hex
+    run_id = insert_metadata({
+        "run_uid": run_uid,
+        "cloud_provider": "aws",
+        "source_db": "mysql",
+        "destination_db": "postgres",
+        "status": "pending",
+        "mail": "lior@example.com",
+        "plan_name": f"Extreme Plan – {tag}",
+        "started_at": datetime.utcnow().isoformat()
+    })
 
     schema = "finalEmp"
     sizes = get_adaptive_selectors(schema, "mysql") if spread else get_size_based_selectors(schema, "mysql")
@@ -138,18 +84,130 @@ def _generic_extreme_suite(*, users: list[int], run_time: int, tag: str,
             for q in queries:
                 q["p95"] = statistics.quantiles(q["durations"], n=100)[94] if q["durations"] else None
 
-            exec_obj = TestExecution(
-                test_id=test_id,
-                timestamp=datetime.utcnow().isoformat(),
-                db_type=db_type,
-                test_type=f"{tag}_{u}u",
-                schema=schema,
-                queries=list(test.get_built_plan_with_durations().values()),
-            )
-            insert_execution(**exec_obj.to_dynamo_item())
-            exec_results[f"{db_type}_{u}u"] = exec_obj.to_dynamo_item()
+            step_results = []
+            for step in queries:
+                avg = step["avg"]
+                p95 = step["p95"]
 
-    return {"test_id": test_id, "execution": exec_results}
+                insert_execution(
+                    test_id=run_id,  # FK → bigint
+                    db_type=db_type,
+                    test_type=f"{tag}_{u}u",
+                    schema=schema,
+                    query_type=step["query_type"],
+                    selector=step["selector"],
+                    mysql_time=avg if db_type == "mysql" else None,
+                    postgres_time=avg if db_type == "postgres" else None,
+                    winner="mysql" if db_type == "mysql" else "postgres",
+                    avg=avg,
+                    p95=p95,
+                    queries=[step],
+                    timestamp=datetime.utcnow().isoformat()
+                )
+                print("👉 Inserting execution:", {
+                    "query_type": step["query_type"],
+                    "selector": step["selector"],
+                    "avg": avg,
+                    "p95": p95
+                })
+
+                step_results.append(step)
+
+
+
+    return {"run_id": run_id, "run_uid": run_uid}
+
+
+
+def _run_named_suite(label: str, order: list[str]) -> Dict[str, Any]:
+    """Run a named benchmark suite with a list of test plan names."""
+    print(f"\n🚀 Starting benchmark suite: {label}")
+    results: Dict[str, Any] = {}
+
+    for name in order:
+        func = TEST_PLANS.get(name)
+        if not func:
+            print(f"⚠️ Unknown test plan: {name}")
+            continue
+
+        print(f"\n=== Running benchmark: {name} ===")
+        try:
+            results[name] = func()
+            print(f"✅ '{name}' done – test_id: {results[name]['run_id']}")
+        except Exception as e:
+            print(f"❌ '{name}' failed: {e}")
+        print("🕒 Cooling‑down 5 s…") ## need to move back into 45, after testing.
+        time.sleep(5)
+
+    print(f"\n🏁 Suite '{label}' completed.\n")
+    first_key = next(iter(results))
+    run_id = results[first_key]["run_id"]
+    return {
+        "run_id": run_id,
+        "results": results,
+        "message": f"{label} suite completed"
+    }
+
+
+
+def run_mix_workload():
+    return _generic_extreme_suite(tag="mix", users=[10, 20], run_time=45, spread=True)
+
+def run_multi_user_smoke():
+    return _generic_extreme_suite(tag="smoke", users=[5, 10], run_time=15, spread=True,
+        steps_override=lambda s: basic_select(":db", s["t1"], repeat=25) +
+                                 filtered_test(":db", s["t2"], repeat=25) +
+                                 pure_count(":db", s["t1"], repeat=5))
+
+def run_index_stress():
+    return _generic_extreme_suite(tag="index", users=[15], run_time=45, spread=True,
+        steps_override=lambda s: filtered_test(":db", s["t3"], repeat=25) +
+                                 group_by(":db", s["t4"], repeat=20) +
+                                 pagination_test(":db", s["t5"], repeat=15))
+
+def run_heavy_read_write():
+    return _generic_extreme_suite(tag="rw", users=[8, 16], run_time=120, spread=True,
+        steps_override=lambda s: pagination_test(":db", s["t6"], repeat=15) +
+                                 basic_select(":db", s["t2"], repeat=15) +
+                                 aggregation_test(":db", s["t5"], repeat=12) +
+                                 pure_count(":db", s["t1"], repeat=12))
+
+def run_reporting_analytics():
+    return _generic_extreme_suite(tag="report", users=[5], run_time=50, spread=True,
+        steps_override=lambda s: window_query(":db", s["t5"], repeat=20) +
+                                 group_by(":db", s["t6"], repeat=20) +
+                                 aggregation_test(":db", s["t6"], repeat=20))
+
+def run_edge_case_offsets():
+    return _generic_extreme_suite(tag="edge", users=[12], run_time=50, spread=True,
+        steps_override=lambda s: large_offset(":db", s["t7"], repeat=18) +
+                                 recursive_cte(":db", s["t2"], repeat=10) +
+                                 filtered_test(":db", s["t4"], repeat=12))
+
+def run_point_lookup():
+    return _generic_extreme_suite(tag="lookup", users=[2], run_time=7, spread=True,
+        steps_override=lambda s: basic_select(":db", s["t1"], repeat=10)) #needs to be more run time
+
+
+def run_small_join_select():
+    return _generic_extreme_suite(tag="smalljoin", users=[2], run_time=25, spread=True,
+        steps_override=lambda s: deep_join_default(":db", selector=s["t2"], join_size=2) +
+                                 group_by(":db", s["t2"], repeat=6))
+
+def run_dashboard_reads():
+    return _generic_extreme_suite(tag="dash", users=[3], run_time=30, spread=True,
+        steps_override=lambda s: basic_select(":db", s["t1"], repeat=40) +
+                                 pagination_test(":db", s["t1"], repeat=10))
+
+def run_spike_30_users():
+    return _generic_extreme_suite(tag="spike30", users=[30], run_time=600, spread=True)
+
+def run_heavy_only():
+    return _generic_extreme_suite(tag="heavy", users=[4], run_time=180, spread=True,
+        steps_override=lambda s: pure_count(":db", s["t6"], repeat=6) +
+                                 window_query(":db", s["t5"], repeat=6) +
+                                 deep_join_longest(":db", s["t7"]) +
+                                 pagination_test(":db", s["t7"], repeat=8))
 
 
 def run_basic_queries_suite() -> Dict[str, Any]:
@@ -167,28 +225,6 @@ def run_balanced_suite() -> Dict[str, Any]:
     ])
 
 
-def _run_named_suite(label: str, order: list[str]) -> Dict[str, Any]:
-    """Run a named benchmark suite with a list of test plan names."""
-    print(f"\n🚀 Starting benchmark suite: {label}")
-    results: Dict[str, Any] = {}
-
-    for name in order:
-        func = TEST_PLANS.get(name)
-        if not func:
-            print(f"⚠️ Unknown test plan: {name}")
-            continue
-
-        print(f"\n=== Running benchmark: {name} ===")
-        try:
-            results[name] = func()
-            print(f"✅ '{name}' done – test_id: {results[name]['test_id']}")
-        except Exception as e:
-            print(f"❌ '{name}' failed: {e}")
-        print("🕒 Cooling‑down 45 s…")
-        time.sleep(45)
-
-    print(f"\n🏁 Suite '{label}' completed.\n")
-    return {"message": f"{label} suite completed", "results": results}
 
 # ---------------------------------------------------------------------
 # 3. TEST_PLANS
