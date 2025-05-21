@@ -11,15 +11,27 @@ TEST_TYPE_TO_FUNCTION = {
     "Balanced Suite": test_service.run_balanced_suite,
 }
 
-
-
 @testRouter.post("/create-simple-test")
 def create_simple_test(
     test_type: Literal["Basic Queries", "Advanced Workload", "Balanced Suite"] = Body(..., embed=True)):
     try:
-        suite = TEST_TYPE_TO_FUNCTION[test_type]()
-        return {"run_id": suite["run_id"]}
-
+        print(f"\n🎯 RUNNING SUITE TYPE: {test_type}")
+        TEST_TYPE_TO_FUNCTION[test_type]()
+        return {"message": "Test executed. See console output."}
     except Exception as e:
         print("🔥 create_simple_test error:", e)
         raise HTTPException(status_code=500, detail=str(e))
+
+
+# @testRouter.post("/create-simple-test")
+# def create_simple_test(
+#     test_type: Literal["Basic Queries", "Advanced Workload", "Balanced Suite"] = Body(..., embed=True)):
+#     try:
+#         suite = TEST_TYPE_TO_FUNCTION[test_type]()
+#         return {"run_id": suite["run_id"]}
+#
+#     except Exception as e:
+#         print("🔥 create_simple_test error:", e)
+#         raise HTTPException(status_code=500, detail=str(e))
+
+
