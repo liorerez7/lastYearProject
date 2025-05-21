@@ -4,30 +4,10 @@ from main.services.supabase_service import fetch_runs as sb_fetch_runs, fetch_ru
 
 
 # ---------- public ----------
-def fetch_runs(limit: int = 100) -> List[Dict[str, Any]]:
-    return sb_fetch_runs(limit).data
 
 def fetch_run(run_id: int) -> Dict[str, Any]:
-    pack = sb_fetch_run(run_id)  # SELECT * WHERE id = run_id
-    meta, execs = pack["metadata"], pack["executions"]
-
-    # format results
-    results = [
-        {
-            "id": e["id"],
-            "name": f'{e["query_type"]} – sel {e["selector"]}',
-            "description": e["query_type"],
-            "mysql_time": e["mysql_time"],
-            "postgres_time": e["postgres_time"],
-            "winner": e["winner"]
-        }
-        for e in execs
-    ]
-
-    # calc category summary if missing
-    cat = meta.get("summary_json", {}).get("category_results") if meta else None
-    if cat is None:
-        cat = _compute_category_results(execs)
+    pack = sb_fetch_run(run_id)
+    meta = pack["metadata"]
 
     return {
         "id": meta["id"],
@@ -35,10 +15,15 @@ def fetch_run(run_id: int) -> Dict[str, Any]:
         "started_at": meta["started_at"],
         "finished_at": meta.get("finished_at"),
         "status": meta["status"],
-        "results": results,
-        "category_results": cat,
-        "recommendations": meta.get("recommendations", "")
+        "cloud_provider": meta.get("cloud_provider", "failed to load"),
+        "source_db": meta.get("source_db", "failed to load"),
+        "destination_db": meta.get("destination_db", "failed to load"),
+        "recommendations": meta.get("recommendations", "failed to load")
     }
+
+
+def fetch_runs(limit: int = 100) -> List[Dict[str, Any]]:
+    return sb_fetch_runs(limit).data
 
 # ---------- helpers ----------
 def _compute_category_results(execs):

@@ -148,6 +148,10 @@ const handleRunTest = async () => {
 
     const result = await res.json();
     console.log("✅ Test started:", result.message);
+
+    if (result.test_id) {
+      navigate(`/runs/${encodeURIComponent(result.test_id)}`);
+    }
   } catch (err) {
     console.error("🔥 Test run failed:", err);
   } finally {

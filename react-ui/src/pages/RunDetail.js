@@ -2,9 +2,6 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { getRun } from "../api/runs_api";
-import ResultTile from "../components/ResultTile";
-import { BarChartComponent, RadarChartComponent } from "../components/PerformanceChart";
-import SummaryPanel from "../components/SummaryPanel";
 
 const RunDetail = () => {
   const { id } = useParams();
@@ -15,63 +12,57 @@ const RunDetail = () => {
   if (isError)
     return <div className="text-red-600 p-4">שגיאה בטעינת נתונים</div>;
 
-  const barData = run.results.map(r => ({
-    name: r.name,
-    mysql: r.mysql_time,
-    postgres: r.postgres_time
-  }));
-
-  const radarData = Object.entries(run.category_results).map(
-    ([cat, v]) => ({
-      category: cat,
-      mysql: v.mysql_wins,
-      postgres: v.postgres_wins
-    })
-  );
-
-  const mysqlWins = run.results.filter(r => r.winner === "mysql").length;
-  const postgresWins = run.results.filter(r => r.winner === "postgres").length;
-  const totalImprovement = ((run.results.reduce((s, r) =>
-    s + Math.abs(r.mysql_time - r.postgres_time) / Math.max(r.mysql_time, r.postgres_time), 0
-  ) / run.results.length) * 100).toFixed(1);
-
   return (
-    <div className="max-w-6xl mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">
-        {run.plan_name} <span className="text-gray-500 text-base font-normal">
-        ({new Date(run.started_at).toLocaleString()})</span>
-      </h1>
+    <div className="max-w-3xl mx-auto p-6">
+      <h1 className="text-2xl font-bold mb-4">פרטי הרצה</h1>
 
-      <div className="grid md:grid-cols-2 gap-6 mb-8">
-        <div className="border rounded-lg p-4">
-          <h2 className="font-semibold mb-4 text-right">Bar Chart</h2>
-          <BarChartComponent data={barData}/>
+      <div className="bg-white rounded shadow p-4 space-y-4">
+        <div>
+          <span className="font-semibold">Plan Name:</span>{" "}
+          {run.plan_name}
         </div>
-        <div className="border rounded-lg p-4">
-          <h2 className="font-semibold mb-4 text-right">Radar Chart</h2>
-          <RadarChartComponent data={radarData}/>
+
+        <div>
+          <span className="font-semibold">Start Time:</span>{" "}
+          {new Date(run.started_at).toLocaleString()}
         </div>
-      </div>
 
-      <SummaryPanel
-        mysqlWins={mysqlWins}
-        postgresWins={postgresWins}
-        totalImprovement={totalImprovement}
-        recommendations={run.recommendations}
-      />
+        <div>
+          <span className="font-semibold">End Time:</span>{" "}
+          {run.finished_at ? new Date(run.finished_at).toLocaleString() : "—"}
+        </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
-        {run.results.map(r => (
-          <ResultTile key={r.id}
-            title={r.name}
-            subtitle={r.description}
-            mysqlTime={r.mysql_time}
-            postgresTime={r.postgres_time}
-            winner={r.winner}
-          />
-        ))}
+        <div>
+          <span className="font-semibold">Cloud Provider:</span>{" "}
+          {run.cloud_provider}
+        </div>
+
+        <div>
+          <span className="font-semibold">Source DB:</span>{" "}
+          {run.source_db}
+        </div>
+
+        <div>
+          <span className="font-semibold">Destination DB:</span>{" "}
+          {run.destination_db}
+        </div>
+
+        <div>
+          <span className="font-semibold">Status:</span>{" "}
+          {run.status}
+        </div>
+
+        <div className="pt-4">
+          <button
+            className="text-blue-600 hover:underline"
+            onClick={() => window.location.href = `/executions/${run.id}`}
+          >
+            ▶ הצג תוצאות (לא פעיל כרגע)
+          </button>
+        </div>
       </div>
     </div>
   );
 };
+
 export default RunDetail;
