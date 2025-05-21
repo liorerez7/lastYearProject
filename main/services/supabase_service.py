@@ -10,17 +10,21 @@ supabase: Client = create_client(
     os.getenv("SUPABASE_KEY")
 )
 
-def insert_metadata(data: Dict[str, Any]) -> int:
-    resp = (
-        supabase
-        .table("test_metadata")
-        .insert(data)
-        .select("id")
-        .single()
-        .execute()
-    )
-    return resp.data["id"]
 
+def insert_metadata(data: Dict[str, Any]) -> int:
+    try:
+        resp = supabase.table("test_metadata").insert(data).execute()
+        inserted = resp.data  # list of inserted rows
+        print("✅ Metadata inserted:", inserted)
+
+        if not inserted or "id" not in inserted[0]:
+            raise Exception("Missing 'id' in insert response!")
+
+        return inserted[0]["id"]
+
+    except Exception as e:
+        print("❌ Supabase insert exception:", e)
+        raise
 
 
 def update_metadata_status(
@@ -39,8 +43,21 @@ def update_metadata_status(
         data["finished_at"] = finished_at
     return supabase.table("test_metadata").update(data).eq("id", test_id).execute()
 
+# def insert_execution(**fields):
+#     return supabase.table("test_executions").insert(fields).execute()
+
 def insert_execution(**fields):
-    return supabase.table("test_executions").insert(fields).execute()
+    try:
+        print("\n📤 Inserting execution to Supabase:")
+        print(json.dumps(fields, indent=2, default=str))
+
+        resp = supabase.table("test_executions").insert(fields).execute()
+        print("✅ Inserted execution:", resp.data)
+        return resp
+
+    except Exception as e:
+        print("❌ Supabase execution insert error:", e)
+        raise
 
 
 def get_executions_by_test_id(test_id: str):

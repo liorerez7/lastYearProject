@@ -21,10 +21,10 @@ from main.services.supabase_service import insert_metadata, insert_execution
 from models.models import TestMetadata, TestExecution
 
 
-def _create_test_metadata(tag: str) -> tuple[str, str]:
+def _create_test_metadata(tag: str) -> tuple[int, str]:
     """Create and print test metadata only once per test suite."""
     run_uid = uuid.uuid4().hex
-    run_id = f"manual_run_{uuid.uuid4().hex}"  # simple random just for testing
+    #run_id = f"manual_run_{uuid.uuid4().hex}"  # simple random just for testing
     started_at = datetime.utcnow().isoformat()
 
     print("\n📦 META DATA:")
@@ -42,6 +42,7 @@ def _create_test_metadata(tag: str) -> tuple[str, str]:
         "recommendations": "some recs here"
     }
     print(json.dumps(metadata, indent=2))
+    run_id = insert_metadata(metadata)
 
     # Uncomment for production:
     # run_id = insert_metadata({
@@ -124,6 +125,20 @@ def _generic_extreme_suite(*, users: list[int], run_time: int, tag: str,
                     "p99": step.get("p99", 0.0),
                     "queries": [step]
                 }, indent=2))
+                insert_execution(
+                    test_id=run_id,
+                    db_type=db_type,
+                    test_type=f"{tag}_{u}u",
+                    schema=schema,
+                    timestamp=datetime.utcnow().isoformat(),
+                    query_type=step["query_type"],
+                    selector=step.get("selector", "0"),
+                    avg=step.get("avg", 0.0),
+                    p95=step.get("p95", 0.0),
+                    p99=step.get("p99", 0.0),
+                    stddev=step.get("stddev", 0.0),
+                    queries=[step]
+                )
 
                 step_results.append(step)
 
@@ -163,14 +178,6 @@ def _run_named_suite(label: str, order: list[str]) -> Dict[str, Any]:
         "results": results,
         "message": f"{label} suite completed"
     }
-
-
-# Modified to accept existing metadata parameter
-def run_mix_workload(use_existing_metadata=None):
-    if use_existing_metadata:
-        run_id, run_uid = use_existing_metadata
-        return _generic_test_with_metadata(run_id, run_uid, tag="mix", users=[10, 20], run_time=45, spread=True)
-    return _generic_extreme_suite(tag="mix", users=[10, 20], run_time=45, spread=True)
 
 
 # Helper function to run tests with existing metadata
@@ -237,9 +244,39 @@ def _generic_test_with_metadata(run_id, run_uid, *, tag, users, run_time, spread
                     "queries": [step]
                 }, indent=2))
 
+                insert_execution(
+                    test_id=run_id,
+                    db_type=db_type,
+                    test_type=f"{tag}_{u}u",
+                    schema=schema,
+                    timestamp=datetime.utcnow().isoformat(),
+                    query_type=step["query_type"],
+                    selector=step.get("selector", "0"),
+                    avg=step.get("avg", 0.0),
+                    p95=step.get("p95", 0.0),
+                    p99=step.get("p99", 0.0),
+                    stddev=step.get("stddev", 0.0),
+                    queries=[step]
+                )
+
                 step_results.append(step)
 
     return {"run_id": run_id, "run_uid": run_uid}
+
+
+# Modified to accept existing metadata parameter
+def run_mix_workload(use_existing_metadata=None):
+    if use_existing_metadata:
+        run_id, run_uid = use_existing_metadata
+        return _generic_test_with_metadata(run_id, run_uid, tag="mix", users=[10, 20], run_time=45, spread=True)
+    return _generic_extreme_suite(tag="mix", users=[10, 20], run_time=45, spread=True)
+
+
+
+
+def run_basic_queries_suite() -> Dict[str, Any]:
+    return _run_named_suite("Basic Queries", ["lookup"])
+
 
 
 # Update all test functions to accept the metadata parameter
@@ -363,9 +400,6 @@ def run_heavy_only(use_existing_metadata=None):
                                                            deep_join_longest(":db", s["t7"]) +
                                                            pagination_test(":db", s["t7"], repeat=8))
 
-
-def run_basic_queries_suite() -> Dict[str, Any]:
-    return _run_named_suite("Basic Queries", ["lookup"])
 
 
 def run_advanced_workload_suite() -> Dict[str, Any]:
