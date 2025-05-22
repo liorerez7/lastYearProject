@@ -2,14 +2,20 @@ import React from "react";
 import { Zap, Gauge, Timer, ArrowDown, Award, TrendingDown } from "lucide-react";
 
 export default function BenchmarkCard({ result }) {
-  const {
-    test_name,
-    mysql_avg_duration,
-    postgres_avg_duration,
-    query_type,
-    winner,                // ← כמו בקוד הישן
-    difference_percent     // ← כמו בקוד הישן
-  } = result;
+     const {
+      test_name,
+      mysql_avg_duration,
+      postgres_avg_duration,
+      mysql_p95,
+      postgres_p95,
+      mysql_stddev,
+      postgres_stddev,
+      mysql_count,
+      postgres_count,
+      query_type,
+      winner,
+      difference_percent
+    } = result;
 
   const faster_db = winner; // התאמה לשם החדש בקוד
   const performance_gain_percent = difference_percent;
@@ -103,11 +109,22 @@ export default function BenchmarkCard({ result }) {
             <div className="mt-1 text-sm font-bold text-blue-700">
               {formatDuration(mysql_avg_duration)}
             </div>
+            <div className="text-[11px] text-gray-500 mt-0.5">
+              {mysql_count} runs<br />
+              P95: {mysql_p95.toFixed(2)}s<br />
+              σ: {mysql_stddev.toFixed(2)}s
+            </div>
           </div>
+
           <div className="bg-white rounded-lg p-2 shadow-sm border border-green-200">
             <div className="text-xs font-medium text-green-600">PostgreSQL</div>
             <div className="mt-1 text-sm font-bold text-green-700">
               {formatDuration(postgres_avg_duration)}
+            </div>
+            <div className="text-[11px] text-gray-500 mt-0.5">
+              {postgres_count} runs<br />
+              P95: {postgres_p95.toFixed(2)}s<br />
+              σ: {postgres_stddev.toFixed(2)}s
             </div>
           </div>
         </div>

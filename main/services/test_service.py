@@ -96,20 +96,9 @@ def _generic_extreme_suite(*, users: list[int], run_time: int, tag: str,
 
             step_results = []
             for step in queries:
-                print("\n🧪 EXECUTION ENTRY:")
-                print(json.dumps({
-                    "test_id": run_id,
-                    "db_type": db_type,
-                    "test_type": f"{tag}_{u}u",
-                    "schema": schema,
-                    "timestamp": datetime.utcnow().isoformat(),
-                    "query_type": step["query_type"],
-                    "selector": step.get("selector", "0"),
-                    "avg": step.get("avg", 0.0),
-                    "p95": step.get("p95", 0.0),
-                    "p99": step.get("p99", 0.0),
-                    "queries": [step]
-                }, indent=2))
+
+                executions_count = len(step.get("durations", []))
+
                 insert_execution(
                     test_id=run_id,
                     db_type=db_type,
@@ -122,6 +111,7 @@ def _generic_extreme_suite(*, users: list[int], run_time: int, tag: str,
                     p95=step.get("p95", 0.0),
                     p99=step.get("p99", 0.0),
                     stddev=step.get("stddev", 0.0),
+                    executions_count=executions_count,
                     queries=[step]
                 )
 
@@ -214,20 +204,8 @@ def _generic_test_with_metadata(run_id, run_uid, *, tag, users, run_time, spread
 
             step_results = []
             for step in queries:
-                print("\n🧪 EXECUTION ENTRY:")
-                print(json.dumps({
-                    "test_id": run_id,
-                    "db_type": db_type,
-                    "test_type": f"{tag}_{u}u",
-                    "schema": schema,
-                    "timestamp": datetime.utcnow().isoformat(),
-                    "query_type": step["query_type"],
-                    "selector": step.get("selector", "0"),
-                    "avg": step.get("avg", 0.0),
-                    "p95": step.get("p95", 0.0),
-                    "p99": step.get("p99", 0.0),
-                    "queries": [step]
-                }, indent=2))
+
+                executions_count = len(step.get("durations", []))
 
                 insert_execution(
                     test_id=run_id,
@@ -241,6 +219,7 @@ def _generic_test_with_metadata(run_id, run_uid, *, tag, users, run_time, spread
                     p95=step.get("p95", 0.0),
                     p99=step.get("p99", 0.0),
                     stddev=step.get("stddev", 0.0),
+                    executions_count=executions_count,
                     queries=[step]
                 )
 
@@ -255,11 +234,6 @@ def run_mix_workload(use_existing_metadata=None):
         run_id, run_uid = use_existing_metadata
         return _generic_test_with_metadata(run_id, run_uid, tag="mix", users=[10, 20], run_time=45, spread=True)
     return _generic_extreme_suite(tag="mix", users=[10, 20], run_time=45, spread=True)
-
-
-
-
-
 
 
 # Update all test functions to accept the metadata parameter
@@ -333,14 +307,14 @@ def run_edge_case_offsets(use_existing_metadata=None):
 def run_point_lookup(use_existing_metadata=None):
     if use_existing_metadata:
         run_id, run_uid = use_existing_metadata
-        return _generic_test_with_metadata(run_id, run_uid, tag="lookup", users=[2], run_time=30, spread=True,
+        return _generic_test_with_metadata(run_id, run_uid, tag="lookup", users=[2], run_time=45, spread=True,
                                            steps_override=lambda s: basic_select(":db", s["t1"], repeat=1) +
                                                                     basic_select(":db", s["t2"], repeat=1) +
                                                                     basic_select(":db", s["t3"], repeat=1) +
                                                                     basic_select(":db", s["t4"], repeat=1) +
                                                                     basic_select(":db", s["t5"], repeat=1) +
                                                                     basic_select(":db", s["t6"], repeat=1))
-    return _generic_extreme_suite(tag="lookup", users=[2], run_time=30, spread=True,
+    return _generic_extreme_suite(tag="lookup", users=[2], run_time=45, spread=True,
                                   steps_override=lambda s: basic_select(":db", s["t1"], repeat=1) +
                                                            basic_select(":db", s["t2"], repeat=1) +
                                                            basic_select(":db", s["t3"], repeat=1) +
@@ -352,11 +326,11 @@ def run_point_lookup(use_existing_metadata=None):
 def run_small_join_select(use_existing_metadata=None):
     if use_existing_metadata:
         run_id, run_uid = use_existing_metadata
-        return _generic_test_with_metadata(run_id, run_uid, tag="smalljoin", users=[2], run_time=25, spread=True,
+        return _generic_test_with_metadata(run_id, run_uid, tag="smalljoin", users=[2], run_time=30, spread=True,
                                            steps_override=lambda s: deep_join_default(":db", selector=s["t2"],
                                                                                       join_size=2) +
                                                                     group_by(":db", s["t2"], repeat=6))
-    return _generic_extreme_suite(tag="smalljoin", users=[2], run_time=25, spread=True,
+    return _generic_extreme_suite(tag="smalljoin", users=[2], run_time=30, spread=True,
                                   steps_override=lambda s: deep_join_default(":db", selector=s["t2"], join_size=2) +
                                                            group_by(":db", s["t2"], repeat=6))
 
@@ -364,15 +338,13 @@ def run_small_join_select(use_existing_metadata=None):
 def run_dashboard_reads(use_existing_metadata=None):
     if use_existing_metadata:
         run_id, run_uid = use_existing_metadata
-        return _generic_test_with_metadata(run_id, run_uid, tag="dash", users=[3], run_time=30, spread=True,
+        return _generic_test_with_metadata(run_id, run_uid, tag="dash", users=[3], run_time=35, spread=True,
                                            steps_override=lambda s: filtered_test(":db", s["t1"], repeat=20) +
                                                                     filtered_test(":db", s["t5"], repeat=20) +
-                                                                    basic_select(":db", s["t3"], repeat=1) +
                                                                     pagination_test(":db", s["t1"], repeat=10))
     return _generic_extreme_suite(tag="dash", users=[3], run_time=30, spread=True,
                                   steps_override=lambda s: filtered_test(":db", s["t1"], repeat=20) +
                                                            filtered_test(":db", s["t5"], repeat=20) +
-                                                           basic_select(":db", s["t3"], repeat=1) +
                                                            pagination_test(":db", s["t1"], repeat=10))
 
 
@@ -401,7 +373,7 @@ def run_heavy_only(use_existing_metadata=None):
 
 
 def run_basic_queries_suite() -> Dict[str, Any]:
-    return _run_named_suite("Basic Queries", ["lookup", "dash"])
+    return _run_named_suite("Basic Queries", ["lookup", "dash", "smalljoin", "smoke", "index"])
 
 def run_advanced_workload_suite() -> Dict[str, Any]:
     return _run_named_suite("Advanced Workload", ["heavy"])

@@ -61,15 +61,12 @@ const transformExecutionData = (executions) => {
   if (!executions || executions.length === 0) return [];
 
   const groupedByQuery = executions.reduce((acc, exec) => {
-    // Using exec.test_type as primary key for grouping tests,
-    // and adding query_type to distinguish if test_type is not unique across query_types
     const key = `${exec.test_type}_${exec.query_type}`;
     if (!acc[key]) {
       acc[key] = {
-        // Store details from the first encountered record for this key
         test_type: exec.test_type,
         query_type: exec.query_type,
-        schema: exec.schema // Assuming schema might be available
+        schema: exec.schema
       };
     }
     acc[key][exec.db_type] = exec;
@@ -81,35 +78,38 @@ const transformExecutionData = (executions) => {
     .map(([key, group]) => {
       const mysql = group.mysql;
       const postgres = group.postgres;
+
       const mysqlAvg = mysql.avg || 0;
       const postgresAvg = postgres.avg || 0;
 
+      const mysqlCount = mysql.executions_count || 0;
+      const postgresCount = postgres.executions_count || 0;
+
       let winner = 'Tie';
-      if (mysqlAvg !== postgresAvg) { // Handle potential floating point inaccuracies if numbers are extremely close
-          winner = mysqlAvg < postgresAvg ? 'MySQL' : 'PostgreSQL';
+      if (mysqlAvg !== postgresAvg) {
+        winner = mysqlAvg < postgresAvg ? 'MySQL' : 'PostgreSQL';
       }
 
-      // Calculation of difference_percent based on the faster DB (from your old code)
       let difference_percent = 0;
       if (winner !== 'Tie') {
-        const फास्टरAvg = Math.min(mysqlAvg, postgresAvg);
-        const स्लोवरAvg = Math.max(mysqlAvg, postgresAvg);
-        if (फास्टरAvg > 0) { // Avoid division by zero if faster is 0 (though unlikely for durations)
-            difference_percent = ((स्लोवरAvg - फास्टरAvg) / फास्टरAvg) * 100;
-        } else if (स्लोवरAvg > 0) { // If faster is 0 but slower is not, it's 100% difference
-            difference_percent = 100;
-        }
+        const fasterAvg = Math.min(mysqlAvg, postgresAvg);
+        const slowerAvg = Math.max(mysqlAvg, postgresAvg);
+        difference_percent = fasterAvg > 0 ? ((slowerAvg - fasterAvg) / fasterAvg) * 100 : 100;
       }
 
-
       return {
-        test_name: group.test_type || key, // Prefer test_type if available directly on group
+        test_name: group.test_type || key,
         mysql_avg_duration: mysqlAvg,
         postgres_avg_duration: postgresAvg,
-        query_type: group.query_type || 'N/A', // Prefer query_type from group
-        difference_percent: difference_percent,
+        mysql_stddev: mysql.stddev || 0,
+        postgres_stddev: postgres.stddev || 0,
+        mysql_p95: mysql.p95 || 0,
+        postgres_p95: postgres.p95 || 0,
+        mysql_count: mysqlCount,
+        postgres_count: postgresCount,
+        query_type: group.query_type || 'N/A',
+        difference_percent,
         winner,
-        // Pass along schema if available for header or other uses
         schema: group.schema
       };
     });

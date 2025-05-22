@@ -25,7 +25,13 @@ export default function PerformanceChart({ results }) {
     x: result.mysql_avg_duration,   // x-axis is MySQL time
     y: result.postgres_avg_duration, // y-axis is PostgreSQL time
     z: result.difference_percent || 1, // z determines the size of dot - larger = bigger difference
-    queryType: result.query_type.replace(/_/g, ' ')
+    queryType: result.query_type.replace(/_/g, ' '),
+    mysql_count: result.mysql_count,
+    postgres_count: result.postgres_count,
+    mysql_p95: result.mysql_p95,
+    postgres_p95: result.postgres_p95,
+    mysql_stddev: result.mysql_stddev,
+    postgres_stddev: result.postgres_stddev,
   }));
 
   const CustomTooltip = ({ active, payload, label }) => {
@@ -35,23 +41,32 @@ export default function PerformanceChart({ results }) {
         <div className="p-4 border shadow-lg rounded-md bg-white opacity-95">
           <p className="text-base font-bold">{originalData ? originalData.test_name : label}</p>
           {originalData && <p className="text-sm text-gray-500 mb-2 capitalize">{originalData.query_type.replace(/_/g, ' ')}</p>}
+
+          <div className="text-xs text-gray-600 mb-2">
+            {originalData.mysql_count} runs<br />
+            P95: {originalData.mysql_p95.toFixed(2)}s<br />
+            σ: {originalData.mysql_stddev.toFixed(2)}s
+          </div>
+
           <div className="flex items-center text-blue-600 mb-1">
             <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
             <span className="font-medium">MySQL:</span>
             <span className="ml-1">{payload[0].value !== null ? payload[0].value.toFixed(3) + ' s' : 'N/A'}</span>
           </div>
-          <div className="flex items-center text-green-600">
+
+          <div className="flex items-center text-green-600 mb-1">
             <div className="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
             <span className="font-medium">PostgreSQL:</span>
             <span className="ml-1">{payload[1].value !== null ? payload[1].value.toFixed(3) + ' s' : 'N/A'}</span>
           </div>
+
           {originalData && originalData.winner !== 'Tie' && (
-          <div className="mt-2 pt-2 border-t text-sm">
-            <span className={`font-medium ${originalData.winner === 'MySQL' ? 'text-blue-600' : 'text-green-600'}`}>
-              {originalData.winner} is {originalData.difference_percent.toFixed(1)}% faster
-            </span>
-          </div>
-        )}
+            <div className="mt-2 pt-2 border-t text-sm">
+              <span className={`font-medium ${originalData.winner === 'MySQL' ? 'text-blue-600' : 'text-green-600'}`}>
+                {originalData.winner} is {originalData.difference_percent.toFixed(1)}% faster
+              </span>
+            </div>
+          )}
         </div>
       );
     }
@@ -67,6 +82,11 @@ export default function PerformanceChart({ results }) {
           <p className="text-sm text-gray-500 mb-2 capitalize">{data.queryType}</p>
 
           <div className="flex items-center text-blue-600 mb-1">
+            <div className="text-xs text-gray-600 ml-5 mt-0.5">
+              {data.postgres_count} runs<br />
+              P95: {data.postgres_p95.toFixed(2)}s<br />
+              σ: {data.postgres_stddev.toFixed(2)}s
+            </div>
             <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
             <span className="font-medium">MySQL:</span>
             <span className="ml-1">{data.MySQL.toFixed(3) + ' s'}</span>

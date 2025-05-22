@@ -194,26 +194,39 @@ export default function QueryTypeComparison({ results }) {
               } p-4 rounded-lg border shadow-sm`}
             >
               <div className="stat-title text-sm capitalize">{data.displayType}</div>
-              <div className={`stat-value text-sm ${
-                data.fasterDB === 'MySQL' ? 'text-blue-600' :
-                data.fasterDB === 'PostgreSQL' ? 'text-green-600' :
-                'text-gray-600'
-              }`}>
-                <div className="flex items-center">
-                  <TrendingUp className="mr-1" size={16} />
-                  {data.fasterDB !== 'Tie' ? data.fasterDB : 'Equal'}
+                <div className={`stat-value text-sm ${
+                  data.fasterDB === 'MySQL' ? 'text-blue-600' :
+                  data.fasterDB === 'PostgreSQL' ? 'text-green-600' :
+                  'text-gray-600'
+                }`}>
+                  <div className="flex items-center">
+                    <TrendingUp className="mr-1" size={16} />
+                    {data.fasterDB !== 'Tie' ? data.fasterDB : 'Equal'}
+                  </div>
                 </div>
-              </div>
-              <div className="stat-desc mt-1">
-                <div className="flex justify-between items-center text-xs">
-                  <span className="text-blue-600">{data.MySQL.toFixed(2)}s</span>
-                  <span className="text-gray-400">vs</span>
-                  <span className="text-green-600">{data.PostgreSQL.toFixed(2)}s</span>
-                </div>
-                <div className="progress-bar h-1.5 rounded-full bg-gray-200 mt-1 overflow-hidden">
-                  <div className="h-full bg-blue-500" style={{
-                    width: `${(data.mysqlWins / (data.mysqlWins + data.pgWins || 1)) * 100}%`
-                  }}></div>
+                <div className="stat-desc mt-1">
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="text-blue-600">
+                      {data.MySQL.toFixed(2)}s avg
+                    </span>
+                    <span className="text-gray-400">|</span>
+                    <span className="text-green-600">
+                      {data.PostgreSQL.toFixed(2)}s avg
+                    </span>
+                  </div>
+                  <div className="text-[10px] text-gray-500 mt-0.5">
+                    Based on {data.totalTests} tests
+                  </div>
+                  <div className="relative w-full bg-gray-200 rounded-full h-2 mt-2 overflow-hidden" title={`MySQL won ${data.mysqlWins}, PostgreSQL won ${data.pgWins}`}>
+                    <div
+                      className="absolute top-0 left-0 h-full bg-blue-500"
+                      style={{ width: `${((data.mysqlWins / ((data.mysqlWins + data.pgWins) || 1)) * 100).toFixed(1)}%` }}
+                    />
+                  </div>
+                  <div className="flex justify-between text-[10px] text-gray-400 mt-1">
+                    <span>MySQL wins</span>
+                    <span>PostgreSQL wins</span>
+
                 </div>
               </div>
             </div>
