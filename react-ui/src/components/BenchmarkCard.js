@@ -1,5 +1,6 @@
 import React from "react";
 import { Zap, Gauge, Timer, ArrowDown, Award, TrendingDown } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 
 export default function BenchmarkCard({ result }) {
      const {
@@ -57,6 +58,12 @@ export default function BenchmarkCard({ result }) {
     }
   };
 
+  const hasUnstableData = () => {
+    const lowRuns = mysql_count < 5 || postgres_count < 5;
+    const highVariance = mysql_stddev > mysql_avg_duration || postgres_stddev > postgres_avg_duration;
+    return lowRuns || highVariance;
+  };
+
   const styles = getCardStyle();
 
   const getIcon = () => {
@@ -88,14 +95,24 @@ export default function BenchmarkCard({ result }) {
           <h2 className="card-title text-base font-semibold leading-tight">
             {test_name}
           </h2>
-          {faster_db !== "N/A" && (
-            <div
-              className={`badge ${styles.badgeClass} gap-1 text-xs font-semibold`}
-            >
-              {getIcon()}
-              {faster_db}
-            </div>
-          )}
+          <div className="flex items-center gap-2">
+            {faster_db !== "N/A" && (
+              <div
+                className={`badge ${styles.badgeClass} gap-1 text-xs font-semibold`}
+              >
+                {getIcon()}
+                {faster_db}
+              </div>
+            )}
+            {hasUnstableData() && (
+              <div
+                className="tooltip tooltip-left"
+                data-tip="Unstable: low run count or high stddev"
+              >
+                <AlertCircle size={16} className="text-yellow-500" />
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="badge badge-outline badge-sm mb-3 capitalize font-medium">

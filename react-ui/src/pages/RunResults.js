@@ -74,11 +74,15 @@ const transformExecutionData = (executions) => {
   }, {});
 
   return Object.entries(groupedByQuery)
-    .filter(([_, group]) => group.mysql && group.postgres)
+    .filter(([_, group]) =>
+      group.mysql &&
+      group.postgres &&
+      (group.mysql.avg || 0) > 0 &&
+      (group.postgres.avg || 0) > 0
+    )
     .map(([key, group]) => {
       const mysql = group.mysql;
       const postgres = group.postgres;
-
       const mysqlAvg = mysql.avg || 0;
       const postgresAvg = postgres.avg || 0;
 
@@ -147,11 +151,26 @@ function TabOverviewContent({ results }) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 md:gap-5">
-        {results.map((result, idx) => (
-          <BenchmarkCard key={idx} result={result} />
-        ))}
-      </div>
+      {/* ✅ Scrollable cards area */}
+      <div className="max-h-[calc(100vh-220px)] overflow-y-auto pr-1 space-y-6">
+          {[...new Set(results.map(r => r.query_type))].map((type, idx) => {
+            const group = results.filter(r => r.query_type === type);
+            const formattedType = type.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+
+            return (
+              <div key={idx}>
+                <h3 className="text-lg font-semibold mb-2 text-gray-700 border-b pb-1">
+                  {formattedType}
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 md:gap-5">
+                  {group.map((result, i) => (
+                    <BenchmarkCard key={`${type}-${i}`} result={result} />
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
     </div>
   );
 }
