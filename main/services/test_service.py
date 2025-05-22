@@ -333,10 +333,20 @@ def run_edge_case_offsets(use_existing_metadata=None):
 def run_point_lookup(use_existing_metadata=None):
     if use_existing_metadata:
         run_id, run_uid = use_existing_metadata
-        return _generic_test_with_metadata(run_id, run_uid, tag="lookup", users=[2], run_time=7, spread=True,
-                                           steps_override=lambda s: basic_select(":db", s["t1"], repeat=10))
-    return _generic_extreme_suite(tag="lookup", users=[2], run_time=7, spread=True,
-                                  steps_override=lambda s: basic_select(":db", s["t1"], repeat=10))
+        return _generic_test_with_metadata(run_id, run_uid, tag="lookup", users=[2], run_time=30, spread=True,
+                                           steps_override=lambda s: basic_select(":db", s["t1"], repeat=1) +
+                                                                    basic_select(":db", s["t2"], repeat=1) +
+                                                                    basic_select(":db", s["t3"], repeat=1) +
+                                                                    basic_select(":db", s["t4"], repeat=1) +
+                                                                    basic_select(":db", s["t5"], repeat=1) +
+                                                                    basic_select(":db", s["t6"], repeat=1))
+    return _generic_extreme_suite(tag="lookup", users=[2], run_time=30, spread=True,
+                                  steps_override=lambda s: basic_select(":db", s["t1"], repeat=1) +
+                                                           basic_select(":db", s["t2"], repeat=1) +
+                                                           basic_select(":db", s["t3"], repeat=1) +
+                                                           basic_select(":db", s["t4"], repeat=1) +
+                                                           basic_select(":db", s["t5"], repeat=1) +
+                                                           basic_select(":db", s["t6"], repeat=1))
 
 
 def run_small_join_select(use_existing_metadata=None):
@@ -355,10 +365,14 @@ def run_dashboard_reads(use_existing_metadata=None):
     if use_existing_metadata:
         run_id, run_uid = use_existing_metadata
         return _generic_test_with_metadata(run_id, run_uid, tag="dash", users=[3], run_time=30, spread=True,
-                                           steps_override=lambda s: basic_select(":db", s["t1"], repeat=40) +
+                                           steps_override=lambda s: filtered_test(":db", s["t1"], repeat=20) +
+                                                                    filtered_test(":db", s["t5"], repeat=20) +
+                                                                    basic_select(":db", s["t3"], repeat=1) +
                                                                     pagination_test(":db", s["t1"], repeat=10))
     return _generic_extreme_suite(tag="dash", users=[3], run_time=30, spread=True,
-                                  steps_override=lambda s: basic_select(":db", s["t1"], repeat=40) +
+                                  steps_override=lambda s: filtered_test(":db", s["t1"], repeat=20) +
+                                                           filtered_test(":db", s["t5"], repeat=20) +
+                                                           basic_select(":db", s["t3"], repeat=1) +
                                                            pagination_test(":db", s["t1"], repeat=10))
 
 
@@ -387,7 +401,7 @@ def run_heavy_only(use_existing_metadata=None):
 
 
 def run_basic_queries_suite() -> Dict[str, Any]:
-    return _run_named_suite("Basic Queries", ["lookup"])
+    return _run_named_suite("Basic Queries", ["lookup", "dash"])
 
 def run_advanced_workload_suite() -> Dict[str, Any]:
     return _run_named_suite("Advanced Workload", ["heavy"])
