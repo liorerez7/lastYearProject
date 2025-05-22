@@ -18,4 +18,3 @@ export const getRun = async (id) => {
     id: data.id
   };
 };
-//export const getRun  = id => axios.get(`${API_URL}/runs/${id}`).then(r => r.data);
