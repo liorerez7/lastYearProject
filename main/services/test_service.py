@@ -240,11 +240,11 @@ def run_mix_workload(use_existing_metadata=None):
 def run_multi_user_smoke(use_existing_metadata=None):
     if use_existing_metadata:
         run_id, run_uid = use_existing_metadata
-        return _generic_test_with_metadata(run_id, run_uid, tag="smoke", users=[5, 10], run_time=15, spread=True,
+        return _generic_test_with_metadata(run_id, run_uid, tag="smoke", users=[5, 10], run_time=20, spread=True,
                                            steps_override=lambda s: basic_select(":db", s["t1"], repeat=25) +
                                                                     filtered_test(":db", s["t2"], repeat=25) +
                                                                     pure_count(":db", s["t1"], repeat=5))
-    return _generic_extreme_suite(tag="smoke", users=[5, 10], run_time=15, spread=True,
+    return _generic_extreme_suite(tag="smoke", users=[5, 10], run_time=20, spread=True,
                                   steps_override=lambda s: basic_select(":db", s["t1"], repeat=25) +
                                                            filtered_test(":db", s["t2"], repeat=25) +
                                                            pure_count(":db", s["t1"], repeat=5))
