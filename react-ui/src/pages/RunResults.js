@@ -1,35 +1,146 @@
-//import React from "react";
+//import React, { useState, useMemo } from "react";
 //import { useParams } from "react-router-dom";
 //import { useQuery } from "react-query";
 //import axios from "axios";
 //
+//// Icons from the new code
+//import { LayoutGrid, BarChartBig, FileText, Info as InfoIcon, AlertCircle, Bolt, ArrowRight, ScanLine } from "lucide-react"; // Renamed Info to InfoIcon to avoid conflict
+//
+//// Components from your original ("old") code structure
+//import BenchmarkCard from "../components/BenchmarkCard";
+//import BenchmarkSummary from "../components/BenchmarkSummary";
+//import PerformanceChart from "../components/PerformanceChart";
+//import QueryTypeComparison from "../components/QueryTypeComparison";
+//
+//// API URL from your old code
 //const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8080";
 //
+//// Data fetching function from your old code
 //const getExecutions = async (test_id) => {
 //  const res = await axios.get(`${API_URL}/executions?test_id=${test_id}`);
 //  return res.data;
 //};
 //
-//const RunResults = () => {
-//  const { test_id } = useParams(); // שמנו בפרמטר של ה־URL
-//  const { data, isLoading, isError } = useQuery(["executions", test_id], () => getExecutions(test_id));
+//// Data transformation function from your old code
+//// This function already calculates 'winner' and 'difference_percent'
+//// which are expected by your BenchmarkCard and BenchmarkSummary components.
+//const transformExecutionData = (executions) => {
+//  if (!executions || executions.length === 0) return [];
 //
-//  if (isLoading) return <div>טוען תוצאות...</div>;
-//  if (isError) return <div>שגיאה בטעינת התוצאות</div>;
+//  const groupedByQuery = executions.reduce((acc, exec) => {
+//    const key = `${exec.test_type}_${exec.query_type}`;
+//    if (!acc[key]) {
+//      acc[key] = {
+//        test_type: exec.test_type,
+//        query_type: exec.query_type,
+//        schema: exec.schema
+//      };
+//    }
+//    acc[key][exec.db_type] = exec;
+//    return acc;
+//  }, {});
 //
-//  return (
-//    <div className="p-6">
-//      <h1 className="text-xl font-bold mb-4">תוצאות גולמיות</h1>
-//      <pre style={{ background: "#f0f0f0", padding: "1rem", overflowX: "auto" }}>
-//        {JSON.stringify(data, null, 2)}
-//      </pre>
-//    </div>
-//  );
+//  return Object.entries(groupedByQuery)
+//    .filter(([_, group]) =>
+//      group.mysql &&
+//      group.postgres &&
+//      (group.mysql.avg || 0) > 0 &&
+//      (group.postgres.avg || 0) > 0
+//    )
+//    .map(([key, group]) => {
+//      const mysql = group.mysql;
+//      const postgres = group.postgres;
+//      const mysqlAvg = mysql.avg || 0;
+//      const postgresAvg = postgres.avg || 0;
+//
+//      const mysqlCount = mysql.executions_count || 0;
+//      const postgresCount = postgres.executions_count || 0;
+//
+//      let winner = 'Tie';
+//      if (mysqlAvg !== postgresAvg) {
+//        winner = mysqlAvg < postgresAvg ? 'MySQL' : 'PostgreSQL';
+//      }
+//
+//      let difference_percent = 0;
+//      if (winner !== 'Tie') {
+//        const fasterAvg = Math.min(mysqlAvg, postgresAvg);
+//        const slowerAvg = Math.max(mysqlAvg, postgresAvg);
+//        difference_percent = fasterAvg > 0 ? ((slowerAvg - fasterAvg) / fasterAvg) * 100 : 100;
+//      }
+//
+//      return {
+//        test_name: group.test_type || key,
+//        mysql_avg_duration: mysqlAvg,
+//        postgres_avg_duration: postgresAvg,
+//        mysql_stddev: mysql.stddev || 0,
+//        postgres_stddev: postgres.stddev || 0,
+//        mysql_p95: mysql.p95 || 0,
+//        postgres_p95: postgres.p95 || 0,
+//        mysql_count: mysqlCount,
+//        postgres_count: postgresCount,
+//        query_type: group.query_type || 'N/A',
+//        difference_percent,
+//        winner,
+//        schema: group.schema
+//      };
+//    });
 //};
 //
-//export default RunResults;
-
-
+//// Tab Content Components (adapted from your old code's conditional rendering)
+//
+//function TabOverviewContent({ results }) {
+//  const mysqlWins = results.filter(r => r.winner === 'MySQL').length;
+//  const pgWins = results.filter(r => r.winner === 'PostgreSQL').length;
+//
+//  return (
+//    <div className="p-4 md:p-6">
+//      <div className="flex flex-wrap items-stretch gap-3 mb-6 md:mb-6">
+//        <div className="flex-1 min-w-[200px] rounded-lg border border-blue-200 bg-blue-50 p-3 shadow-sm">
+//          <div className="flex items-center gap-3">
+//            <Bolt size={20} className="text-blue-600" />
+//            <div>
+//              <div className="text-sm font-semibold text-blue-700">MySQL Wins</div>
+//              <div className="text-xl font-bold text-blue-800">{mysqlWins}</div>
+//              <div className="text-xs text-gray-500 mt-0.5">Tests where MySQL performed better</div>
+//            </div>
+//          </div>
+//        </div>
+//
+//        <div className="flex-1 min-w-[200px] rounded-lg border border-green-200 bg-green-50 p-3 shadow-sm">
+//          <div className="flex items-center gap-3">
+//            <Bolt size={20} className="text-green-600" />
+//            <div>
+//              <div className="text-sm font-semibold text-green-700">PostgreSQL Wins</div>
+//              <div className="text-xl font-bold text-green-800">{pgWins}</div>
+//              <div className="text-xs text-gray-500 mt-0.5">Tests where PostgreSQL performed better</div>
+//            </div>
+//          </div>
+//        </div>
+//      </div>
+//
+//      {/* ✅ Scrollable cards area */}
+//      <div className="max-h-[calc(100vh-220px)] overflow-y-auto pr-1 space-y-6">
+//          {[...new Set(results.map(r => r.query_type))].map((type, idx) => {
+//            const group = results.filter(r => r.query_type === type);
+//            const formattedType = type.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+//
+//            return (
+//              <div key={idx}>
+//                <h3 className="text-lg font-semibold mb-2 text-gray-700 border-b pb-1">
+//                  {formattedType}
+//                </h3>
+//                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 md:gap-5">
+//                  {group.map((result, i) => (
+//                    <BenchmarkCard key={`${type}-${i}`} result={result} />
+//                  ))}
+//                </div>
+//              </div>
+//            );
+//          })}
+//        </div>
+//    </div>
+//  );
+//}
 
 import React, { useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
@@ -37,7 +148,7 @@ import { useQuery } from "react-query";
 import axios from "axios";
 
 // Icons from the new code
-import { LayoutGrid, BarChartBig, FileText, Info as InfoIcon, AlertCircle, Bolt, ArrowRight, ScanLine } from "lucide-react"; // Renamed Info to InfoIcon to avoid conflict
+import { LayoutGrid, BarChartBig, FileText, Info as InfoIcon, AlertCircle, Bolt, ArrowRight, ScanLine, Users, Filter, X, Timer } from "lucide-react";
 
 // Components from your original ("old") code structure
 import BenchmarkCard from "../components/BenchmarkCard";
@@ -55,8 +166,6 @@ const getExecutions = async (test_id) => {
 };
 
 // Data transformation function from your old code
-// This function already calculates 'winner' and 'difference_percent'
-// which are expected by your BenchmarkCard and BenchmarkSummary components.
 const transformExecutionData = (executions) => {
   if (!executions || executions.length === 0) return [];
 
@@ -119,50 +228,185 @@ const transformExecutionData = (executions) => {
     });
 };
 
-// Tab Content Components (adapted from your old code's conditional rendering)
+// Filter Component
+function LoadLevelFilter({ userLevels, selectedLevel, onLevelChange }) {
+  const [isOpen, setIsOpen] = useState(false);
 
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 transition-colors font-medium text-gray-700"
+      >
+        <Filter size={16} />
+        <span>
+          {selectedLevel ? `${selectedLevel} Users` : 'All Load Levels'}
+        </span>
+        <span className="ml-1 text-gray-400">▼</span>
+      </button>
+
+      {isOpen && (
+        <div className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10 min-w-[200px]">
+          <div className="p-2">
+            <button
+              onClick={() => {
+                onLevelChange(null);
+                setIsOpen(false);
+              }}
+              className={`w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 transition-colors flex items-center gap-2 ${
+                !selectedLevel ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-700'
+              }`}
+            >
+              <Users size={14} />
+              All Load Levels
+              {!selectedLevel && <span className="ml-auto text-blue-600">✓</span>}
+            </button>
+            {userLevels.map(level => (
+              <button
+                key={level}
+                onClick={() => {
+                  onLevelChange(level);
+                  setIsOpen(false);
+                }}
+                className={`w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 transition-colors flex items-center gap-2 ${
+                  selectedLevel === level ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-700'
+                }`}
+              >
+                <Users size={14} />
+                {level} Users
+                {selectedLevel === level && <span className="ml-auto text-blue-600">✓</span>}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Tab Content Components
 function TabOverviewContent({ results }) {
-  const mysqlWins = results.filter(r => r.winner === 'MySQL').length;
-  const pgWins = results.filter(r => r.winner === 'PostgreSQL').length;
+  const [selectedUserLevel, setSelectedUserLevel] = useState(null);
+
+  // Extract user levels and filter results
+  const { userLevels, filteredResults } = useMemo(() => {
+    const extractUserCount = (testName) => {
+      const match = testName.match(/(\d+)u/);
+      return match ? parseInt(match[1]) : null;
+    };
+
+    const levels = [...new Set(results.map(r => extractUserCount(r.test_name)).filter(Boolean))].sort((a, b) => a - b);
+
+    const filtered = selectedUserLevel
+      ? results.filter(r => extractUserCount(r.test_name) === selectedUserLevel)
+      : results;
+
+    return { userLevels: levels, filteredResults: filtered };
+  }, [results, selectedUserLevel]);
+
+  const mysqlWins = filteredResults.filter(r => r.winner === 'MySQL').length;
+  const pgWins = filteredResults.filter(r => r.winner === 'PostgreSQL').length;
+  const totalTests = filteredResults.length;
 
   return (
     <div className="p-4 md:p-6">
-      <div className="flex flex-wrap items-stretch gap-3 mb-6 md:mb-6">
-        <div className="flex-1 min-w-[200px] rounded-lg border border-blue-200 bg-blue-50 p-3 shadow-sm">
-          <div className="flex items-center gap-3">
-            <Bolt size={20} className="text-blue-600" />
-            <div>
-              <div className="text-sm font-semibold text-blue-700">MySQL Wins</div>
-              <div className="text-xl font-bold text-blue-800">{mysqlWins}</div>
-              <div className="text-xs text-gray-500 mt-0.5">Tests where MySQL performed better</div>
+      {/* Header with stats and filter */}
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
+        <div className="flex flex-wrap items-stretch gap-3">
+          <div className="flex-1 min-w-[180px] rounded-xl border border-blue-200 bg-gradient-to-r from-blue-50 to-blue-100 p-4 shadow-sm">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-blue-200 rounded-lg">
+                <Bolt size={20} className="text-blue-700" />
+              </div>
+              <div>
+                <div className="text-sm font-semibold text-blue-700">MySQL Wins</div>
+                <div className="text-2xl font-bold text-blue-800">{mysqlWins}</div>
+                <div className="text-xs text-blue-600 mt-0.5">
+                  {totalTests > 0 ? `${((mysqlWins / totalTests) * 100).toFixed(1)}% of tests` : '0% of tests'}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex-1 min-w-[180px] rounded-xl border border-green-200 bg-gradient-to-r from-green-50 to-green-100 p-4 shadow-sm">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-green-200 rounded-lg">
+                <Bolt size={20} className="text-green-700" />
+              </div>
+              <div>
+                <div className="text-sm font-semibold text-green-700">PostgreSQL Wins</div>
+                <div className="text-2xl font-bold text-green-800">{pgWins}</div>
+                <div className="text-xs text-green-600 mt-0.5">
+                  {totalTests > 0 ? `${((pgWins / totalTests) * 100).toFixed(1)}% of tests` : '0% of tests'}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex-1 min-w-[180px] rounded-xl border border-gray-200 bg-gradient-to-r from-gray-50 to-gray-100 p-4 shadow-sm">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-gray-200 rounded-lg">
+                <ScanLine size={20} className="text-gray-700" />
+              </div>
+              <div>
+                <div className="text-sm font-semibold text-gray-700">Total Tests</div>
+                <div className="text-2xl font-bold text-gray-800">{totalTests}</div>
+                <div className="text-xs text-gray-600 mt-0.5">
+                  {selectedUserLevel ? `${selectedUserLevel} user load` : 'All load levels'}
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="flex-1 min-w-[200px] rounded-lg border border-green-200 bg-green-50 p-3 shadow-sm">
-          <div className="flex items-center gap-3">
-            <Bolt size={20} className="text-green-600" />
-            <div>
-              <div className="text-sm font-semibold text-green-700">PostgreSQL Wins</div>
-              <div className="text-xl font-bold text-green-800">{pgWins}</div>
-              <div className="text-xs text-gray-500 mt-0.5">Tests where PostgreSQL performed better</div>
-            </div>
-          </div>
+        {/* Filter */}
+        <div className="flex items-center gap-3">
+          {selectedUserLevel && (
+            <button
+              onClick={() => setSelectedUserLevel(null)}
+              className="flex items-center gap-2 px-3 py-2 bg-red-50 text-red-700 border border-red-200 rounded-lg hover:bg-red-100 transition-colors text-sm font-medium"
+            >
+              <X size={14} />
+              Clear Filter
+            </button>
+          )}
+          <LoadLevelFilter
+            userLevels={userLevels}
+            selectedLevel={selectedUserLevel}
+            onLevelChange={setSelectedUserLevel}
+          />
         </div>
       </div>
 
-      {/* ✅ Scrollable cards area */}
-      <div className="max-h-[calc(100vh-220px)] overflow-y-auto pr-1 space-y-6">
-          {[...new Set(results.map(r => r.query_type))].map((type, idx) => {
-            const group = results.filter(r => r.query_type === type);
+      {/* Results */}
+      {filteredResults.length === 0 ? (
+        <div className="text-center py-12">
+          <div className="text-gray-500 text-lg mb-2">No results found</div>
+          <div className="text-gray-400 text-sm">
+            {selectedUserLevel
+              ? `No tests found for ${selectedUserLevel} user load level`
+              : 'No benchmark results available'
+            }
+          </div>
+        </div>
+      ) : (
+        <div className="max-h-[calc(100vh-280px)] overflow-y-auto pr-1 space-y-8">
+          {[...new Set(filteredResults.map(r => r.query_type))].map((type, idx) => {
+            const group = filteredResults.filter(r => r.query_type === type);
             const formattedType = type.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
 
             return (
-              <div key={idx}>
-                <h3 className="text-lg font-semibold mb-2 text-gray-700 border-b pb-1">
-                  {formattedType}
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 md:gap-5">
+              <div key={idx} className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-2 bg-white rounded-lg shadow-sm">
+                    <Timer size={20} className="text-gray-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-800">{formattedType}</h3>
+                    <p className="text-sm text-gray-600">{group.length} test{group.length !== 1 ? 's' : ''}</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                   {group.map((result, i) => (
                     <BenchmarkCard key={`${type}-${i}`} result={result} />
                   ))}
@@ -171,6 +415,7 @@ function TabOverviewContent({ results }) {
             );
           })}
         </div>
+      )}
     </div>
   );
 }
