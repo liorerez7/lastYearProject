@@ -1,147 +1,3 @@
-//import React, { useState, useMemo } from "react";
-//import { useParams } from "react-router-dom";
-//import { useQuery } from "react-query";
-//import axios from "axios";
-//
-//// Icons from the new code
-//import { LayoutGrid, BarChartBig, FileText, Info as InfoIcon, AlertCircle, Bolt, ArrowRight, ScanLine } from "lucide-react"; // Renamed Info to InfoIcon to avoid conflict
-//
-//// Components from your original ("old") code structure
-//import BenchmarkCard from "../components/BenchmarkCard";
-//import BenchmarkSummary from "../components/BenchmarkSummary";
-//import PerformanceChart from "../components/PerformanceChart";
-//import QueryTypeComparison from "../components/QueryTypeComparison";
-//
-//// API URL from your old code
-//const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8080";
-//
-//// Data fetching function from your old code
-//const getExecutions = async (test_id) => {
-//  const res = await axios.get(`${API_URL}/executions?test_id=${test_id}`);
-//  return res.data;
-//};
-//
-//// Data transformation function from your old code
-//// This function already calculates 'winner' and 'difference_percent'
-//// which are expected by your BenchmarkCard and BenchmarkSummary components.
-//const transformExecutionData = (executions) => {
-//  if (!executions || executions.length === 0) return [];
-//
-//  const groupedByQuery = executions.reduce((acc, exec) => {
-//    const key = `${exec.test_type}_${exec.query_type}`;
-//    if (!acc[key]) {
-//      acc[key] = {
-//        test_type: exec.test_type,
-//        query_type: exec.query_type,
-//        schema: exec.schema
-//      };
-//    }
-//    acc[key][exec.db_type] = exec;
-//    return acc;
-//  }, {});
-//
-//  return Object.entries(groupedByQuery)
-//    .filter(([_, group]) =>
-//      group.mysql &&
-//      group.postgres &&
-//      (group.mysql.avg || 0) > 0 &&
-//      (group.postgres.avg || 0) > 0
-//    )
-//    .map(([key, group]) => {
-//      const mysql = group.mysql;
-//      const postgres = group.postgres;
-//      const mysqlAvg = mysql.avg || 0;
-//      const postgresAvg = postgres.avg || 0;
-//
-//      const mysqlCount = mysql.executions_count || 0;
-//      const postgresCount = postgres.executions_count || 0;
-//
-//      let winner = 'Tie';
-//      if (mysqlAvg !== postgresAvg) {
-//        winner = mysqlAvg < postgresAvg ? 'MySQL' : 'PostgreSQL';
-//      }
-//
-//      let difference_percent = 0;
-//      if (winner !== 'Tie') {
-//        const fasterAvg = Math.min(mysqlAvg, postgresAvg);
-//        const slowerAvg = Math.max(mysqlAvg, postgresAvg);
-//        difference_percent = fasterAvg > 0 ? ((slowerAvg - fasterAvg) / fasterAvg) * 100 : 100;
-//      }
-//
-//      return {
-//        test_name: group.test_type || key,
-//        mysql_avg_duration: mysqlAvg,
-//        postgres_avg_duration: postgresAvg,
-//        mysql_stddev: mysql.stddev || 0,
-//        postgres_stddev: postgres.stddev || 0,
-//        mysql_p95: mysql.p95 || 0,
-//        postgres_p95: postgres.p95 || 0,
-//        mysql_count: mysqlCount,
-//        postgres_count: postgresCount,
-//        query_type: group.query_type || 'N/A',
-//        difference_percent,
-//        winner,
-//        schema: group.schema
-//      };
-//    });
-//};
-//
-//// Tab Content Components (adapted from your old code's conditional rendering)
-//
-//function TabOverviewContent({ results }) {
-//  const mysqlWins = results.filter(r => r.winner === 'MySQL').length;
-//  const pgWins = results.filter(r => r.winner === 'PostgreSQL').length;
-//
-//  return (
-//    <div className="p-4 md:p-6">
-//      <div className="flex flex-wrap items-stretch gap-3 mb-6 md:mb-6">
-//        <div className="flex-1 min-w-[200px] rounded-lg border border-blue-200 bg-blue-50 p-3 shadow-sm">
-//          <div className="flex items-center gap-3">
-//            <Bolt size={20} className="text-blue-600" />
-//            <div>
-//              <div className="text-sm font-semibold text-blue-700">MySQL Wins</div>
-//              <div className="text-xl font-bold text-blue-800">{mysqlWins}</div>
-//              <div className="text-xs text-gray-500 mt-0.5">Tests where MySQL performed better</div>
-//            </div>
-//          </div>
-//        </div>
-//
-//        <div className="flex-1 min-w-[200px] rounded-lg border border-green-200 bg-green-50 p-3 shadow-sm">
-//          <div className="flex items-center gap-3">
-//            <Bolt size={20} className="text-green-600" />
-//            <div>
-//              <div className="text-sm font-semibold text-green-700">PostgreSQL Wins</div>
-//              <div className="text-xl font-bold text-green-800">{pgWins}</div>
-//              <div className="text-xs text-gray-500 mt-0.5">Tests where PostgreSQL performed better</div>
-//            </div>
-//          </div>
-//        </div>
-//      </div>
-//
-//      {/* ✅ Scrollable cards area */}
-//      <div className="max-h-[calc(100vh-220px)] overflow-y-auto pr-1 space-y-6">
-//          {[...new Set(results.map(r => r.query_type))].map((type, idx) => {
-//            const group = results.filter(r => r.query_type === type);
-//            const formattedType = type.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-//
-//            return (
-//              <div key={idx}>
-//                <h3 className="text-lg font-semibold mb-2 text-gray-700 border-b pb-1">
-//                  {formattedType}
-//                </h3>
-//                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 md:gap-5">
-//                  {group.map((result, i) => (
-//                    <BenchmarkCard key={`${type}-${i}`} result={result} />
-//                  ))}
-//                </div>
-//              </div>
-//            );
-//          })}
-//        </div>
-//    </div>
-//  );
-//}
-
 import React, { useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
@@ -167,17 +23,62 @@ const getExecutions = async (test_id) => {
 
 // Data transformation function from your old code
 const transformExecutionData = (executions) => {
-  if (!executions || executions.length === 0) return [];
 
+
+  const normalizeQuery = (query) => {
+    return query
+      .replace(/`/g, '"')           // שנה backticks לציטוט כפול
+      .replace(/\s+/g, ' ')         // הסר רווחים כפולים
+      .trim();                      // הסר רווחים בתחילה ובסוף
+  };
+
+  if (!executions || executions.length === 0) return [];
+  console.log("🔄 [transformExecutionData] Raw executions:", executions);
   const groupedByQuery = executions.reduce((acc, exec) => {
+    console.log("🔎 FULL EXEC OBJECT:", exec);
     const key = `${exec.test_type}_${exec.query_type}`;
     if (!acc[key]) {
       acc[key] = {
         test_type: exec.test_type,
         query_type: exec.query_type,
-        schema: exec.schema
+        schema: exec.schema,
+        // NEW: Collect all SQL queries for this group
+        sql_queries: new Set(),
+        // NEW: Store load level information
+        load_levels: new Set()
       };
     }
+
+    // NEW: Add SQL query if it exists
+    if (exec.sql_query) {
+      acc[key].sql_queries.add(exec.sql_query);
+      console.log(`✅ [transformExecutionData] Added sql_query for ${key}:`, exec.sql_query);
+    }else {
+        console.log("⚠️ [transformExecutionData] NO exec.sql_query for", exec.test_type, exec.db_type);
+    }
+
+    // NEW: Add any query from json_data if it exists
+    if (exec.queries && Array.isArray(exec.queries)) {
+  console.log("📥 [transformExecutionData] found queries in", exec.test_type, exec.db_type, exec.queries);
+
+  exec.queries.forEach(item => {
+    if (item && item.query && item.query.trim()) {
+      const normalized = normalizeQuery(item.query);
+      acc[key].sql_queries.add(normalized);
+      console.log("✅ [transformExecutionData] added normalized query:", normalized);
+    }
+  });
+} else {
+  console.warn("⚠️ [transformExecutionData] NO queries field for", exec.test_type, exec.db_type);
+}
+
+
+
+    // NEW: Add load level information (using selector as load indicator based on your data)
+    if (exec.selector !== undefined && exec.selector !== null) {
+      acc[key].load_levels.add(exec.selector);
+    }
+
     acc[key][exec.db_type] = exec;
     return acc;
   }, {});
@@ -223,7 +124,12 @@ const transformExecutionData = (executions) => {
         query_type: group.query_type || 'N/A',
         difference_percent,
         winner,
-        schema: group.schema
+        schema: group.schema,
+        // NEW: Add the SQL queries and load information
+        sql_queries: Array.from(group.sql_queries),
+        load_level: group.load_levels.size > 0 ? Math.max(...Array.from(group.load_levels)) : 0,
+        // NEW: Store original execution data for more detailed analysis
+        json_data: mysql.json_data || postgres.json_data || null
       };
     });
 };
@@ -421,84 +327,188 @@ function TabOverviewContent({ results }) {
 }
 
 function TabChartsContent({ results }) {
-  // This is the "Performance Distribution" section from your new code's TabCharts.
-  // It's a bit different from just showing PerformanceChart.
-  // We can include PerformanceChart and then this new distribution.
   const mysqlLeadPercentage = results.length > 0 ? (results.filter(r => r.winner === 'MySQL').length / results.length) * 100 : 0;
   const pgLeadPercentage = results.length > 0 ? (results.filter(r => r.winner === 'PostgreSQL').length / results.length) * 100 : 0;
+  const tiePercentage = results.length > 0 ? (results.filter(r => r.winner === 'Tie').length / results.length) * 100 : 0;
+
+  // Get top performers for each database
+  const topMySQLWins = results
+    .filter(r => r.winner === 'MySQL')
+    .sort((a, b) => b.difference_percent - a.difference_percent)
+    .slice(0, 5);
+
+  const topPostgreSQLWins = results
+    .filter(r => r.winner === 'PostgreSQL')
+    .sort((a, b) => b.difference_percent - a.difference_percent)
+    .slice(0, 5);
+
+  const generateFriendlyName = (testName, queryType) => {
+    const userCount = testName.match(/(\d+)u/)?.[1];
+    const baseType = testName.replace(/_\d+u$/, '').replace(/_/g, ' ');
+    const formattedQueryType = queryType?.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase()) || 'Unknown';
+
+    const typeMap = {
+      'smoke': 'Performance Test',
+      'lookup': 'Data Lookup',
+      'insert': 'Insert Operation',
+      'update': 'Update Operation',
+      'delete': 'Delete Operation',
+      'complex': 'Complex Query'
+    };
+
+    const friendlyType = typeMap[baseType.toLowerCase()] || baseType.charAt(0).toUpperCase() + baseType.slice(1);
+
+    return userCount ? `${friendlyType} - ${formattedQueryType} (${userCount}u)` : `${friendlyType} - ${formattedQueryType}`;
+  };
 
   return (
     <div className="p-4 md:p-6 space-y-8">
+      {/* Enhanced Performance Chart */}
       <PerformanceChart results={results} />
 
-      <div className="divider my-6 md:my-8">
-        <div className="badge badge-lg bg-base-200 border-base-300 py-3 px-4">Performance Distribution</div>
+      <div className="divider my-8">
+        <div className="badge badge-lg bg-gradient-to-r from-blue-100 to-green-100 border-gray-300 py-3 px-6 text-gray-700 font-semibold">
+          Performance Analysis
+        </div>
       </div>
 
-      <div className="bg-gradient-to-r from-blue-50 via-purple-50 to-green-50 p-4 md:p-6 rounded-xl shadow-md border border-base-200">
-        <h3 className="text-lg md:text-xl font-bold mb-4 flex items-center text-neutral-700">
-          <ScanLine className="mr-2 opacity-70" />
-          Database Lead in Tests
+      {/* Overall Statistics */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl border border-blue-200 shadow-sm">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-blue-200 rounded-lg">
+              <Bolt size={20} className="text-blue-700" />
+            </div>
+            <div>
+              <div className="text-sm font-semibold text-blue-700">MySQL Dominance</div>
+              <div className="text-2xl font-bold text-blue-800">{mysqlLeadPercentage.toFixed(1)}%</div>
+              <div className="text-xs text-blue-600">of all benchmark tests</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-xl border border-green-200 shadow-sm">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-green-200 rounded-lg">
+              <Bolt size={20} className="text-green-700" />
+            </div>
+            <div>
+              <div className="text-sm font-semibold text-green-700">PostgreSQL Dominance</div>
+              <div className="text-2xl font-bold text-green-800">{pgLeadPercentage.toFixed(1)}%</div>
+              <div className="text-xs text-green-600">of all benchmark tests</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-4 rounded-xl border border-gray-200 shadow-sm">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-gray-200 rounded-lg">
+              <ScanLine size={20} className="text-gray-700" />
+            </div>
+            <div>
+              <div className="text-sm font-semibold text-gray-700">Tied Results</div>
+              <div className="text-2xl font-bold text-gray-800">{tiePercentage.toFixed(1)}%</div>
+              <div className="text-xs text-gray-600">negligible differences</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Performance Leaders */}
+      <div className="bg-gradient-to-r from-blue-50 via-purple-50 to-green-50 p-6 rounded-xl shadow-md border border-gray-200">
+        <h3 className="text-xl font-bold mb-6 flex items-center text-gray-800">
+          <ScanLine className="mr-3 text-gray-600" size={24} />
+          Top Performance Leaders
         </h3>
 
-        <div className="flex flex-col md:flex-row gap-6">
-          {/* MySQL Lead Section */}
-          <div className="flex-1 card bg-white p-4 shadow rounded-lg border border-blue-100">
-            <div className="mb-3 text-center">
-              <span className="text-sm font-semibold text-blue-600">MySQL Performance Lead</span>
-              <div className="w-full bg-gray-200 rounded-full h-3.5 my-1.5">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* MySQL Top Wins */}
+          <div className="bg-white p-5 shadow-lg rounded-xl border border-blue-100">
+            <div className="mb-4">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-4 h-4 bg-blue-500 rounded-full"></div>
+                <span className="text-lg font-bold text-blue-700">MySQL Top Wins</span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-4">
                 <div
-                  className="bg-blue-500 h-3.5 rounded-full transition-all duration-500 ease-out"
-                  style={{ width: `${mysqlLeadPercentage}%` }}
+                  className="bg-gradient-to-r from-blue-400 to-blue-600 h-4 rounded-full transition-all duration-1000 ease-out shadow-sm"
+                  style={{ width: `${Math.min(mysqlLeadPercentage, 100)}%` }}
                 ></div>
               </div>
-              <div className="text-xs text-gray-500">
-                MySQL was faster in <strong>{mysqlLeadPercentage.toFixed(0)}%</strong> of tests
+              <div className="text-sm text-gray-600 mt-2">
+                Leading in <strong>{mysqlLeadPercentage.toFixed(0)}%</strong> of benchmarks
               </div>
             </div>
-            <div className="space-y-2 max-h-48 overflow-y-auto pr-2">
-              {results
-                .filter(r => r.winner === 'MySQL')
-                .slice(0, 4) // Show top few examples
-                .map((result, idx) => (
-                  <div key={`mysql-win-${idx}`} className="bg-blue-50 p-2.5 rounded-md shadow-sm border border-blue-100 text-xs">
-                    <div className="font-medium text-blue-700">{result.test_name}</div>
-                    <div className="text-gray-600 mt-0.5">
-                      {result.difference_percent.toFixed(1)}% faster than PostgreSQL
+
+            <div className="space-y-3 max-h-64 overflow-y-auto pr-2">
+              {topMySQLWins.length > 0 ? (
+                topMySQLWins.map((result, idx) => (
+                  <div key={`mysql-win-${idx}`} className="bg-blue-50 p-3 rounded-lg shadow-sm border border-blue-100 hover:shadow-md transition-shadow">
+                    <div className="font-semibold text-blue-800 text-sm mb-1">
+                      {generateFriendlyName(result.test_name, result.query_type)}
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-gray-600">Performance advantage:</span>
+                      <span className="text-sm font-bold text-blue-600">
+                        {result.difference_percent.toFixed(1)}% faster
+                      </span>
+                    </div>
+                    <div className="text-xs text-gray-500 mt-1">
+                      MySQL: {(result.mysql_avg_duration * 1000).toFixed(1)}ms •
+                      PostgreSQL: {(result.postgres_avg_duration * 1000).toFixed(1)}ms
                     </div>
                   </div>
                 ))
-              }
+              ) : (
+                <div className="text-center py-8 text-gray-500">
+                  <div className="text-sm">No MySQL wins found</div>
+                </div>
+              )}
             </div>
           </div>
 
-          {/* PostgreSQL Lead Section */}
-          <div className="flex-1 card bg-white p-4 shadow rounded-lg border border-green-100">
-            <div className="mb-3 text-center">
-              <span className="text-sm font-semibold text-green-600">PostgreSQL Performance Lead</span>
-              <div className="w-full bg-gray-200 rounded-full h-3.5 my-1.5">
+          {/* PostgreSQL Top Wins */}
+          <div className="bg-white p-5 shadow-lg rounded-xl border border-green-100">
+            <div className="mb-4">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-4 h-4 bg-green-500 rounded-full"></div>
+                <span className="text-lg font-bold text-green-700">PostgreSQL Top Wins</span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-4">
                 <div
-                  className="bg-green-500 h-3.5 rounded-full transition-all duration-500 ease-out"
-                  style={{ width: `${pgLeadPercentage}%` }}
+                  className="bg-gradient-to-r from-green-400 to-green-600 h-4 rounded-full transition-all duration-1000 ease-out shadow-sm"
+                  style={{ width: `${Math.min(pgLeadPercentage, 100)}%` }}
                 ></div>
               </div>
-              <div className="text-xs text-gray-500">
-                PostgreSQL was faster in <strong>{pgLeadPercentage.toFixed(0)}%</strong> of tests
+              <div className="text-sm text-gray-600 mt-2">
+                Leading in <strong>{pgLeadPercentage.toFixed(0)}%</strong> of benchmarks
               </div>
             </div>
-            <div className="space-y-2 max-h-48 overflow-y-auto pr-2">
-              {results
-                .filter(r => r.winner === 'PostgreSQL')
-                .slice(0, 4) // Show top few examples
-                .map((result, idx) => (
-                  <div key={`pg-win-${idx}`} className="bg-green-50 p-2.5 rounded-md shadow-sm border border-green-100 text-xs">
-                    <div className="font-medium text-green-700">{result.test_name}</div>
-                    <div className="text-gray-600 mt-0.5">
-                      {result.difference_percent.toFixed(1)}% faster than MySQL
+
+            <div className="space-y-3 max-h-64 overflow-y-auto pr-2">
+              {topPostgreSQLWins.length > 0 ? (
+                topPostgreSQLWins.map((result, idx) => (
+                  <div key={`pg-win-${idx}`} className="bg-green-50 p-3 rounded-lg shadow-sm border border-green-100 hover:shadow-md transition-shadow">
+                    <div className="font-semibold text-green-800 text-sm mb-1">
+                      {generateFriendlyName(result.test_name, result.query_type)}
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-gray-600">Performance advantage:</span>
+                      <span className="text-sm font-bold text-green-600">
+                        {result.difference_percent.toFixed(1)}% faster
+                      </span>
+                    </div>
+                    <div className="text-xs text-gray-500 mt-1">
+                      PostgreSQL: {(result.postgres_avg_duration * 1000).toFixed(1)}ms •
+                      MySQL: {(result.mysql_avg_duration * 1000).toFixed(1)}ms
                     </div>
                   </div>
                 ))
-              }
+              ) : (
+                <div className="text-center py-8 text-gray-500">
+                  <div className="text-sm">No PostgreSQL wins found</div>
+                </div>
+              )}
             </div>
           </div>
         </div>

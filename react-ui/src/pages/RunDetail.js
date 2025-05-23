@@ -1,163 +1,252 @@
 import React from "react";
+import { Clock, Calendar, Database, Cloud, Play, CheckCircle, XCircle, AlertCircle, Eye } from "lucide-react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { getRun } from "../api/runs_api";
 
 const RunDetail = () => {
   const { id } = useParams();
-  const { data: run, isLoading, isError } = useQuery(["run", id], () => getRun(id));
 
-  // Function to format date in a more compact way
+  const {
+  data: run,
+  isLoading,
+  isError,
+  refetch,
+} = useQuery(["run", id], () => getRun(id), {
+  refetchInterval: (data) => {
+    if (!data) return 3000; // עדיין לא נטען
+    return data.status === "done" || data.status === "completed" ? false : 3000;
+  },
+  refetchIntervalInBackground: true
+});
+
+
+  if (isLoading) {
+    return <div className="p-6 text-center text-neutral-500">Loading run details...</div>;
+  }
+
+  if (isError || !run) {
+    return <div className="p-6 text-center text-red-500">Failed to load run data.</div>;
+  }
+
   const formatDate = (dateString) => {
     if (!dateString) return "—";
     const date = new Date(dateString);
-    return date.toLocaleString("en-GB", {
-      day: "2-digit",
+    return date.toLocaleString("en-US", {
       month: "short",
+      day: "numeric",
       year: "numeric",
       hour: "2-digit",
       minute: "2-digit",
+      hour12: true,
     });
   };
 
-  // Function to calculate duration between start and end times
   const calculateDuration = (start, end) => {
     if (!start || !end) return "—";
-
     const startTime = new Date(start);
     const endTime = new Date(end);
     const diffMs = endTime - startTime;
-
     const minutes = Math.floor(diffMs / 60000);
     const seconds = Math.floor((diffMs % 60000) / 1000);
-
     return `${minutes}m ${seconds}s`;
   };
 
-  // Function to determine status badge styling
-  const getStatusBadgeClasses = (status) => {
+  const getStatusConfig = (status) => {
     switch (status?.toLowerCase()) {
       case "done":
-        return "bg-green-100 text-green-800 border border-green-200";
+      case "completed":
+        return {
+          color: "text-emerald-700",
+          bg: "bg-emerald-50",
+          border: "border-emerald-200",
+          icon: CheckCircle,
+          label: "Completed"
+        };
       case "pending":
-        return "bg-yellow-100 text-yellow-800 border border-yellow-200";
+        return {
+          color: "text-amber-700",
+          bg: "bg-amber-50",
+          border: "border-amber-200",
+          icon: AlertCircle,
+          label: "Pending"
+        };
+      case "running":
+        return {
+          color: "text-blue-700",
+          bg: "bg-blue-50",
+          border: "border-blue-200",
+          icon: Play,
+          label: "Running"
+        };
       case "failed":
-        return "bg-red-100 text-red-800 border border-red-200";
+        return {
+          color: "text-red-700",
+          bg: "bg-red-50",
+          border: "border-red-200",
+          icon: XCircle,
+          label: "Failed"
+        };
       default:
-        return "bg-gray-100 text-gray-800 border border-gray-200";
+        return {
+          color: "text-gray-700",
+          bg: "bg-gray-50",
+          border: "border-gray-200",
+          icon: AlertCircle,
+          label: "Unknown"
+        };
     }
   };
 
-  // Function to get status icon
-  const getStatusIcon = (status) => {
-    switch (status?.toLowerCase()) {
-      case "done":
-        return "✓"; // Checkmark
-      case "pending":
-        return "⏳"; // Hourglass
-      case "failed":
-        return "✕"; // X mark
-      default:
-        return "•"; // Bullet point
-    }
+  const getDatabaseIcon = (db) => {
+    const colors = {
+      mysql: "text-orange-600 bg-orange-100",
+      postgres: "text-blue-600 bg-blue-100",
+      postgresql: "text-blue-600 bg-blue-100",
+      mongodb: "text-green-600 bg-green-100",
+    };
+    return colors[db?.toLowerCase()] || "text-gray-600 bg-gray-100";
   };
 
-  if (isLoading)
-    return <div className="flex justify-center items-center h-64">טוען…</div>;
-  if (isError)
-    return <div className="text-red-600 p-4 text-center">שגיאה בטעינת נתונים</div>;
+  const getCloudIcon = (provider) => {
+    const colors = {
+      aws: "text-orange-500 bg-orange-100",
+      azure: "text-blue-500 bg-blue-100",
+      gcp: "text-green-500 bg-green-100",
+      google: "text-green-500 bg-green-100",
+    };
+    return colors[provider?.toLowerCase()] || "text-gray-500 bg-gray-100";
+  };
+
+  const statusConfig = getStatusConfig(run.status);
+  const StatusIcon = statusConfig.icon;
 
   return (
-    <div className="max-w-4xl mx-auto p-4 md:p-6">
-      <h1 className="text-2xl font-bold mb-6 text-center">My Tests</h1>
-
-      <div className="space-y-4">
-        {/* Test Run Card */}
-        <div className="bg-white rounded-lg shadow-md p-5 transition-all duration-300 hover:shadow-lg border border-gray-100">
-          {/* Header with Plan Name and Status Badge */}
-          <div className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between">
-            <h2 className="text-xl font-semibold text-gray-900">{run.plan_name}</h2>
-            <div className="flex items-center mt-2 md:mt-0">
-              <span className={`px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1 ${getStatusBadgeClasses(run.status)}`}>
-                <span>{getStatusIcon(run.status)}</span>
-                <span>{run.status}</span>
-              </span>
-            </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+      <div className="max-w-5xl mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="mb-8">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="h-8 w-1 bg-blue-600 rounded-full"></div>
+            <h1 className="text-3xl font-bold text-gray-900">Test Details</h1>
           </div>
+          <p className="text-gray-600 ml-5">Comprehensive view of your test execution</p>
+        </div>
 
-          {/* Details Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 mb-6">
-            {/* Left Column */}
-            <div className="space-y-5 md:pr-4">
-              <div className="flex flex-col">
-                <p className="uppercase tracking-wide text-xs text-gray-500 mb-1">Cloud Provider</p>
-                <div className="flex items-center">
-                  <span className="w-2 h-2 rounded-full bg-blue-500 mr-2"></span>
-                  <p className="text-sm text-gray-700 font-medium">{run.cloud_provider}</p>
-                </div>
+        {/* Compact Test Card */}
+        <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300">
+          {/* Compact Header */}
+          <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4 text-white">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-xl font-bold">{run.plan_name}</h2>
+                <p className="text-blue-100 text-xs">ID: {run.id}</p>
               </div>
-
-              <div className="flex flex-col">
-                <p className="uppercase tracking-wide text-xs text-gray-500 mb-1">Source Database</p>
-                <div className="flex items-center">
-                  <span className="w-2 h-2 rounded-full bg-green-500 mr-2"></span>
-                  <p className="text-sm text-gray-700 font-medium">{run.source_db}</p>
-                </div>
-              </div>
-
-              <div className="flex flex-col">
-                <p className="uppercase tracking-wide text-xs text-gray-500 mb-1">Destination Database</p>
-                <div className="flex items-center">
-                  <span className="w-2 h-2 rounded-full bg-purple-500 mr-2"></span>
-                  <p className="text-sm text-gray-700 font-medium">{run.destination_db}</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Column */}
-            <div className="space-y-5 md:border-l md:border-gray-100 md:pl-4">
-              <div className="flex flex-col">
-                <p className="uppercase tracking-wide text-xs text-gray-500 mb-1">Start Time</p>
-                <div className="flex items-center">
-                  <svg className="w-3 h-3 text-gray-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                  </svg>
-                  <p className="text-sm text-gray-700 font-medium">{formatDate(run.started_at)}</p>
-                </div>
-              </div>
-
-              <div className="flex flex-col">
-                <p className="uppercase tracking-wide text-xs text-gray-500 mb-1">End Time</p>
-                <div className="flex items-center">
-                  <svg className="w-3 h-3 text-gray-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                  </svg>
-                  <p className="text-sm text-gray-700 font-medium">{formatDate(run.finished_at)}</p>
-                </div>
-              </div>
-
-              <div className="flex flex-col">
-                <p className="uppercase tracking-wide text-xs text-gray-500 mb-1">Duration</p>
-                <div className="flex items-center">
-                  <svg className="w-3 h-3 text-gray-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                  </svg>
-                  <p className="text-sm text-gray-700 font-medium">{calculateDuration(run.started_at, run.finished_at)}</p>
-                </div>
+              <div className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border ${statusConfig.border} ${statusConfig.bg} ${statusConfig.color} font-medium text-sm`}>
+                <StatusIcon className="h-3.5 w-3.5" />
+                <span>{statusConfig.label}</span>
               </div>
             </div>
           </div>
 
-          {/* Action Button */}
-          <div className="flex justify-end mt-6 border-t pt-4 border-gray-100">
+          <div className="p-6">
+            {/* Compact Stats - 2 rows, 4 columns */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+              {/* Duration */}
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-lg bg-purple-100 text-purple-600">
+                  <Clock className="h-4 w-4" />
+                </div>
+                <div>
+                  <p className="text-xs text-gray-500 font-medium">Duration</p>
+                  <p className="text-sm font-bold text-gray-900">
+                    {calculateDuration(run.started_at, run.finished_at)}
+                  </p>
+                </div>
+              </div>
+
+              {/* Cloud */}
+              <div className="flex items-center gap-3">
+                <div className={`p-2 rounded-lg ${getCloudIcon(run.cloud_provider)}`}>
+                  <Cloud className="h-4 w-4" />
+                </div>
+                <div>
+                  <p className="text-xs text-gray-500 font-medium">Cloud</p>
+                  <p className="text-sm font-bold text-gray-900 capitalize">{run.cloud_provider}</p>
+                </div>
+              </div>
+
+              {/* Started */}
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-lg bg-green-100 text-green-600">
+                  <Calendar className="h-4 w-4" />
+                </div>
+                <div>
+                  <p className="text-xs text-gray-500 font-medium">Started</p>
+                  <p className="text-xs font-bold text-gray-900">{formatDate(run.started_at)}</p>
+                </div>
+              </div>
+
+              {/* Completed */}
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-lg bg-red-100 text-red-600">
+                  <Calendar className="h-4 w-4" />
+                </div>
+                <div>
+                  <p className="text-xs text-gray-500 font-medium">Completed</p>
+                  <p className="text-xs font-bold text-gray-900">{formatDate(run.finished_at)}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Compact Database Migration */}
+            <div className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-lg p-4 mb-4 border border-gray-100">
+              <div className="flex items-center justify-between">
+                {/* Source DB */}
+                <div className="flex items-center gap-2">
+                  <div className={`p-2 rounded-lg ${getDatabaseIcon(run.source_db)}`}>
+                    <Database className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-500 font-medium">From</p>
+                    <p className="text-sm font-bold text-gray-900 capitalize">{run.source_db}</p>
+                  </div>
+                </div>
+
+                {/* Arrow */}
+                <div className="bg-blue-600 text-white rounded-full p-2">
+                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </div>
+
+                {/* Destination DB */}
+                <div className="flex items-center gap-2">
+                  <div className={`p-2 rounded-lg ${getDatabaseIcon(run.destination_db)}`}>
+                    <Database className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-500 font-medium">To</p>
+                    <p className="text-sm font-bold text-gray-900 capitalize">{run.destination_db}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Action Button */}
             <button
-              className="flex items-center gap-2 bg-blue-50 text-blue-600 hover:bg-blue-100 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-              onClick={() => window.location.href = `/executions/${run.id}`}
+              disabled={run.status !== "done" && run.status !== "completed"}
+              className={`w-full font-semibold py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 shadow-md
+                ${run.status === "done" || run.status === "completed"
+                  ? "bg-blue-600 hover:bg-blue-700 text-white"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed"}`}
+              onClick={() => {
+                if (run.status === "done" || run.status === "completed") {
+                  window.location.href = `/executions/${run.id}`;
+                }
+              }}
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-              </svg>
+              <Eye className="h-4 w-4" />
               View Execution Results
             </button>
           </div>

@@ -18,8 +18,6 @@ def create_simple_test(
 ):
     try:
         print(f"\n🎯 RUNNING SUITE TYPE: {test_type}")
-
-
         test_data = TEST_TYPE_TO_FUNCTION[test_type]()
         print("✅ test_data returned:", test_data)
 

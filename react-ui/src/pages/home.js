@@ -150,7 +150,9 @@ const handleRunTest = async () => {
     console.log("✅ Test started:", result.message);
 
     if (result.test_id) {
-      navigate(`/runs/${encodeURIComponent(result.test_id)}`);
+      setTimeout(() => {
+        navigate(`/runs/${encodeURIComponent(result.test_id)}`);
+      }, 5000);
     }
   } catch (err) {
     console.error("🔥 Test run failed:", err);
@@ -159,19 +161,22 @@ const handleRunTest = async () => {
   }
 };
 
+
 //const handleRunTest = async () => {
 //  setLoadingTest(true);
 //  try {
-//    const res  = await fetch("http://localhost:8080/test/create-simple-test", {
-//      method : "POST",
+//    const res = await fetch("http://localhost:8080/test/create-simple-test", {
+//      method: "POST",
 //      headers: { "Content-Type": "application/json" },
-//      body   : JSON.stringify({ test_type: testLevel })
+//      body: JSON.stringify({ test_type: testLevel })
 //    });
 //
-//    if (!res.ok) throw new Error("Server error");
-//    const { run_id } = await res.json();   // שולף רק run_id
+//    const result = await res.json();
+//    console.log("✅ Test started:", result.message);
 //
-//    navigate(`/runs/${run_id}`);
+//    if (result.test_id) {
+//      navigate(`/runs/${encodeURIComponent(result.test_id)}`);
+//    }
 //  } catch (err) {
 //    console.error("🔥 Test run failed:", err);
 //  } finally {
