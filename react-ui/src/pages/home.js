@@ -151,13 +151,14 @@ const handleRunTest = async () => {
 
     if (result.test_id) {
       setTimeout(() => {
+        setLoadingTest(false);
         navigate(`/runs/${encodeURIComponent(result.test_id)}`);
       }, 5000);
     }
   } catch (err) {
     console.error("🔥 Test run failed:", err);
   } finally {
-    setLoadingTest(false);
+
   }
 };
 

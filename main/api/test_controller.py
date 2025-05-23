@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Body
+from fastapi import APIRouter, HTTPException, Body, BackgroundTasks
 from typing import Literal
 from main.services import test_service
 
@@ -14,16 +14,21 @@ TEST_TYPE_TO_FUNCTION = {
 
 @testRouter.post("/create-simple-test")
 def create_simple_test(
-        test_type: Literal["Basic Queries", "Advanced Workload", "Balanced Suite"] = Body(..., embed=True)
+    test_type: Literal["Basic Queries", "Advanced Workload", "Balanced Suite"] = Body(..., embed=True),
+    background_tasks: BackgroundTasks = BackgroundTasks()
 ):
     try:
-        print(f"\n🎯 RUNNING SUITE TYPE: {test_type}")
-        test_data = TEST_TYPE_TO_FUNCTION[test_type]()
-        print("✅ test_data returned:", test_data)
+        print(f"\n🎯 Starting suite for: {test_type}")
+
+
+        run_id, run_uid = test_service.create_metadata_only(test_type)
+
+
+        background_tasks.add_task(TEST_TYPE_TO_FUNCTION[test_type], run_id)
 
         return {
-            "message": "Simple test created",
-            "test_id": test_data["run_id"]
+            "message": f"Suite '{test_type}' execution started",
+            "test_id": run_id
         }
 
     except Exception as e:

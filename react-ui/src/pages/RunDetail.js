@@ -14,7 +14,7 @@ const RunDetail = () => {
   refetch,
 } = useQuery(["run", id], () => getRun(id), {
   refetchInterval: (data) => {
-    if (!data) return 3000; // עדיין לא נטען
+    if (!data) return 120000; // עדיין לא נטען
     return data.status === "done" || data.status === "completed" ? false : 3000;
   },
   refetchIntervalInBackground: true

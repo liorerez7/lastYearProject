@@ -452,6 +452,10 @@ def _create_test_metadata(tag: str) -> Tuple[int, str]:
     return run_id, run_uid
 
 
+
+def create_metadata_only(tag: str) -> Tuple[int, str]:
+    return _create_test_metadata(tag.lower().replace(" ", "_"))
+
 def _execute_test_plan(
         tag: str,
         users: list[int],
@@ -534,11 +538,16 @@ def _execute_test_plan(
     return {"run_id": run_id, "run_uid": run_uid}
 
 
-def _run_named_suite(label: str, test_names: list[str]) -> Dict[str, Any]:
+
+def _run_named_suite(label: str, test_names: list[str], run_id_override: Optional[int] = None) -> Dict[str, Any]:
     """Run a named benchmark suite with a list of test plan names."""
 
     tag = label.lower().replace(" ", "_")
-    run_id, run_uid = _create_test_metadata(tag)
+    if run_id_override:
+        run_id = run_id_override
+        run_uid = "unknown"  # or fetch from DB if needed
+    else:
+        run_id, run_uid = _create_test_metadata(tag)
     results: Dict[str, Any] = {}
     failed_tests = []
     successful_tests = []
@@ -569,7 +578,7 @@ def _run_named_suite(label: str, test_names: list[str]) -> Dict[str, Any]:
             failed_tests.append(name)
 
         print("🕒 Cooling‑down 5 s…")
-        time.sleep(5)
+        time.sleep(45)
 
     # Update metadata status after all tests are completed
     finished_at = datetime.utcnow().isoformat()
@@ -619,17 +628,22 @@ TEST_CONFIGS: Dict[str, Dict[str, Any]] = {
     "lookup": {
         "tag": "lookup",
         "users": [2],
-        "run_time": 10,
+        "run_time": 50,
         "spread": True,
         "steps_override": lambda s: (
-            basic_select(":db", s["t1"], repeat=1)
-
+            basic_select(":db", s["t1"], repeat=1) +
+            basic_select(":db", s["t2"], repeat=1) +
+            basic_select(":db", s["t3"], repeat=1) +
+            basic_select(":db", s["t4"], repeat=1) +
+            basic_select(":db", s["t5"], repeat=1) +
+            basic_select(":db", s["t6"], repeat=1) +
+            basic_select(":db", s["t7"], repeat=1)
         )
     },
     "dash": {
         "tag": "dash",
         "users": [3],
-        "run_time": 10,
+        "run_time": 40,
         "spread": True,
         "steps_override": lambda s: (
                 filtered_test(":db", s["t1"], repeat=20) +
@@ -932,21 +946,24 @@ def run_spike_30_users() -> Dict[str, Any]:
 
 
 # Suite functions
-def run_basic_queries_suite() -> Dict[str, Any]:
-    return _run_named_suite("Basic Queries", ["lookup", "dash"])
+
+def run_basic_queries_suite(run_id: Optional[int] = None) -> Dict[str, Any]:
+    return _run_named_suite("Basic Queries", ["lookup", "dash"], run_id)
+
+def run_advanced_workload_suite(run_id: Optional[int] = None) -> Dict[str, Any]:
+    return _run_named_suite("Advanced Workload", ["heavy"], run_id)
 
 
-def run_advanced_workload_suite() -> Dict[str, Any]:
-    return _run_named_suite("Advanced Workload", ["heavy"])
-
-
-def run_balanced_suite() -> Dict[str, Any]:
+def run_balanced_suite(run_id: Optional[int] = None) -> Dict[str, Any]:
     return _run_named_suite("Balanced Suite", [
         "lookup", "dash", "smalljoin",
         "smoke", "index",
         "heavy",
         "mix", "rw", "report", "edge", "spike30"
-    ])
+    ], run_id)
+
+
+
 
 
 # Backward compatibility mapping (if needed)
