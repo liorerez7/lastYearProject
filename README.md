@@ -116,6 +116,3 @@ MIT License – use freely, contribute kindly.
 ## 🙏 Credits
 
 - [pgloader](https://github.com/dimitri/pgloader)
-- [Supabase](https://supabase.com/)
-- [FastAPI](https://fastapi.tiangolo.com/)
-
