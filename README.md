@@ -2,7 +2,8 @@
 
 > Seamlessly migrate & test your databases across cloud platforms.
 
-SkyDB helps organizations make informed, data-driven decisions when considering whether to migrate from **MySQL to PostgreSQL** (or vice versa). The system uploads SQL dumps, automatically deploys both database engines to AWS RDS, runs a suite of realistic SQL benchmark tests, and presents the results in a visual dashboard.
+SkyDB helps organizations make informed, data-driven decisions when considering whether to migrate from **MySQL to PostgreSQL** 
+The system uploads SQL dumps, automatically deploys both database engines to AWS RDS, runs a suite of realistic SQL benchmark tests, and presents the results in a visual dashboard.
 
 ---
 
@@ -26,8 +27,7 @@ We plan to make it fully open and easy-to-use **soon**. Stay tuned by starring t
    - Supports up to 30 concurrent users (stress/load tests)
 4. Execution metrics collected:
    - avg, p95, stddev
-5. Results stored in **Supabase**
-6. Displayed through a clean **React UI** (comparison cards, charts, history)
+5. Displayed through a clean **React UI** (comparison cards, charts, history)
 
 ---
 
@@ -38,7 +38,7 @@ We plan to make it fully open and easy-to-use **soon**. Stay tuned by starring t
 You can also explore our concept in this flow diagram:
 
 ```
-Upload → Schema Analysis → Deploy to AWS (MySQL & PG) → Benchmark → Supabase → UI
+Upload → Schema Analysis → Deploy to AWS (MySQL & PG) → Benchmark →  UI
 ```
 
 ---
@@ -93,16 +93,17 @@ LastYearProject/
 
 1. User uploads SQL files
 2. Backend deploys RDS instances
-3. Queries are executed in parallel
-4. Results stored and visualized
-5. User gets a detailed, actionable comparison
+3. Migration happens from src database to dst database
+4. Queries are executed in parallel
+5. Results stored and visualized
+6. User gets a detailed, actionable comparison
 
 ---
 
 ## 👨‍💻 Contributors
 
-- **Lior Erlich** – Backend, Data Migration, System Design  
-- **Niv Ishay** – Frontend, Visualization, User Flow
+- **Lior Erez** 
+- **Niv Ishay**
 
 ---
 
@@ -115,6 +116,3 @@ MIT License – use freely, contribute kindly.
 ## 🙏 Credits
 
 - [pgloader](https://github.com/dimitri/pgloader)
-- [Supabase](https://supabase.com/)
-- [FastAPI](https://fastapi.tiangolo.com/)
-- Sakila / Employees datasets for testing
