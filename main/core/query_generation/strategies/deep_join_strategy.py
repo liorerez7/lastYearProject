@@ -74,4 +74,5 @@ class DeepJoinQueryStrategy(BaseQueryStrategy):
             else:
                 return None  # Could not find valid FK
 
-        return f"SELECT *\nFROM {base_table}\n" + "\n".join(joins) + "\nLIMIT 100;"
+        return f"SELECT *\nFROM {base_table}\n" + "\n".join(joins) + f"\nLIMIT {self.LIMIT};"
+

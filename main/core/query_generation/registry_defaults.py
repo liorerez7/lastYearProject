@@ -4,8 +4,12 @@ from main.core.query_generation.strategies.basic_select_strategy import BasicSel
 from main.core.query_generation.strategies.deep_join_strategy import DeepJoinQueryStrategy
 from main.core.query_generation.strategies.filtered_query_strategy import FilteredQueryStrategy
 from main.core.query_generation.strategies.group_by_query_strategy import GroupByQueryStrategy
+from main.core.query_generation.strategies.pagination_query_strategy import PaginationQueryStrategy
+from main.core.query_generation.strategies.pure_count_query_strategy import PureCountQueryStrategy
 from main.core.query_generation.strategies.reverse_join_strategy import ReverseJoinQueryStrategy
-
+from main.core.query_generation.strategies.window_query_strategy import WindowQueryStrategy
+from main.core.query_generation.strategies.large_offset_query_strategy import LargeOffsetQueryStrategy
+from main.core.query_generation.strategies.recursive_cte_query_strategy import RecursiveCTEQueryStrategy
 """
 This module contains a registry for different query generation strategies.
 The registry maps strategy names to their corresponding classes.
@@ -21,7 +25,7 @@ STRATEGY_CONFIG = {
             "longest": False
         }
     },
-"basic_select": {
+    "basic_select": {
         "class": BasicSelectQueryStrategy,
         "params": {}
     },
@@ -40,7 +44,28 @@ STRATEGY_CONFIG = {
     "group_by": {
         "class": GroupByQueryStrategy,
         "params": {}
+    },
+    "pagination": {
+        "class": PaginationQueryStrategy,
+        "parms": {}
+    },
+    "pure_count": {
+        "class": PureCountQueryStrategy,
+        "params": {}
+    },
+    "window_query": {
+        "class": WindowQueryStrategy,
+        "params": {}
+    },
+    "large_offset": {
+        "class": LargeOffsetQueryStrategy,
+        "params": {}
+    },
+    "recursive_cte": {
+        "class": RecursiveCTEQueryStrategy,
+        "params": {}
     }
+
 }
 
 

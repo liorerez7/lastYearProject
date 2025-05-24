@@ -25,7 +25,7 @@ docker run --name mysql57 \
 
 # Step 2: Wait for MySQL to initialize
 echo "⏳ Waiting for MySQL to initialize..."
-sleep 10
+sleep 30
 
 echo "📦 Creating '$SCHEMA_NAME' database..."
 docker exec -i mysql57 mysql -u $MYSQL_USER -p$MYSQL_PASS -e "CREATE DATABASE IF NOT EXISTS $SCHEMA_NAME;"

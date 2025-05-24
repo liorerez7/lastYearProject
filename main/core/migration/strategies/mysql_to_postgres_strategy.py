@@ -19,7 +19,7 @@ class MySQLToPostgresStrategy(BaseMigrationStrategy):
         self.run_pgloader_script(schema_name)
         self.export_pg_dump_from_windows(schema_name)
         self.upload_to_postgres_rds()
-        self.upload_to_mysql_rds()
+        #self.upload_to_mysql_rds()
 
     def run_pgloader_script(self, schema_name):
         print("🚀 Running pgloader migration script via WSL...")
@@ -140,7 +140,3 @@ class MySQLToPostgresStrategy(BaseMigrationStrategy):
         except Exception as e:
             print(f"❌ Error creating database: {e}")
             raise
-
-
-if __name__ == '__main__':
-    MySQLToPostgresStrategy(shcema_name="employees").create_postgres_database_if_not_exists(get_windows_host_ip(), "employees")

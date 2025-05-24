@@ -12,6 +12,11 @@ from main.core.query_generation.utils.schema_graph_utils import (
 )
 from main.core.query_generation.utils.table_access_utils import resolve_table_key
 
+## This class is not working on this data base!
+## it might work in general, but it wasnt checked. because on this particular database it doesnt work
+## maybe because of the fact that the foreign keys are not set up in a way it can be used
+
+
 class ReverseJoinQueryStrategy(BaseQueryStrategy):
     def __init__(self, limit: int = 8):
         super().__init__()

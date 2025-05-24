@@ -12,6 +12,6 @@ class BasicSelectQueryStrategy(BaseQueryStrategy):
             raise ValueError("❌ selector must be explicitly provided for BasicSelectQueryStrategy.")
 
         table_index = selector % len(table_names)
-        table = resolve_table_key(schema_metadata, table_names[table_index])  # ← התיקון
+        table = resolve_table_key(schema_metadata, table_names[table_index])
         table_name = quote_table_name(table, db_type)
-        return f"SELECT * FROM {table_name} LIMIT 100;"
+        return f"SELECT * FROM {table_name} LIMIT {self.LIMIT};"
