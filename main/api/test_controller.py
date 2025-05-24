@@ -1,3 +1,5 @@
+import asyncio
+
 from fastapi import APIRouter, HTTPException, Body, BackgroundTasks
 from typing import Literal
 from main.services import test_service
@@ -20,10 +22,7 @@ def create_simple_test(
     try:
         print(f"\n🎯 Starting suite for: {test_type}")
 
-
         run_id, run_uid = test_service.create_metadata_only(test_type)
-
-
         background_tasks.add_task(TEST_TYPE_TO_FUNCTION[test_type], run_id)
 
         return {
