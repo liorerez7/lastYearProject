@@ -94,10 +94,10 @@ def _execute_test_plan(
                 engine,
                 meta_obj,
                 locust_config={
-                    "wait_time_min": 0.5,
-                    "wait_time_max": 1.5,
+                    "wait_time_min": 0.0,
+                    "wait_time_max": 0.1,
                     "users": u,
-                    "spawn_rate": 2,
+                    "spawn_rate": 5,
                     "run_time": run_time,
                 },
             )
@@ -253,33 +253,33 @@ TEST_CONFIGS: Dict[str, Dict[str, Any]] = {
     # 3. Balanced  – יום עבודה ממוצע
     "balanced": {
         "tag": "balanced",
-        "users": [6, 12], # should be 6, 12
-        "run_time": 180, # should be 180,
+        "users": [10, 40], # should be 6, 12
+        "run_time": 150, # should be 180,
         "spread": True,
         "steps_override": lambda s: (
-                basic_select(":db", s["t1"], repeat=10) +  # ~20 %
-                basic_select(":db", s["t2"], repeat=20) +  # ~20 %
-                basic_select(":db", s["t3"], repeat=30) +  # ~20 %
-                pagination_test(":db", s["t1"], repeat=25) +  # ~10 %
-                filtered_test(":db", s["t2"], repeat=25) +  # ~10 %
-                pagination_test(":db", s["t2"], repeat=25) +  # ~10 %
-                filtered_test(":db", s["t3"], repeat=25) +  # ~10 %
+                basic_select(":db", s["t1"], repeat=10) +
+                basic_select(":db", s["t2"], repeat=20) +
+                basic_select(":db", s["t3"], repeat=30) +
+                pagination_test(":db", s["t1"], repeat=15) +
+                filtered_test(":db", s["t2"], repeat=20) +
+                pagination_test(":db", s["t2"], repeat=15) +
+                filtered_test(":db", s["t3"], repeat=20) +
 
                 # ---------- 25 % queries – medium ----------
-                aggregation_test(":db", s["t3"], repeat=40) +
-                group_by(":db", s["t3"], repeat=40) +
-                pure_count(":db", s["t3"], repeat=30) +
-                basic_select(":db", s["t4"], repeat=25) +  # ~20 %
-                basic_select(":db", s["t5"], repeat=25) +  # ~20 %
-                filtered_test(":db", s["t4"], repeat=25) +  # ~10 %
-                filtered_test(":db", s["t5"], repeat=25) +  # ~10 %
+                aggregation_test(":db", s["t5"], repeat=40) +
+                group_by(":db", s["t5"], repeat=40) +
+                pure_count(":db", s["t4"], repeat=30) +
+                basic_select(":db", s["t4"], repeat=25) +
+                basic_select(":db", s["t5"], repeat=25) +
+                filtered_test(":db", s["t4"], repeat=25) +
+                filtered_test(":db", s["t5"], repeat=25) +
 
 
                 # ---------- 15 % queries – heavy ----------
-                basic_select(":db", s["t7"], repeat=10) +  # ~20 %
-                basic_select(":db", s["t6"], repeat=10) +  # ~20 %
-                filtered_test(":db", s["t6"], repeat=15) +  # ~10 %
-                filtered_test(":db", s["t6"], repeat=10) +  # ~10 %
+                basic_select(":db", s["t7"], repeat=10) +
+                basic_select(":db", s["t6"], repeat=10) +
+                filtered_test(":db", s["t7"], repeat=20) +
+                filtered_test(":db", s["t6"], repeat=15) +
 
                 deep_join_default(":db", selector=s["t7"], join_size=3) +  # runs once per repeat
                 deep_join_default(":db", selector=s["t7"], join_size=3) +  # runs once per repeat
@@ -295,7 +295,22 @@ TEST_CONFIGS: Dict[str, Dict[str, Any]] = {
                 deep_join_longest(":db", s["t6"]) +  # runs once per repeat
                 deep_join_longest(":db", s["t6"]) +  # runs once per repeat
                 deep_join_longest(":db", s["t6"]) +  # runs once per repeat
-                group_by(":db", s["t6"], repeat=25)
+                deep_join_default(":db", selector=s["t7"], join_size=3) +  # runs once per repeat
+                deep_join_default(":db", selector=s["t7"], join_size=3) +  # runs once per repeat
+                deep_join_default(":db", selector=s["t7"], join_size=3) +  # runs once per repeat
+                deep_join_default(":db", selector=s["t7"], join_size=3) +  # runs once per repeat
+                deep_join_default(":db", selector=s["t7"], join_size=3) +  # runs once per repeat
+                deep_join_default(":db", selector=s["t7"], join_size=3) +  # runs once per repeat
+                deep_join_longest(":db", s["t6"]) +  # runs once per repeat
+                deep_join_longest(":db", s["t6"]) +  # runs once per repeat
+                deep_join_longest(":db", s["t6"]) +  # runs once per repeat
+                deep_join_longest(":db", s["t6"]) +  # runs once per repeat
+                deep_join_longest(":db", s["t6"]) +  # runs once per repeat
+                deep_join_longest(":db", s["t6"]) +  # runs once per repeat
+                deep_join_longest(":db", s["t6"]) +  # runs once per repeat
+                deep_join_longest(":db", s["t6"]) +  # runs once per repeat
+                group_by(":db", s["t6"], repeat=20) +
+                group_by(":db", s["t7"], repeat=20)
         )
     }
 }
