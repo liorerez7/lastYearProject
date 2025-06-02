@@ -257,20 +257,30 @@ TEST_CONFIGS: Dict[str, Dict[str, Any]] = {
         "run_time": 180, # should be 180,
         "spread": True,
         "steps_override": lambda s: (
-                basic_select(":db", s["t1"], repeat=20) +  # ~20 %
-                basic_select(":db", s["t2"], repeat=30) +  # ~20 %
-                basic_select(":db", s["t3"], repeat=40) +  # ~20 %
-                pagination_test(":db", s["t1"], repeat=40) +  # ~10 %
-                filtered_test(":db", s["t2"], repeat=40) +  # ~10 %
-                pagination_test(":db", s["t2"], repeat=60) +  # ~10 %
-                filtered_test(":db", s["t3"], repeat=60) +  # ~10 %
+                basic_select(":db", s["t1"], repeat=10) +  # ~20 %
+                basic_select(":db", s["t2"], repeat=20) +  # ~20 %
+                basic_select(":db", s["t3"], repeat=30) +  # ~20 %
+                pagination_test(":db", s["t1"], repeat=25) +  # ~10 %
+                filtered_test(":db", s["t2"], repeat=25) +  # ~10 %
+                pagination_test(":db", s["t2"], repeat=25) +  # ~10 %
+                filtered_test(":db", s["t3"], repeat=25) +  # ~10 %
 
                 # ---------- 25 % queries – medium ----------
-                aggregation_test(":db", s["t3"], repeat=50) +
-                group_by(":db", s["t3"], repeat=50) +
-                pure_count(":db", s["t3"], repeat=25) +
+                aggregation_test(":db", s["t3"], repeat=40) +
+                group_by(":db", s["t3"], repeat=40) +
+                pure_count(":db", s["t3"], repeat=30) +
+                basic_select(":db", s["t4"], repeat=25) +  # ~20 %
+                basic_select(":db", s["t5"], repeat=25) +  # ~20 %
+                filtered_test(":db", s["t4"], repeat=25) +  # ~10 %
+                filtered_test(":db", s["t5"], repeat=25) +  # ~10 %
+
 
                 # ---------- 15 % queries – heavy ----------
+                basic_select(":db", s["t7"], repeat=10) +  # ~20 %
+                basic_select(":db", s["t6"], repeat=10) +  # ~20 %
+                filtered_test(":db", s["t6"], repeat=15) +  # ~10 %
+                filtered_test(":db", s["t6"], repeat=10) +  # ~10 %
+
                 deep_join_default(":db", selector=s["t7"], join_size=3) +  # runs once per repeat
                 deep_join_default(":db", selector=s["t7"], join_size=3) +  # runs once per repeat
                 deep_join_default(":db", selector=s["t7"], join_size=3) +  # runs once per repeat
