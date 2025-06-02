@@ -14,13 +14,13 @@ const cloudIcons = {
 const dbIcons = {
   "MySQL": "🗄️",
   "PostgreSQL": "🐘",
-  "MongoDB": "🍃"
+  "SQLite": "🧩"
 };
 
 export default function HomePage() {
   /* ─────────────── state ─────────────── */
   const clouds = ["AWS", "Google Cloud", "Azure"];
-  const databases = ["MySQL", "PostgreSQL", "MongoDB"];
+  const databases = ["MySQL", "PostgreSQL", "SQLite"];
   const [availableTables, setAvailableTables] = useState([]);
   const testTypes = ["Basic Queries", "Advanced Workload", "Balanced Suite"];
   const navigate = useNavigate();
@@ -38,8 +38,6 @@ export default function HomePage() {
 
   const [tablesChosen, setTablesChosen] = useState([]);
   const [testLevel, setTestLevel] = useState("");
-
-  const [loadingMigration, setLoadingMigration] = useState(false);
   const [loadingTest, setLoadingTest] = useState(false);
 
   const schemaInputRef = useRef(null);
@@ -125,16 +123,6 @@ export default function HomePage() {
       setLoadingUpload(false);
     }
   }
-
-  const handleRunMig = () => {
-    setLoadingMigration(true);
-    // Simulating API call
-    setTimeout(() => {
-      setLoadingMigration(false);
-      window.location.href = "/migration-result"; // Redirect to results page
-    }, 1500);
-  };
-
 
 
 const handleRunTest = async () => {
@@ -503,28 +491,10 @@ const handleRunTest = async () => {
           </div>
         </div>
 
-          <div className="actions-section">
-            <button
-              className={`action-btn blue ${loadingMigration ? 'loading' : ''}`}
-              disabled={loadingMigration || loadingTest}
-              onClick={handleRunMig}
-            >
-              {loadingMigration ? (
-                <>
-                  <span className="spinner white"></span>
-                  <span>Processing...</span>
-                </>
-              ) : (
-                <>
-                  <BiRun className="btn-icon" />
-                  <span>Run Migration</span>
-                </>
-              )}
-            </button>
-
+          <div className="actions-section justify-center">
             <button
               className={`action-btn green ${loadingTest ? 'loading' : ''}`}
-              disabled={loadingMigration || loadingTest}
+              disabled={loadingTest}
               onClick={handleRunTest}
             >
               {loadingTest ? (

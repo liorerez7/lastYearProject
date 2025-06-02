@@ -218,137 +218,86 @@ def _run_named_suite(label: str, test_names: list[str], run_id_override: Optiona
 
 # Test configurations - all test parameters in one place
 TEST_CONFIGS: Dict[str, Dict[str, Any]] = {
-    "testing": {
-        "tag": "dash",
-        "users": [2],
-        "run_time": 15,
-        "spread": True,
-        "steps_override": lambda s: (
-                basic_select(":db", s["t1"], repeat=1) +
-                filtered_test(":db", s["t5"], repeat=1) +
-                pagination_test(":db", s["t1"], repeat=1)
-        )
-    },
-    "lookup": {
-        "tag": "lookup",
-        "users": [2],
-        "run_time": 50,
-        "spread": True,
-        "steps_override": lambda s: (
-            basic_select(":db", s["t1"], repeat=1) +
-            basic_select(":db", s["t2"], repeat=1) +
-            basic_select(":db", s["t3"], repeat=1) +
-            basic_select(":db", s["t4"], repeat=1) +
-            basic_select(":db", s["t5"], repeat=1) +
-            basic_select(":db", s["t6"], repeat=1) +
-            basic_select(":db", s["t7"], repeat=1)
-        )
-    },
-    "dash": {
-        "tag": "dash",
+
+    # 1. קריאות קלות – Lookup / Dashlets
+    "basic": {
+        "tag": "basic",
         "users": [3],
-        "run_time": 40,
-        "spread": True,
-        "steps_override": lambda s: (
-                filtered_test(":db", s["t1"], repeat=20) +
-                filtered_test(":db", s["t5"], repeat=20) +
-                pagination_test(":db", s["t1"], repeat=10)
-        )
-    },
-    "smalljoin": {
-        "tag": "smalljoin",
-        "users": [2],
-        "run_time": 30,
-        "spread": True,
-        "steps_override": lambda s: (
-                deep_join_default(":db", selector=s["t2"], join_size=2) +
-                group_by(":db", s["t2"], repeat=6)
-        )
-    },
-    "smoke": {
-        "tag": "smoke",
-        "users": [5, 10],
-        "run_time": 20,
-        "spread": True,
-        "steps_override": lambda s: (
-                basic_select(":db", s["t1"], repeat=25) +
-                filtered_test(":db", s["t2"], repeat=25) +
-                pure_count(":db", s["t1"], repeat=5)
-        )
-    },
-    "index": {
-        "tag": "index",
-        "users": [15],
         "run_time": 45,
         "spread": True,
         "steps_override": lambda s: (
-                filtered_test(":db", s["t3"], repeat=25) +
-                group_by(":db", s["t4"], repeat=20) +
-                pagination_test(":db", s["t5"], repeat=15)
+                basic_select(":db", s["t1"], repeat=30) +  # 30 %
+                basic_select(":db", s["t4"], repeat=10) +  # 10 %
+                filtered_test(":db", s["t1"], repeat=25) +  # 25 %
+                pagination_test(":db", s["t2"], repeat=20) +  # 20 %
+                pure_count(":db", s["t3"], repeat=10) +  # 10 %
+                aggregation_test(":db", s["t2"], repeat=5)  # 5 %
         )
     },
-    "mix": {
-        "tag": "mix",
-        "users": [10, 20],
-        "run_time": 45,
-        "spread": True
-    },
-    "rw": {
-        "tag": "rw",
-        "users": [8, 16],
+
+    # 2. עומס כבד – דיווחים / BI
+    "advanced": {
+        "tag": "advanced",
+        "users": [18],
         "run_time": 120,
         "spread": True,
         "steps_override": lambda s: (
-                pagination_test(":db", s["t6"], repeat=15) +
-                basic_select(":db", s["t2"], repeat=15) +
-                aggregation_test(":db", s["t5"], repeat=12) +
-                pure_count(":db", s["t1"], repeat=12)
+            deep_join_longest(":db",  s["t7"]) +             # 5 %
+            window_query(":db",      s["t6"], repeat=6) +    # 15 %
+            aggregation_test(":db",  s["t6"], repeat=6) +    # 15 %
+            group_by(":db",          s["t5"], repeat=6) +    # 15 %
+            pagination_test(":db",   s["t4"], repeat=10) +   # 25 %
+            basic_select(":db",      s["t3"], repeat=8) +    # 20 %
+            pure_count(":db",        s["t6"], repeat=4)      # 5 %
         )
     },
-    "report": {
-        "tag": "report",
-        "users": [5],
-        "run_time": 50,
+
+    # 3. Balanced  – יום עבודה ממוצע
+    "balanced": {
+        "tag": "balanced",
+        "users": [6, 12],
+        "run_time": 90,
         "spread": True,
         "steps_override": lambda s: (
-                window_query(":db", s["t5"], repeat=20) +
-                group_by(":db", s["t6"], repeat=20) +
-                aggregation_test(":db", s["t6"], repeat=20)
+            # 60 % קלות
+            basic_select(":db",     s["t1"], repeat=24) +
+            pagination_test(":db",  s["t2"], repeat=12) +
+            filtered_test(":db",    s["t2"], repeat=12) +
+
+            # 25 % בינוניות
+            aggregation_test(":db", s["t3"], repeat=8) +
+            group_by(":db",         s["t3"], repeat=8) +
+
+            # 15 % כבדות
+            window_query(":db",     s["t5"], repeat=4)  +
+            deep_join_default(":db", selector=s["t4"], join_size=3) +
+            basic_select(":db",     s["t6"], repeat=4) +
+            basic_select(":db",     s["t7"], repeat=4)
         )
-    },
-    "edge": {
-        "tag": "edge",
-        "users": [12],
-        "run_time": 50,
-        "spread": True,
-        "steps_override": lambda s: (
-                large_offset(":db", s["t7"], repeat=18) +
-                recursive_cte(":db", s["t2"], repeat=10) +
-                filtered_test(":db", s["t4"], repeat=12)
-        )
-    },
-    "heavy": {
-        "tag": "heavy",
-        "users": [4],
-        "run_time": 180,
-        "spread": True,
-        "steps_override": lambda s: (
-                pure_count(":db", s["t6"], repeat=6) +
-                window_query(":db", s["t5"], repeat=6) +
-                deep_join_longest(":db", s["t7"]) +
-                pagination_test(":db", s["t7"], repeat=8)
-        )
-    },
-    "spike30": {
-        "tag": "spike30",
-        "users": [30],
-        "run_time": 600,
-        "spread": True
     }
 }
 
+# Suite functions
 
-# Individual test functions (if you still need them for standalone use)
+def run_basic_queries_suite(run_id: Optional[int] = None) -> Dict[str, Any]:
+    return _run_named_suite("Basic Queries", ["basic"], run_id)
+
+def run_advanced_workload_suite(run_id: Optional[int] = None) -> Dict[str, Any]:
+    return _run_named_suite("Advanced Workload", ["advanced"], run_id)
+
+def run_balanced_suite(run_id: Optional[int] = None) -> Dict[str, Any]:
+    return _run_named_suite("Balanced Suite", ["balanced"], run_id)
+
+
+TEST_PLANS: Dict[str, Callable[..., Dict[str, Any]]] = {
+    "basic":   lambda: _execute_test_plan(**TEST_CONFIGS["basic"]),
+    "advanced": lambda: _execute_test_plan(**TEST_CONFIGS["advanced"]),
+    "balanced": lambda: _execute_test_plan(**TEST_CONFIGS["balanced"]),
+}
+
+
+
+
 
 def testing() -> Dict[str, Any]:
     config = TEST_CONFIGS["testing"]
@@ -567,41 +516,3 @@ def run_spike_30_users() -> Dict[str, Any]:
         print(f"❌ Failed to update metadata for individual test: {e}")
 
     return result
-
-
-# Suite functions
-
-def run_basic_queries_suite(run_id: Optional[int] = None) -> Dict[str, Any]:
-    return _run_named_suite("Basic Queries", ["testing"], run_id)
-
-def run_advanced_workload_suite(run_id: Optional[int] = None) -> Dict[str, Any]:
-    return _run_named_suite("Advanced Workload", ["heavy"], run_id)
-
-
-def run_balanced_suite(run_id: Optional[int] = None) -> Dict[str, Any]:
-    return _run_named_suite("Balanced Suite", [
-        "lookup", "dash", "smalljoin",
-        "smoke", "index",
-        "heavy",
-        "mix", "rw", "report", "edge", "spike30"
-    ], run_id)
-
-
-
-
-
-# Backward compatibility mapping (if needed)
-TEST_PLANS: Dict[str, Callable[..., Dict[str, Any]]] = {
-    "testing": testing,
-    "lookup": run_point_lookup,
-    "dash": run_dashboard_reads,
-    "smalljoin": run_small_join_select,
-    "smoke": run_multi_user_smoke,
-    "index": run_index_stress,
-    "mix": run_mix_workload,
-    "rw": run_heavy_read_write,
-    "report": run_reporting_analytics,
-    "edge": run_edge_case_offsets,
-    "heavy": run_heavy_only,
-    "spike30": run_spike_30_users,
-}
