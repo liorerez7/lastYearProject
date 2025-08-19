@@ -3,7 +3,6 @@ MYSQL_CONFIG = {
     "port": 3306,
     "user": "admin",
     "password": "Lior1234",
-    #"database": "sakila"
     "database": "mydb"
 }
 POSTGRES_CONFIG = {

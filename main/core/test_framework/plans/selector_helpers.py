@@ -13,6 +13,8 @@ from main.core.query_generation.strategies.window_query_strategy import WindowQu
 from main.core.query_generation.utils.table_access_utils import resolve_table_key
 from main.core.schema_analysis.connection.db_connector import DBConnector
 from main.core.schema_analysis.table_profiler import get_rowcounts, pick_s_m_l_selectors
+from sqlalchemy import text as _text
+
 
 STRATEGY_SELECTOR_MAP = {
     "deep_join": DeepJoinQueryStrategy,
@@ -43,16 +45,44 @@ def find_selector_for(test_type: str, schema_metadata, db_type: str) -> int:
 
     return selector
 
-def get_size_based_selectors(schema: str,
-                             db_type: str = "mysql") -> dict[str, int]:
-    """
-    Compute selectors for small / medium / large tables.
-    Called once before the plan is built.
-    """
+# def get_size_based_selectors(schema: str,
+#                              db_type: str = "mysql") -> dict[str, int]:
+#     """
+#     Compute selectors for small / medium / large tables.
+#     Called once before the plan is built.
+#     """
+#     conn = DBConnector(db_type)
+#     engine, metadata = conn.connect(schema)
+#     counts = get_rowcounts(engine, schema)
+#     return pick_s_m_l_selectors(metadata, db_type, counts)
+
+def get_size_based_selectors(schema: str, db_type: str = "mysql") -> dict[str, int]:
     conn = DBConnector(db_type)
     engine, metadata = conn.connect(schema)
+
+    # --- NEW: make sure Postgres looks at the right schema ---
+    if db_type.lower() == "postgres":
+        with engine.connect() as c:
+            c.execute(_text(f'SET search_path TO "{schema}"'))
+        metadata.clear()
+        # רפלקציה מפורשת על הסכמה
+        metadata.reflect(bind=engine, schema=schema)
+
+    # לוג/בדיקת sanity
+    table_keys = sorted(metadata.tables.keys())
+    if not table_keys:
+        print(f"⚠️ get_size_based_selectors: no tables found for {db_type} schema='{schema}'")
+        return {}
+
     counts = get_rowcounts(engine, schema)
     return pick_s_m_l_selectors(metadata, db_type, counts)
+
+
+
+
+
+
+
 
 def get_spread_selectors(schema: str,
                          db_type: str = "mysql",
@@ -101,10 +131,17 @@ def get_adaptive_selectors(schema: str, db_type: str = "mysql",
     """
     conn = DBConnector(db_type)
     engine, metadata = conn.connect(schema)
-    table_keys = sorted(metadata.tables.keys())
 
+    if db_type.lower() == "postgres":
+        with engine.connect() as c:
+            c.execute(_text(f'SET search_path TO "{schema}"'))
+        metadata.clear()
+        metadata.reflect(bind=engine, schema=schema)
+
+    table_keys = sorted(metadata.tables.keys())
     if not table_keys:
-        return {}  # No tables found
+        print(f"⚠️ get_adaptive_selectors: no tables found for {db_type} schema='{schema}'")
+        return {}
 
     # Get row counts and sort from smallest to largest
     rowcounts = get_rowcounts(engine, schema)

@@ -1,5 +1,3 @@
-import asyncio
-
 from fastapi import APIRouter, HTTPException, Body, BackgroundTasks
 from typing import Literal
 from main.services import test_service

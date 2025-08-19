@@ -94,40 +94,6 @@ class ExecutionPlanTest(BaseTest):
                     self._dur[label].append(30.0)
                     print("⏱️ 30-sec limit hit:", e)
 
-    # def _run_with_locust(self, engine, cfg: dict):
-    #     flat_queries = [step["query"] for step in self.built_plan.values() for _ in range(step["repeat"])]
-    #     timeout_stmt = TIMEOUT_SQL[self.db_type](TIMEOUT_MS)
-    #     parent = self
-    #
-    #     class DatabaseUser(User):
-    #         wait_time = between(cfg["wait_time_min"], cfg["wait_time_max"])
-    #
-    #         @task
-    #         def random_query(self):
-    #             sql = random.choice(flat_queries)
-    #             t0 = time.perf_counter()
-    #             try:
-    #                 with engine.connect() as conn:
-    #                     conn.execute(text(timeout_stmt))
-    #                     conn.execute(text(sql))
-    #                 duration = time.perf_counter() - t0
-    #             except Exception as e:
-    #                 duration = 30.0
-    #                 print("⏱️ 30-sec limit hit:", e)
-    #
-    #             label = parent._sql_to_label[sql]
-    #             parent._sqls[label] = sql
-    #             parent._sels[label] = parent.built_plan[int(label.split()[1])]["selector"]
-    #             parent._dur[label].append(duration)
-    #
-    #     env = Environment(user_classes=[DatabaseUser])
-    #     env.create_local_runner()
-    #     env.runner.start(cfg["users"], spawn_rate=cfg["spawn_rate"])
-    #
-    #     gevent.spawn_later(cfg["run_time"], lambda: env.runner.quit())
-    #     env.runner.greenlet.join()
-    #     print(f"Locust run finished after {cfg['run_time']} s")
-
     # ------------------------------------------------------------------
     #  Persistent-connection Locust run  (User-per-connection pattern)
     # ------------------------------------------------------------------

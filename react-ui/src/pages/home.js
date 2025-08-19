@@ -161,33 +161,6 @@ const handleRunTest = async () => {
 
   }
 };
-
-
-//const handleRunTest = async () => {
-//  setLoadingTest(true);
-//  try {
-//    const res = await fetch("http://localhost:8080/test/create-simple-test", {
-//      method: "POST",
-//      headers: { "Content-Type": "application/json" },
-//      body: JSON.stringify({ test_type: testLevel })
-//    });
-//
-//    const result = await res.json();
-//    console.log("✅ Test started:", result.message);
-//
-//    if (result.test_id) {
-//      navigate(`/runs/${encodeURIComponent(result.test_id)}`);
-//    }
-//  } catch (err) {
-//    console.error("🔥 Test run failed:", err);
-//  } finally {
-//    setLoadingTest(false);
-//  }
-//};
-
-
-
-
   return (
     <div className="home-container">
       <header className="header">
