@@ -48,7 +48,6 @@ echo "✅ Migration completed!"
 
 echo "🧹 Cleaning up Docker container..."
 docker stop mysql57 >/dev/null
-docker rm mysql57 >/dev/null
 echo "🗑️ Docker container 'mysql57' removed."
 #how to run:
 
@@ -64,3 +63,7 @@ echo "🗑️ Docker container 'mysql57' removed."
 
 #changed also in the pg_hba.conf the last line to this : host    all             all             0.0.0.0/0               trust
 #and then restart to postgres service
+#!/bin/bash
+
+ Usage:
+ ./migrate.sh <mysql_user> <mysql_pass> <postgres_conn_string> <schema_name> <sql_file1> [sql_file2 ... sql_fileN]
