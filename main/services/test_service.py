@@ -63,14 +63,20 @@ def _execute_test_plan(
     else:
         run_id, run_uid = _create_test_metadata(tag)
 
-    schema_for_metrics = "mydb"
+    # נשתמש בשם הסכמה להצגה/דיווח בתוצאות (בשני המנועים תרצה לראות 'mydb')
+    schema_for_metrics = "finalEmp"
 
+    # -------- חשוב: selectors חייבים להיבנות לפי כל DB בנפרד --------
     for db_type in ("mysql", "postgres"):
+        # קביעת הסכמה/סקופ לרפלקציה לכל מנוע
         if db_type == "mysql":
-            schema_reflection = "mydb"
+            # ב-MySQL שם ה-"schema" הוא למעשה שם ה-DB
+            schema_reflection = "finalEmp"
         else:
-            schema_reflection = "mydb"
+            # ב-Postgres מתחברים ל-DB mydb2 (מוגדר ב-db_config) ועובדים בסכמה mydb
+            schema_reflection = "sakila_migrated"
 
+        # בניית selectors עבור המנוע הנוכחי
         if spread:
             sizes = get_adaptive_selectors(schema_reflection, db_type)
             if not sizes:
@@ -82,6 +88,7 @@ def _execute_test_plan(
         else:
             sizes = get_size_based_selectors(schema_reflection, db_type)
 
+        # בניית steps עפ"י selectors של אותו מנוע
         default_steps = (
             basic_select(":db", sizes.get("t1"), repeat=40) +
             filtered_test(":db", sizes.get("t3"), repeat=25) +
@@ -136,7 +143,7 @@ def _execute_test_plan(
                     test_id=run_id,
                     db_type=db_type,
                     test_type=f"{tag}_{u}u",
-                    schema=schema_for_metrics,
+                    schema=schema_for_metrics,  # נשאר 'mydb' להצגה
                     timestamp=datetime.utcnow().isoformat(),
                     query_type=step["query_type"],
                     selector=step.get("selector", "0"),
@@ -244,25 +251,16 @@ TEST_CONFIGS: Dict[str, Dict[str, Any]] = {
     "basic": {
         "tag": "basic",
         "users": [3],
-        "run_time": 40,
+        #"run_time": 90,
+        "run_time": 25,
         "spread": True,
         "steps_override": lambda s: (
-                            #basic_select(":db", s["t1"], repeat=30) +
-                            #basic_select(":db", s["t4"], repeat=10) +
-                            #filtered_test(":db", s["t1"], repeat=25) +
-                            #pagination_test(":db", s["t2"], repeat=20) +
-                            #pure_count(":db", s["t3"], repeat=10) +
-                            #aggregation_test(":db", s["t2"], repeat=5)
-                deep_join_default(":db", selector=s["t7"], join_size=3) +  # runs once per repeat
-                deep_join_default(":db", selector=s["t7"], join_size=3) +  # runs once per repeat
-                deep_join_default(":db", selector=s["t7"], join_size=3) +  # runs once per repeat
-                deep_join_default(":db", selector=s["t7"], join_size=3) +  # runs once per repeat
-                deep_join_longest(":db", s["t6"]) +  # runs once per repeat
-                deep_join_longest(":db", s["t6"]) +  # runs once per repeat
-                deep_join_longest(":db", s["t6"]) +  # runs once per repeat
-                deep_join_longest(":db", s["t6"]) +  # runs once per repeat
-                deep_join_longest(":db", s["t6"]) +  # runs once per repeat
-                deep_join_longest(":db", s["t6"])   # runs once per repeat
+                basic_select(":db", s["t1"], repeat=30) +
+                            basic_select(":db", s["t4"], repeat=10) +
+                            filtered_test(":db", s["t1"], repeat=25) +
+                            pagination_test(":db", s["t2"], repeat=20) +
+                            pure_count(":db", s["t3"], repeat=10) +
+                            aggregation_test(":db", s["t2"], repeat=5)
         )
     },
 
@@ -286,9 +284,8 @@ TEST_CONFIGS: Dict[str, Dict[str, Any]] = {
     # 3. Balanced  – יום עבודה ממוצע
     "balanced": {
         "tag": "balanced",
-        "users": [10, 40],
-        "run_time": 150,
-        #"run_time": 60,
+        "users": [10, 40], # should be 6, 12
+        "run_time": 150, # should be 180,
         "spread": True,
         "steps_override": lambda s: (
                 basic_select(":db", s["t1"], repeat=10) +

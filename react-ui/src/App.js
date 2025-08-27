@@ -4,6 +4,7 @@ import Home from './pages/home';
 import RunsList  from "./pages/RunsList";
 import RunDetail from "./pages/RunDetail";
 import RunResults from "./pages/RunResults";
+import CostAnalysis from "./pages/CostAnalysis";
 
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/cost-analysis/:test_id" element={<CostAnalysis />} />
         <Route path="/runs"        element={<RunsList />} />
         <Route path="/runs/:id"    element={<RunDetail />} />
         <Route path="/executions/:test_id" element={<RunResults />} />
