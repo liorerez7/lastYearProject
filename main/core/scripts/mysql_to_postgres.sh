@@ -65,5 +65,5 @@ echo "🗑️ Docker container 'mysql57' removed."
 #and then restart to postgres service
 #!/bin/bash
 
- Usage:
- ./migrate.sh <mysql_user> <mysql_pass> <postgres_conn_string> <schema_name> <sql_file1> [sql_file2 ... sql_fileN]
+ #Usage:
+ #./migrate.sh <mysql_user> <mysql_pass> <postgres_conn_string> <schema_name> <sql_file1> [sql_file2 ... sql_fileN]

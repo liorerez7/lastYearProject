@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import axios from "axios";
 
@@ -610,6 +611,7 @@ function TabSummaryContent({ results, rawExecutions }) { // Pass rawExecutions i
 
 export default function RunResults() {
   const { test_id } = useParams(); // From old code
+  const navigate = useNavigate();
   const [activeTabIndex, setActiveTabIndex] = useState(0); // From new code
 
   // useQuery for data fetching from old code
@@ -685,6 +687,17 @@ export default function RunResults() {
             <div className="badge badge-md sm:badge-lg badge-outline border-green-400 text-green-600">PostgreSQL</div>
           </div>
           <p className="text-neutral-focus mt-2 text-sm">Schema: <code className="bg-base-200 px-2 py-0.5 rounded-md text-secondary">{schemaName}</code></p>
+
+          <div className="mt-4">
+            <button
+              onClick={() => navigate(`/cost-analysis/${encodeURIComponent(test_id)}`)}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-amber-300 bg-amber-50 text-amber-800 hover:bg-amber-100 transition-colors font-medium"
+              aria-label="Go to Cost Analysis"
+              title="Open Cost Analysis"
+            >
+              💰 Cost Analysis
+            </button>
+          </div>
         </header>
 
         <div className="flex justify-center mb-6 overflow-x-auto gap-2 px-2">

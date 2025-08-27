@@ -64,17 +64,17 @@ def _execute_test_plan(
         run_id, run_uid = _create_test_metadata(tag)
 
     # נשתמש בשם הסכמה להצגה/דיווח בתוצאות (בשני המנועים תרצה לראות 'mydb')
-    schema_for_metrics = "mydb"
+    schema_for_metrics = "finalEmp"
 
     # -------- חשוב: selectors חייבים להיבנות לפי כל DB בנפרד --------
     for db_type in ("mysql", "postgres"):
         # קביעת הסכמה/סקופ לרפלקציה לכל מנוע
         if db_type == "mysql":
             # ב-MySQL שם ה-"schema" הוא למעשה שם ה-DB
-            schema_reflection = "mydb"
+            schema_reflection = "finalEmp"
         else:
             # ב-Postgres מתחברים ל-DB mydb2 (מוגדר ב-db_config) ועובדים בסכמה mydb
-            schema_reflection = "mydb"
+            schema_reflection = "sakila_migrated"
 
         # בניית selectors עבור המנוע הנוכחי
         if spread:

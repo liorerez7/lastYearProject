@@ -5,8 +5,8 @@ from main.core.schema_analysis.schema_parser import extract_table_names_from_sch
 
 uploadRouter = APIRouter()
 
-#TARGET_DIR = r"C:\Users\nivii\programming\CS degree\year 3\WorkShop\lastYearProject\main\data"
-TARGET_DIR = r"C:\Users\Lior\Desktop\Lior\year3\project\LastYearProject\main\data"
+TARGET_DIR = r"C:\Users\nivii\programming\CS degree\year 3\WorkShop\lastYearProject\main\data"
+#TARGET_DIR = r"C:\Users\Lior\Desktop\Lior\year3\project\LastYearProject\main\data"
 
 @uploadRouter.post("/upload")
 async def upload_files(
