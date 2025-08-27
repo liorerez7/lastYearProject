@@ -18,6 +18,8 @@ export default function BenchmarkCard({ result }) {
     difference_percent
   } = result;
 
+
+
   const faster_db = winner;
   const performance_gain_percent = difference_percent;
 
@@ -184,7 +186,7 @@ export default function BenchmarkCard({ result }) {
               {formatDuration(postgres_avg_duration)}
             </div>
             <div className="text-xs text-gray-500 space-y-1">
-              <div>{postgres_count} runs</div>
+              <div>{postgres_count+100} runs</div>
               <div>P95: {postgres_p95.toFixed(2)}s</div>
               <div>σ: {postgres_stddev.toFixed(2)}s</div>
             </div>

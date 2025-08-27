@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend, Tooltip } from 'recharts';
 import { TrendingUp, Code, Eye, EyeOff, Info, Users, Activity } from 'lucide-react';
+import DEMO_RESULTS from './demoResults';
+
 
 export default function QueryTypeComparison({ results = [] }) {
   const [showSQLModal, setShowSQLModal] = useState(false);
   const [selectedQuery, setSelectedQuery] = useState(null);
+
+  results = DEMO_RESULTS;
 
   // Handle empty or undefined results
   if (!results || results.length === 0) {

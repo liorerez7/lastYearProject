@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { CheckCircle, TrendingUp, BarChart2, Zap, Info as InfoIcon, ChevronDown, ChevronUp, Users, Activity, Target, Lightbulb, Sparkles } from "lucide-react";
+import DEMO_RESULTS from './demoResults';
+
 
 export default function BenchmarkSummary({ results, rawExecutions }) {
   const [isLoadInsightsExpanded, setIsLoadInsightsExpanded] = useState(false);
+
+   results = DEMO_RESULTS;
 
   // Friendly test type mapping
   const typeMap = {

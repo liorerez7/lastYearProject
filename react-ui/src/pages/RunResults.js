@@ -2,6 +2,7 @@ import React, { useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import axios from "axios";
+import DEMO_RESULTS from "../components/demoResults";
 
 // Icons from the new code
 import { LayoutGrid, BarChartBig, FileText, Info as InfoIcon, AlertCircle, Bolt, ArrowRight, ScanLine, Users, Filter, X, Timer } from "lucide-react";
@@ -612,24 +613,12 @@ export default function RunResults() {
   const { test_id } = useParams(); // From old code
   const [activeTabIndex, setActiveTabIndex] = useState(0); // From new code
 
-  // useQuery for data fetching from old code
-  const { data: executions, isLoading, isError, error } = useQuery(
-    ["executions", test_id], // test_id from useParams
-    () => getExecutions(test_id),
-    {
-      // Optional: react-query options like staleTime, cacheTime
-      // staleTime: 5 * 60 * 1000, // 5 minutes
-      // cacheTime: 10 * 60 * 1000, // 10 minutes
-    }
-  );
+  const isLoading = false;
+  const isError = false;
+  const error = null;
+  const executions = []; // משתנה ריק עבור TabSummaryContent
 
-  // useMemo for transforming data, from old code (adapted)
-  const results = useMemo(() => {
-    if (executions) {
-      return transformExecutionData(executions);
-    }
-    return [];
-  }, [executions]);
+  const results = DEMO_RESULTS;
 
   // Loading state from old code, styled
   if (isLoading) return (

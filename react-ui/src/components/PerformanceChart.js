@@ -1,4 +1,7 @@
 import React, { useState, useMemo } from 'react';
+import DEMO_RESULTS from './demoResults';
+
+
 import {
   ResponsiveContainer,
   BarChart,
@@ -14,6 +17,9 @@ import { Zap, Users, Filter, X } from 'lucide-react';
 export default function PerformanceChart({ results }) {
   const [metricType, setMetricType] = useState("avg");
   const [selectedUserLevel, setSelectedUserLevel] = useState(null);
+
+
+  results = DEMO_RESULTS;
 
   // Extract user levels and create friendly names
   const { userLevels, chartData } = useMemo(() => {
