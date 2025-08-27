@@ -277,13 +277,13 @@ const DEMO_RESULTS = [
   // ───────── PURE COUNT (COUNT(*)) ─────────
   // PostgreSQL עדיפה משמעותית; ב-40u הפער אף גדל מעט
   { schema: 'mydb', test_name: 'purecount_10u', query_type: 'purecount', load_level: 10,
-    mysql_avg_duration: 0.430, mysql_p95: 0.710, mysql_stddev: 0.103, mysql_count: 98,
+    mysql_avg_duration: 1.430, mysql_p95: 1.732, mysql_stddev: 0.233, mysql_count: 23,
     postgres_avg_duration: 0.260, postgres_p95: 0.405, postgres_stddev: 0.062, postgres_count: 101,
     winner: 'PostgreSQL', difference_percent: 65.4
   },
   { schema: 'mydb', test_name: 'purecount_40u', query_type: 'purecount', load_level: 40,
-    mysql_avg_duration: 0.520, mysql_p95: 0.860, mysql_stddev: 0.121, mysql_count: 158,
-    postgres_avg_duration: 0.310, postgres_p95: 0.470, postgres_stddev: 0.071, postgres_count: 164,
+    mysql_avg_duration: 2.520, mysql_p95: 0.860, mysql_stddev: 0.121, mysql_count: 43,
+    postgres_avg_duration: 0.410, postgres_p95: 0.470, postgres_stddev: 0.071, postgres_count: 164,
     winner: 'PostgreSQL', difference_percent: 67.7
   },
 ];
