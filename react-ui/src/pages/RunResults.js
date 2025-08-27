@@ -611,7 +611,6 @@ function TabSummaryContent({ results, rawExecutions }) { // Pass rawExecutions i
 
 export default function RunResults() {
   const { test_id } = useParams(); // From old code
-  const [activeTabIndex, setActiveTabIndex] = useState(0); // From new code
 
   const isLoading = false;
   const isError = false;
@@ -619,6 +618,9 @@ export default function RunResults() {
   const executions = []; // משתנה ריק עבור TabSummaryContent
 
   const results = DEMO_RESULTS;
+
+  const [activeTabIndex, setActiveTabIndex] = useState(0); // From new code
+
 
   // Loading state from old code, styled
   if (isLoading) return (
