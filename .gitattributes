@@ -1,0 +1,2 @@
+*.sql linguist-vendored
+*.plpgsql linguist-vendored
