@@ -99,8 +99,7 @@ LastYearProject/
 5. User gets a detailed, actionable comparison
 
 Watch the demo video (Click on the Image) ➡️ 
-[![Watch the video](assets/demo-preview.png)](https://www.youtube.com/watch?v=6UiuaIy3UgE)
-
+[![Watch the video](https://img.youtube.com/vi/6UiuaIy3UgE/0.jpg)](https://www.youtube.com/watch?v=6UiuaIy3UgE)
 ---
 
 ## 👨‍💻 Contributors
