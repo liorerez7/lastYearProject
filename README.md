@@ -98,7 +98,8 @@ LastYearProject/
 4. Results stored and visualized
 5. User gets a detailed, actionable comparison
 
-➡️ [![Watch the demo video](https://img.youtube.com/vi/6UiuaIy3UgE/maxresdefault.jpg)](https://www.youtube.com/watch?v=6UiuaIy3UgE)
+Watch the demo video (Click on the Image) ➡️ 
+(https://img.youtube.com/vi/6UiuaIy3UgE/maxresdefault.jpg)](https://www.youtube.com/watch?v=6UiuaIy3UgE)
 
 ---
 
